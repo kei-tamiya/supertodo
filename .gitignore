@@ -1,0 +1,10 @@
+*~
+#*#
+*.swap
+.DS_Store
+*.swp
+.*
+!.git*
+
+.DS_Store
+
