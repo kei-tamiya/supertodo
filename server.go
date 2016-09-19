@@ -4,11 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	"./controller"
-	"./db"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
+	"github.com/kei-tamiya/supertodo/controller"
+	"github.com/kei-tamiya/supertodo/db"
 	csrf "github.com/utrack/gin-csrf"
 )
 
