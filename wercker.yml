@@ -5,6 +5,7 @@ box: google/golang
 build:
   # The steps that will be executed on build
   steps:
+    - npm-install
     - setup-go-workspace
     - script:
       name: make deps
