@@ -1,0 +1,41 @@
+{
+  "name": "supertodo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "babel-core": "^6.14.0",
+    "babel-loader": "^6.2.5",
+    "babel-preset-es2015": "^6.14.0",
+    "babel-preset-react": "^6.11.1",
+    "browserify": "^13.1.0",
+    "react": "^15.3.1",
+    "reactify": "^1.1.1",
+    "uglify-js": "^2.7.3",
+    "watch": "^0.19.2",
+    "webpack": "^1.13.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "production": "webpack -p",
+    "develop": "webpack -d",
+    "watch": "webpack -d --watch",
+    "build": "browserify --debug src/app.jsx > dest/app.js",
+    "build-dist": "NODE_ENV=production browserify src/app.jsx | uglifyjs -m > dest/app.min.js"
+  },
+  "browserify": {
+    "transform": [
+      "reactify"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kei-tamiya/supertodo.git"
+  },
+  "author": "kei-tamiya",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kei-tamiya/supertodo/issues"
+  },
+  "homepage": "https://github.com/kei-tamiya/supertodo#readme"
+}

@@ -8,58 +8,58 @@ DBNAME:=supertodo
 ENV:=development
 
 deps:
-		which godep || go get github.com/tools/godep
-			godep restore
-				go get github.com/rubenv/sql-migrate/...
-					npm install
+	which godep || go get github.com/tools/godep
+	godep restore
+	go get github.com/rubenv/sql-migrate/...
+	npm install
 
 test:
-		godep go test -v ./...
+	godep go test -v ./...
 
 integration-test:
-		godep go test -v ./... -tags=integration
+	godep go test -v ./... -tags=integration
 
 save:
-		godep save
+	godep save
 
 build:
-		$(WEBPACK) -p --config $(WEBPACK_JS)
+	$(WEBPACK) -p --config $(WEBPACK_JS)
 
 watch:
-		$(WEBPACK) -w --config $(WEBPACK_JS)
+	$(WEBPACK) -w --config $(WEBPACK_JS)
 
 lint:
-		$(ESLINT) client/**/*.jsx
+	$(ESLINT) client/**/*.jsx
 
 fix:
-		$(ESLINT) --fix client/**/*.jsx
+	$(ESLINT) --fix client/**/*.jsx
 
 migrate/init:
-		mysql -u root -h localhost --protocol tcp -e "create database \`$(DBNAME)\`" -p
+	mysql -u root -h localhost --protocol tcp -e "create database \`$(DBNAME)\`" -p
 
 migrate/up:
-		sql-migrate up -env=$(ENV)
+	sql-migrate up -env=$(ENV)
 
 migrate/down:
-		sql-migrate down -env=$(ENV)
+	sql-migrate down -env=$(ENV)
 
 migrate/status:
-		sql-migrate status -env=$(ENV)
+	sql-migrate status -env=$(ENV)
 
 migrate/dry:
-		sql-migrate up -dryrun -env=$(ENV)
+	sql-migrate up -dryrun -env=$(ENV)
 
 docker/build: Dockerfile docker-compose.yml
-		docker-compose build
+	docker-compose build
 
 docker/start:
-		docker-compose up -d
+	docker-compose up -d
 
 docker/logs:
-		docker-compose logs
+	docker-compose logs
 
 docker/clean:
-		docker-compose rm
+	docker-compose rm
 
 docker/bash:
-		docker exec -it $(shell docker-compose ps -q) bash
+	docker exec -it $(shell docker-compose ps -q) bash

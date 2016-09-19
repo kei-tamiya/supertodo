@@ -1,4 +1,5 @@
-REATE TABLE `todos` (
+-- +migrate Up
+CREATE TABLE `todos` (
   `todo_id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
   `board_id` int(11) COMMENT 'board ID',
   `title` varchar(255) NOT NULL COMMENT 'task title',
@@ -11,7 +12,7 @@ REATE TABLE `todos` (
   `updated` timestamp NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT 'when last updated',
   PRIMARY KEY (`todo_id`),
   FOREIGN KEY (`board_id`) REFERENCES `boards`(`board_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='list of todo';
+  ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='list of todo';
 
 -- +migrate Down
 DROP TABLE todos;
