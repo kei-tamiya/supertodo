@@ -2,9 +2,6 @@
 	"ImportPath": "github.com/kei-tamiya/supertodo",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v74",
-	"Packages": [
-		"./..."
-	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/boj/redistore",
@@ -89,22 +86,6 @@
 		{
 			"ImportPath": "github.com/utrack/gin-csrf",
 			"Rev": "63c0ef5eca6cc70a0cd93a8b2ca8a9e2b860d155"
-		},
-		{
-			"ImportPath": "github.com/voyagegroup/gin-boilerplate",
-			"Rev": "4a7dafcc9a692757af8fda6327b3f71c8a4f6e36"
-		},
-		{
-			"ImportPath": "github.com/voyagegroup/gin-boilerplate/controller",
-			"Rev": "4a7dafcc9a692757af8fda6327b3f71c8a4f6e36"
-		},
-		{
-			"ImportPath": "github.com/voyagegroup/gin-boilerplate/db",
-			"Rev": "4a7dafcc9a692757af8fda6327b3f71c8a4f6e36"
-		},
-		{
-			"ImportPath": "github.com/voyagegroup/gin-boilerplate/model",
-			"Rev": "4a7dafcc9a692757af8fda6327b3f71c8a4f6e36"
 		},
 		{
 			"ImportPath": "golang.org/x/net/context",
