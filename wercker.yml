@@ -5,19 +5,19 @@ box: google/golang
 build:
   # The steps that will be executed on build
   steps:
-
-    # Sets the go workspace and places you package
-    # at the right place in the workspace tree
     - setup-go-workspace
-
-    # Build the project
     - script:
-        name: go build
-        code: |
-          go build ./...
+      name: make deps
+      code: make deps
 
-    # Test the project
     - script:
-        name: go test
-        code: |
-          go test ./...
+      name: test
+      code: make test
+
+    - script:
+      name: go build
+      code: godep go build cmd/base.go
+
+    - script:
+      name: npm build
+      code: make build
