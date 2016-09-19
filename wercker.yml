@@ -1,5 +1,4 @@
-box: ewtroan-pendo/goae:latest
-
+box: automatt/golang@1.0.7
 build:
   steps:
     - setup-go-workspace
