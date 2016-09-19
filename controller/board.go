@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"github.com/kei-tamiya/model"
+	"github.com/kei-tamiya/supertodo/model"
 
 	"fmt"
 

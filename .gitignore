@@ -5,6 +5,12 @@
 *.swp
 .*
 !.git*
-
+vendor/
+node_modules/
+public/js/bundle.js
+*.db
+Godeps/_workspace
+!.eslintrc.js
+!.editorconfig
 .DS_Store
 

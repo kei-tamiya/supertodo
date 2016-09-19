@@ -3,7 +3,7 @@ package controller
 import (
 	"net/http"
 
-	"githun.com/kei-tamiya/model"
+	"github.com/kei-tamiya/supertodo/model"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
