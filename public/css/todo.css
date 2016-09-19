@@ -1,0 +1,53 @@
+.todo {
+    background: url("../images/star.png") center center no-repeat;
+    -webkit-background-size: auto 100%;
+    background-size: auto 100%;
+    background-color: #9fffb3;
+    list-style-type: none;
+}
+
+.todo li{
+    height: 100%;
+    padding:20px;
+    font-size: 1.2em;
+}
+
+.form {
+    padding: 20px 0;
+}
+
+#dateTarget {
+    border-right:1px solid #ddd;
+}
+
+#todosTarget {
+    border-left:1px solid #ddd;
+    border-right:1px solid #ddd;
+    border-bottom:1px solid #ddd;
+}
+
+.formTodo {
+    text-align: right;
+}
+
+.formTodo input {
+    height:80px;
+}
+
+.todoBtnList {
+    position: absolute;
+    bottom:0;
+    right:0;
+}
+.todoBtnList li{
+    float: left;
+}
+
+.table>tbody>tr>td.times {
+    padding: 0;
+    border-left:none;
+}
+
+.head td {
+    border-left: 1px solid #ddd;
+}
