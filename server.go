@@ -59,7 +59,6 @@ func (s *Server) Run(addr ...string) {
 }
 
 // Routeはベースアプリケーションのroutingを設定します
-//
 func (s *Server) Route() {
 	// ヘルスチェック用
 	s.Engine.GET("/ping", func(c *gin.Context) {

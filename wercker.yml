@@ -1,25 +1,26 @@
-box: automatt/golang@1.0.7
+# use the official google golang container
+box: google/golang
+
+# Build definition
 build:
+  # The steps that will be executed on build
   steps:
+
+    # Sets the go workspace and places you package
+    # at the right place in the workspace tree
     - setup-go-workspace
 
-    - script:
-        name: make deps
-        code: make deps
+    # golint step!
+    - wercker/golint
 
-    - script:
-        name: test
-        code: make test
-
+    # Build the project
     - script:
         name: go build
-        code: godep go build cmd/base.go
-
-    - script:
-        name: npm build
-        code: make build
-
-    - script:
-        name: copy whole repo contents and built binary.
         code: |
-          cp -ar ./ ${WERCKER_OUTPUT_DIR}
+          go build ./...
+
+    # Test the project
+    - script:
+        name: go test
+        code: |
+          go test ./...
