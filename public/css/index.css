@@ -1,0 +1,127 @@
+@charset "utf8";
+
+/* reset */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+  outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+  text-decoration: none;
+}
+del {
+  text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing=0' in the markup */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/*******************/
+header .wrapHead {
+  margin:0;
+  height: 50px;
+  background: url("../images/bg_tamiya.jpg") left top repeat-x;
+  -webkit-background-size: auto 100%;
+  background-size: auto 100%;
+  opacity: 0.1;
+}
+
+header h1 {
+  padding:40px 0 15px;
+  font-size:2em;
+  text-align: center;
+  font-weight: bold;
+  color: #000;
+}
+
+
+.wrapContents {
+  position: relative;
+}
+
+
+.wrapTodoBoard {
+  width: 70%;
+}
+.timeTable {
+  margin: 20px 40px;
+}
+
+.timeTable td {
+  text-align: center;
+}
+.todos {
+  min-width: 500px;
+  max-width: 1000px;
+  width: 85%;
+  border: 1px solid #333;
+  border-left:none;
+}
+
+.times {
+  width:100px;
+}
+
+.times .time {
+  margin: 0;
+  height: 15px;
+  padding: 10px 0 30px;
+  width:100%;
+  border: 1px solid #ddd;
+  border-top: none;
+  border-right:none;
+  text-align: center;
+  vertical-align: middle;
+}
+
+#root {
+  position: absolute;
+  right: 50px;
+  top: 160px;
+}
+
+footer {
+  height: 100px;
+  background: #0573a0;
+  text-align: center;
+}
+
+footer p {
+  padding: 40px;
+}
