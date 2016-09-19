@@ -6,7 +6,7 @@ build:
   # The steps that will be executed on build
   steps:
     - script:
-      name: set nodejs emvironment
+      name: set nodejs environment
       code: |
         sudo apt-get update
         sudo apt-get -y install nodejs npm
