@@ -1,0 +1,26 @@
+box: ewtroan-pendo/goae:latest
+
+build:
+  steps:
+    - setup-go-workspace
+
+    - script:
+        name: make deps
+        code: make deps
+
+    - script:
+        name: test
+        code: make test
+
+    - script:
+        name: go build
+        code: godep go build cmd/base.go
+
+    - script:
+        name: npm build
+        code: make build
+
+    - script:
+        name: copy whole repo contents and built binary.
+        code: |
+          cp -ar ./ ${WERCKER_OUTPUT_DIR}
