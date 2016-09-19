@@ -5,7 +5,22 @@ box: google/golang
 build:
   # The steps that will be executed on build
   steps:
-    - npm-install
+    - script:
+      name: set nodejs emvironment
+      code: |
+        sudo apt-get update
+        sudo apt-get -y install nodejs npm
+        sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+    - script:
+      # ref. https://github.com/wercker/step-npm-install/blob/master/run.sh
+      name: custom npm-install
+      code: |
+        cd js
+        mkdir -p "$WERCKER_CACHE_DIR/wercker/npm"
+        npm config set cache "$WERCKER_CACHE_DIR/wercker/npm"
+        sudo npm update
+        #sudo npm cache clean
+        sudo npm install $WERCKER_NPM_INSTALL_OPTIONS
     - setup-go-workspace
     - script:
       name: make deps
