@@ -15,8 +15,6 @@ build:
       # ref. https://github.com/wercker/step-npm-install/blob/master/run.sh
       name: custom npm-install
       code: |
-        mkdir js
-        cd js
         mkdir -p "$WERCKER_CACHE_DIR/wercker/npm"
         npm config set cache "$WERCKER_CACHE_DIR/wercker/npm"
         sudo npm update
