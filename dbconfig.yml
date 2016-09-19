@@ -1,0 +1,8 @@
+development:
+  dialect: mysql
+    datasource: root:password@tcp(localhost:3306)/board?parseTime=true&collation=utf8_general_ci&interpolateParams=true
+      dir: migrations
+
+test:
+  dialect: mysql
+    datasource: root:password@tcp(localhost:3306)/test-board?parseTime=true&collation=utf8_general_ci&interpolateParams=true
