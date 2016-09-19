@@ -1,4 +1,4 @@
-box: ewtroan-pendo/goae@0.4.1
+box: ewtroan-pendo/goae:latest
 
 build:
   steps:
