@@ -6,3 +6,4 @@ development:
 test:
   dialect: mysql
   datasource: root:password@tcp(localhost:3306)/test-supertodo?parseTime=true&collation=utf8_general_ci&interpolateParams=true
+  dir: migrations
