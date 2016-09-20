@@ -6,18 +6,47 @@ build:
   # The steps that will be executed on build
   steps:
 
-    # Sets the go workspace and places you package
-    # at the right place in the workspace tree
+#    - script:
+#      name: set nodejs environment
+#      code: |
+#        sudo apt-get update
+#        sudo apt-get -y install nodejs npm
+#        sudo update-alternatives --install /usr/bin/node node /usr/bin/nodejs 10
+#    - script:
+#      # ref. https://github.com/wercker/step-npm-install/blob/master/run.sh
+#      name: custom npm-install
+#      code: |
+#        mkdir -p "$WERCKER_CACHE_DIR/wercker/npm"
+#        npm config set cache "$WERCKER_CACHE_DIR/wercker/npm"
+#        sudo npm update
+#        #sudo npm cache clean
+#        sudo npm install $WERCKER_NPM_INSTALL_OPTIONS
+    
+    - install-packages:
+      packages: openssh-client
+    - add-ssh-key:
+      keyname: myrepo
+
     - setup-go-workspace
 
-    # Build the project
+    - add-to-known_hosts:
+      hostname: github.com
+      fingerprint: 76:62:0b:4e:92:91:9f:ee:e7:ea:a5:75:02:18:5e:a1
     - script:
-        name: go build
-        code: |
-          go build ./...
+      name: Clone private packages
+      code: |-
+        git clone git@github.com:kei-tamiya/supertodo.git $GOPATH/src/github.com/kei-tamiya/supertodo
+    - script:
+      name: make deps
+      code: |
+        which godep || go get github.com/tools/godep
+        godep restore
+        go get github.com/rubenv/sql-migrate/...
 
-    # Test the project
     - script:
-        name: go test
-        code: |
-          go test ./...
+      name: go build
+      code: godep go build cmd/base.go
+
+#    - script:
+#      name: npm build
+#      code: make build
