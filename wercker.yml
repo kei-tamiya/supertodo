@@ -1,5 +1,5 @@
 # use the official google golang container
-box: google/golang
+box: wercker/golang
 
 # Build definition
 build:
@@ -26,16 +26,15 @@ build:
       packages: openssh-client
     - add-ssh-key:
       keyname: myrepo
-      host: github.com
 
     - setup-go-workspace
 
     - add-to-known_hosts:
       hostname: github.com
       fingerprint: 76:62:0b:4e:92:91:9f:ee:e7:ea:a5:75:02:18:5e:a1
-    - script:
-      name: Remove private packages Directory
-      code: rm -rf $GOPATH/src/github.com/kei-tamiya/supertodo
+#    - script:
+#      name: Remove private packages Directory
+#      code: rm -rf $GOPATH/src/github.com/kei-tamiya/supertodo
 
     - script:
       name: Clone private packages
