@@ -35,8 +35,8 @@ build:
       fingerprint: 76:62:0b:4e:92:91:9f:ee:e7:ea:a5:75:02:18:5e:a1
     - script:
       name: Remove private packages Directory
-      code: |-
-        rm -rf $GOPATH/src/github.com/kei-tamiya/supertodo
+      code: rm -rf $GOPATH/src/github.com/kei-tamiya/supertodo
+
     - script:
       name: Clone private packages
       code: |-
