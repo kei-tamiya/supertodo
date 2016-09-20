@@ -4,7 +4,6 @@ import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import App from 'github.com/kei-tamiya/supertodo/client/containers/App'
 import reducer from 'github.com/kei-tamiya/supertodo/client/reducers'
-import 'todomvc-app-css/index.css'
 
 const store = createStore(reducer)
 

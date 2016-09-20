@@ -24,7 +24,7 @@ build:
     - script:
       name: Clone private packages
       code: |-
-        git clone git@github.com:kei-tamiya/supertodo.git $GOPATH/github.com/kei-tamiya/supertodo
+        git clone git@github.com:kei-tamiya/supertodo.git $GOPATH/src/github.com/kei-tamiya/supertodo
     - install-packages:
       packages: openssh-client
     - add-ssh-key:
@@ -37,10 +37,6 @@ build:
     - script:
       name: make deps
       code: make deps
-
-    - script:
-      name: test
-      code: make test
 
     - script:
       name: go build
