@@ -42,7 +42,10 @@ build:
 #        git clone git@github.com:kei-tamiya/supertodo.git $GOPATH/src/github.com/kei-tamiya/supertodo
     - script:
       name: make deps
-      code: make deps
+      code: |
+        which godep || go get github.com/tools/godep
+        godep restore
+        go get github.com/rubenv/sql-migrate/...
 
     - script:
       name: go build
