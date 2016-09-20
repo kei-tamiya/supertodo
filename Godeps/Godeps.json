@@ -1,5 +1,4 @@
 {
-	"ImportPath": "github.com/kei-tamiya/supertodo",
 	"GoVersion": "go1.7",
 	"GodepVersion": "v74",
 	"Deps": [
