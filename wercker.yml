@@ -1,5 +1,5 @@
 # use the official google golang container
-box: wercker/golang
+box: google/golang
 
 # Build definition
 build:
