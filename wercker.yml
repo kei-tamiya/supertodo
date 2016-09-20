@@ -6,7 +6,13 @@ build:
   # The steps that will be executed on build
   steps:
     - setup-go-workspace
-    
+
+    - script:
+        name: godep
+        code: |
+          cd $WERCKER_SOURCE_DIR
+          echo `pwd`
+          go get github.com/tools/godep && godep restore
     - script:
       name: set nodejs environment
       code: |
