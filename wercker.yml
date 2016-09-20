@@ -5,6 +5,8 @@ box: google/golang
 build:
   # The steps that will be executed on build
   steps:
+    - setup-go-workspace
+    
     - script:
       name: set nodejs environment
       code: |
@@ -29,7 +31,6 @@ build:
     - add-to-known_hosts:
       hostname: github.com
       fingerprint: 76:62:0b:4e:92:91:9f:ee:e7:ea:a5:75:02:18:5e:a1
-    - setup-go-workspace
     - script:
       name: make deps
       code: make deps
