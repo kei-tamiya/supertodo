@@ -21,10 +21,6 @@ build:
         #sudo npm cache clean
         sudo npm install $WERCKER_NPM_INSTALL_OPTIONS
     
-    - script:
-      name: Clone private packages
-      code: |-
-        git clone git@github.com:kei-tamiya/supertodo.git $GOPATH/src/github.com/kei-tamiya/supertodo
     - install-packages:
       packages: openssh-client
     - add-ssh-key:
