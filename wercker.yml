@@ -36,7 +36,7 @@ build:
     - script:
       name: Clone private packages
       code: |-
-        git clone git@github.com:kei-tamiya/supertodo.git $GOPATH/src/github.com/kei-tamiya/supertodo
+        sudo git clone git@github.com:kei-tamiya/supertodo.git $GOPATH/src/github.com/kei-tamiya/supertodo
     - script:
       name: make deps
       code: make deps
