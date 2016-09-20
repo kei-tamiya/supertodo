@@ -20,6 +20,12 @@ build:
         sudo npm update
         #sudo npm cache clean
         sudo npm install $WERCKER_NPM_INSTALL_OPTIONS
+    - add-ssh-key:
+      keyname: myrepo
+      host: github.com
+    - add-to-known_hosts:
+      hostname: github.com
+      fingerprint: 76:62:0b:4e:92:91:9f:ee:e7:ea:a5:75:02:18:5e:a1
     - setup-go-workspace
     - script:
       name: make deps
