@@ -20,6 +20,9 @@ build:
         sudo npm update
         #sudo npm cache clean
         sudo npm install $WERCKER_NPM_INSTALL_OPTIONS
+    
+    - install-packages:
+      packages: openssh-client
     - add-ssh-key:
       keyname: myrepo
       host: github.com
