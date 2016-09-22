@@ -21,7 +21,7 @@ func (t *Todo) Get(c *gin.Context) {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, todos)
+	c.JSON(http.StatusOK, gin.H{"data": todos})
 }
 
 func (t *Todo) Post(c *gin.Context) {
