@@ -1,5 +1,3 @@
-import { combineReducers } from 'redux'
-
 import {
     ADD_TODO, DELETE_TODO, UPDATE_TODO_TITLE,
     UPDATE_TODO_POSITION, TOGGLE_TODO,
@@ -29,7 +27,7 @@ const todo = (state, action) => {
     }
 }
 
-const todos = (state = {
+export const todos = (state = {
     isFetching: false,
     didInvalidate: false,
     items: []
@@ -64,7 +62,7 @@ const todos = (state = {
 
 }
 
-const todosByPetatto = (state = { }, action) => {
+export const todosByPetatto = (state = { }, action) => {
     switch (action.type) {
         case RECEIVE_TODOS:
         case REQUEST_TODOS:
@@ -76,10 +74,3 @@ const todosByPetatto = (state = { }, action) => {
             return state
     }
 }
-
-const rootReducer = combineReducers({
-    todosByPetatto,
-    todos
-})
-
-export default rootReducer

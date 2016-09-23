@@ -12,6 +12,8 @@
     "react": "^15.3.1",
     "reactify": "^1.1.1",
     "redux-devtools": "^3.3.1",
+    "redux-devtools-dock-monitor": "^1.1.1",
+    "redux-devtools-log-monitor": "^1.0.11",
     "uglify-js": "^2.7.3",
     "watch": "^0.19.2",
     "webpack": "^1.13.2"
@@ -42,12 +44,16 @@
   "dependencies": {
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
+    "react-router": "^2.8.1",
+    "react-router-redux": "^4.0.6",
     "react-tap-event-plugin": "^1.0.0",
     "redux": "^3.6.0",
     "redux-logger": "^2.6.1",
     "redux-thunk": "^2.1.0"
   },
   "babel": {
-    "plugins": ["transform-class-properties"]
+    "plugins": [
+      "transform-class-properties"
+    ]
   }
 }
