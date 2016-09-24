@@ -1,23 +1,50 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { increase, decrease } from '../actions/Count'
+import { fetchToken } from '../actions/Token'
 
-function Root({ number, increase, decrease }) {
-    return (
-        <div>
-            Some state changes:
-            {number}
-            <button onClick={() => increase(1)}>Increase</button>
-            <button onClick={() => decrease(1)}>Decrease</button>
-        </div>
-    )
+class Root extends Component {
+
+    componentWillMount() {
+        const { dispatch } = this.props
+        dispatch(fetchToken())
+    }
+    //
+    // componentWillReceiveProps(nextProps) {
+    //     console.log("okofsadfsafdsafsdkok")
+    //
+    //     if (nextProps.token !== this.props.token) {
+    //         console.log("okokok")
+    //         const { dispatch, token } = nextProps
+    //         dispatch(fetchToken())
+    //     }
+    // }
+
+    render() {
+        const { token, number } = this.props
+        return (
+            <div>
+                Some state changes:
+                {number}
+                <button onClick={() => increase(1)}>Increase</button>
+                <button onClick={() => decrease(1)}>Decrease</button>
+            </div>
+        )
+    }
+
 }
 
 Root.PropTypes = {
-    number: PropTypes.number.isRequired
+    token: PropTypes.string.isRequired,
+    number: PropTypes.number.isRequired,
+    increase: PropTypes.func.isRequired,
+    decrease: PropTypes.func.isRequired,
+    dispatch: PropTypes.func.isRequired
 }
 
-export default connect(
-    state => ({ number: state.number }),
-    { increase, decrease }
-)(Root)
+const mapStateToProps = state => {
+    return {
+        token: state.item
+    }
+}
+export default connect(mapStateToProps)(Root)

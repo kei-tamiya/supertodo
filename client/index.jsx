@@ -14,6 +14,7 @@ import TodoApp from './containers/App'
 // import * as reducers from './reducers/'
 import update from './reducers/Count'
 import { todos, todosByPetatto } from './reducers/Todo'
+import token from './reducers/token'
 import App from './components/App'
 import Root from './components/Root'
 import Foo from './components/Foo'
@@ -24,6 +25,7 @@ const reducer = combineReducers({
     update,
     todos,
     todosByPetatto,
+    token,
     routing: routerReducer
 })
 
