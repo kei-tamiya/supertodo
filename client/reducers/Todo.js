@@ -4,7 +4,6 @@ import {
     REQUEST_TODOS, RECEIVE_TODOS
 } from '../actions/Todo'
 
-
 const todo = (state, action) => {
     switch (action.type) {
         case ADD_TODO:
@@ -27,7 +26,7 @@ const todo = (state, action) => {
     }
 }
 
-export const todos = (state = {
+const todos = (state = {
     isFetching: false,
     didInvalidate: false,
     items: []
@@ -47,7 +46,8 @@ export const todos = (state = {
             return {
                 state,
                 isFetching: true,
-                didInvalidate: false
+                didInvalidate: false,
+                items: action.todos
             }
         case RECEIVE_TODOS:
             return {
@@ -62,15 +62,17 @@ export const todos = (state = {
 
 }
 
-export const todosByPetatto = (state = { }, action) => {
+const todosByPetatto = (state = { }, action) => {
     switch (action.type) {
         case RECEIVE_TODOS:
         case REQUEST_TODOS:
             return {
                 state,
-                [action.pataTodos]: todos(state[action.pataTodos], action)
+                items: todos(state[action.todos], action)
             }
         default:
             return state
     }
 }
+
+export {todos, todosByPetatto}

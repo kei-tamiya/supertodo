@@ -1,7 +1,15 @@
-import React from 'react'
+import React, { Component } from 'react'
+import App from '../containers/App'
 
-function Bar() {
-    return <div>And I am Bar!</div>
+class Bar extends Component {
+    render() {
+        return (
+            <div>And I am Bar!
+                <App />
+            </div>
+
+        )
+    }
 }
 
 export default Bar

@@ -10,10 +10,10 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-// import App from './containers/App'
+import TodoApp from './containers/App'
 // import * as reducers from './reducers/'
 import update from './reducers/Count'
-// import { App, Root, Foo, Bar } from './components'
+import { todos, todosByPetatto } from './reducers/Todo'
 import App from './components/App'
 import Root from './components/Root'
 import Foo from './components/Foo'
@@ -22,6 +22,8 @@ import Bar from './components/Bar'
 
 const reducer = combineReducers({
     update,
+    todos,
+    todosByPetatto,
     routing: routerReducer
 })
 

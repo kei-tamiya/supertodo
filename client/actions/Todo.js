@@ -13,53 +13,52 @@ export const addTodo = title => ({
     title
 })
 //
-// export const deleteTodo = pataTodos => ({
+// export const deleteTodo = petaTodos => ({
 //     type: DELETE_TODO,
-//     pataTodos
+//     petaTodos
 // })
 //
-// export const updateTodoTitle = pataTodos => ({
+// export const updateTodoTitle = petaTodos => ({
 //     type: UPDATE_TODO_TITLE,
-//     pataTodos
+//     petaTodos
 // })
 //
-// export const updateTodoPosition = pataTodos => ({
+// export const updateTodoPosition = petaTodos => ({
 //     type: UPDATE_TODO_POSITION,
-//     pataTodos
+//     petaTodos
 // })
 //
-// export const toggleTodo = pataTodos => ({
+// export const toggleTodo = petaTodos => ({
 //     type: TOGGLE_TODO,
-//     pataTodos
+//     petaTodos
 // })
 
-export const requestTodos = pataTodos => ({
+export const requestTodos = (todos = []) => ({
     type: REQUEST_TODOS,
-    pataTodos
+    todos
 })
 
-export const receiveTodos = (pataTodos, json) => ({
+export const receiveTodos = (json) => ({
     type: RECEIVE_TODOS,
-    pataTodos
+    todos: json.data
 })
 
-const fetchTodos = pataTodos => dispatch => {
-    dispatch(requestTodos(pataTodos))
+const fetchTodos = (todos) => dispatch => {
+    dispatch(requestTodos(todos))
     return fetch(`http://localhost:8080/api/todos`)
         // .then(console.log(fetch(`http://localhost:8080/api/todos`)))
         .then(response => response.json())
         .then(json => {
-            dispatch(receiveTodos(pataTodos, json))
-            console.log(json)
+            dispatch(receiveTodos(json))
         })
-
+        // デバッグ用
         .catch((error) => {
             console.error(error)
         })
 }
 
-const shouldFetchTodos = (state, pataTodos) => {
-    const todos = state.todosByPetatto[pataTodos]
+const shouldFetchTodos = (state) => {
+    const todos = state.todosByPetatto.items
     if (!todos) {
         return true
     }
@@ -69,8 +68,8 @@ const shouldFetchTodos = (state, pataTodos) => {
     return todos.didInvalidate
 }
 
-export const fetchTodosIfNeeded = pataTodos => (dispatch, getState) => {
-    if (shouldFetchTodos(getState(), pataTodos)) {
-        return dispatch(fetchTodos(pataTodos))
+export const fetchTodosIfNeeded = (todos) => (dispatch, getState) => {
+    if (shouldFetchTodos(getState())) {
+        return dispatch(fetchTodos(todos))
     }
 }

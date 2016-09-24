@@ -5,18 +5,9 @@ import TodoList from '../components/TodoList'
 import AddTodo from '../containers/AddTodo'
 
 class App extends Component {
-    // PropTypes: {
-    //     todos: PropTypes.array.isRequired
+    // constructor(props) {
+    //     super(props)
     // }
-
-    // static propTypes = {
-    //     selectedTodo: PropTypes.string.isRequired,
-    //     todos: PropTypes.array.isRequired,
-    //     isFetching: PropTypes.string.isRequired,
-    //     dispatch: PropTypes.func.isRequired
-    // }
-
-
     componentDidMount() {
         const { dispatch, todos } = this.props
         dispatch(fetchTodosIfNeeded(todos))
@@ -29,9 +20,6 @@ class App extends Component {
         }
     }
 
-    // handleChange = nextReddit => {
-    //     this.props.dispatch(selectReddit(nextReddit))
-    // }
     //
     // handleRefreshClick = e => {
     //     e.preventDefault()
@@ -44,37 +32,45 @@ class App extends Component {
 
 
     render() {
-        const { todos } = this.props
-        // const { todos, isFetching } = this.props
-        // const isEmpty = todos.length === 0
+        const { todos, isFetching } = this.props
+
+        let isEmpty = true
+        if (todos !== null) {
+            isEmpty = todos.length === 0
+        }
 
         return (
             <div>
                 <AddTodo />
-                <TodoList todos={todos} />
-                {/*{isFetching*/}
-                    {/*? <h2>Loading...</h2>*/}
-                    {/*: <TodoList todos={todos} />*/}
-                {/*}*/}
+                {/*<TodoList todos={todos}/>*/}
+                {isEmpty
+                    ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
+                    : <TodoList todos={todos}/>
+                }
             </div>
         )
     }
 }
 
 App.propTypes = {
-    todos: PropTypes.array.isRequired
+    todos: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        completed: PropTypes.bool.isRequired,
+        title: PropTypes.string.isRequired,
+        top: PropTypes.number.isRequired,
+        left: PropTypes.number.isRequired
+    }).isRequired).isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired
 }
 
-// const mapStateToProps = state => ({
-//     todos: state
-// })
 
-const mapStateToProps = () => {
-    // const todosByPetatto = state
+const mapStateToProps = state => {
+    const { todosByPetatto } = state
     const {
         isFetching,
         items: todos
-    } = {
+    } =  todosByPetatto.items || {
         isFetching: true,
         items: []
     }
