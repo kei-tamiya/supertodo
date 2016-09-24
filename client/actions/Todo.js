@@ -6,13 +6,32 @@ export const ADD_TODO = 'ADD_TODO'
 export const REQUEST_TODOS = 'REQUEST_TODOS'
 export const RECEIVE_TODOS = 'RECEIVE_TODOS'
 
-let nextTodoId = 0
-export const addTodo = title => ({
+export const addTodo = (json) => ({
     type: ADD_TODO,
-    id: nextTodoId++,
-    title
+    todo: json
 })
-//
+
+export const addTodoByApi = (title) => (dispatch, getState) => {
+    const todoToSave = Object.assign({}, {title: title})
+    return fetch('http://localhost:8080/api/todos', {
+        credentials: 'same-origin',
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-XSRF-TOKEN': getState().token.token
+        },
+        body: JSON.stringify(todoToSave)
+    })
+        .then(response => response.json())
+        .then(json => {
+            if (json == null) {
+                return
+            }
+            dispatch(addTodo(json))
+        })
+}
+
 // export const deleteTodo = petaTodos => ({
 //     type: DELETE_TODO,
 //     petaTodos
@@ -45,7 +64,7 @@ export const receiveTodos = (json) => ({
 
 const fetchTodos = (todos) => dispatch => {
     dispatch(requestTodos(todos))
-    return fetch(`http://localhost:8080/api/todos`)
+    return fetch('http://localhost:8080/api/todos')
         // .then(console.log(fetch(`http://localhost:8080/api/todos`)))
         .then(response => response.json())
         .then(json => {

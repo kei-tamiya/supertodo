@@ -32,7 +32,7 @@ func (t *Todo) Post(c *gin.Context) {
 	}
 
 	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-		result, err := todo.Update(tx)
+		result, err := todo.Insert(tx)
 		if err != nil {
 			return err
 		}
@@ -40,10 +40,14 @@ func (t *Todo) Post(c *gin.Context) {
 			return err
 		}
 		todo.ID, err = result.LastInsertId()
+		if err != nil {
+			return err
+		}
+		todo, err = model.TodoOne(t.DB, todo.ID)
 		return err
 	})
 
-	c.JSON(http.StatusOK, todo)
+	c.JSON(http.StatusOK, &todo)
 }
 
 //PutはタスクをDBに追加します

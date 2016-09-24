@@ -34,6 +34,9 @@ lint:
 fix:
 	$(ESLINT) --fix client/**/*.jsx
 
+gen:
+	cd model && go generate
+
 migrate/init:
 	mysql -u root -h localhost --protocol tcp -e "create database \`$(DBNAME)\`" -p
 
