@@ -13,8 +13,8 @@ import (
 type Board struct {
 	ID      int64      `db:"board_id" json:"id"`
 	Date    string     `json:"date"`
-	Created *time.Time `json:created`
-	Updated *time.Time `json:updated`
+	Created *time.Time `json:"created"`
+	Updated *time.Time `json:"updated"`
 }
 
 func (t *Board) BoardsAll(dbx *sqlx.DB) (boards []Board, err error) {
