@@ -1,21 +1,11 @@
 package model
 
 import (
-	"time"
-
 	"database/sql"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 )
-
-// 行動予定タグとなるもの
-type Board struct {
-	ID      int64      `db:"board_id" json:"id"`
-	Date    string     `json:"date"`
-	Created *time.Time `json:"created"`
-	Updated *time.Time `json:"updated"`
-}
 
 func (t *Board) BoardsAll(dbx *sqlx.DB) (boards []Board, err error) {
 	if err = dbx.Select(&boards, "SELECT * FROM boards"); err != nil {

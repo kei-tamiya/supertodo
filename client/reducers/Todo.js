@@ -4,27 +4,26 @@ import {
     REQUEST_TODOS, RECEIVE_TODOS
 } from '../actions/Todo'
 
-const todo = (state, action) => {
-    switch (action.type) {
-        case ADD_TODO:
-            return {
-                id: action.id,
-                title: action.title,
-                completed: false
-            }
-        // case TOGGLE_TODO:
-        //     if (state.id !== action.id) {
-        //         return state
-        //     }
-        //
-        //     return {
-        //         state,
-        //         completed: !state.completed
-        //     }
-        default:
-            return state
-    }
-}
+// const todo = (state = {}, action) => {
+//     switch (action.type) {
+//         case ADD_TODO:
+//             return {
+//                 state,
+//                 todo: action.todo
+//             }
+//         // case TOGGLE_TODO:
+//         //     if (state.id !== action.id) {
+//         //         return state
+//         //     }
+//         //
+//         //     return {
+//         //         state,
+//         //         completed: !state.completed
+//         //     }
+//         default:
+//             return state
+//     }
+// }
 
 const todos = (state = {
     isFetching: false,
@@ -32,11 +31,20 @@ const todos = (state = {
     items: []
 }, action) => {
     switch (action.type) {
-        case ADD_TODO:
-            return [
-                ...state,
-                todo(undefined, action)
-            ]
+        // case ADD_TODO:
+        //     // const todos = Object.assign({}, getState().todos, action.todos)
+        //     // console.log("createdTodos : " + todos)
+        //     const myMap = new Map()
+        //     myMap.set(Object.keys(state.items).length, action.todo)
+        //     const test = Object.assign({}, state.items, myMap)
+        //     console.log("test : " + test)
+        //     console.log("myMap : " + myMap)
+        //
+        //     return {
+        //         state,
+        //         isFetching: false,
+        //         items: test
+        //     }
         // case DELETE_TODO:
         //     return state.map(t =>
         //         todo(t, action)
@@ -64,6 +72,13 @@ const todos = (state = {
 
 const todosByPetatto = (state = { }, action) => {
     switch (action.type) {
+        case ADD_TODO:
+            const myMap = new Map()
+            myMap.set(Object.keys(state.items).length, action.todo)
+            // const test = Object.assign({}, state.items, myMap)
+            return [
+                ...state.items, myMap
+            ]
         case RECEIVE_TODOS:
         case REQUEST_TODOS:
             return {
