@@ -42,6 +42,8 @@
   },
   "homepage": "https://github.com/kei-tamiya/supertodo#readme",
   "dependencies": {
+    "inline-style-prefixer": "^2.0.4",
+    "material-ui": "^0.15.4",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",

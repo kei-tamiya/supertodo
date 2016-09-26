@@ -10,10 +10,11 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import injectTapEventPlugin from "react-tap-event-plugin";
 import TodoApp from './containers/App'
 // import * as reducers from './reducers/'
 import update from './reducers/Count'
-import { todo, todos, todosByPetatto } from './reducers/Todo'
+import { todos, todosByPetatto } from './reducers/Todo'
 import token from './reducers/token'
 import user from './reducers/User'
 import App from './components/App'
@@ -21,6 +22,7 @@ import Root from './components/Root'
 import Foo from './components/Foo'
 import Bar from './components/Bar'
 import Signup from './containers/Signup'
+import Material from './containers/Material';
 
 
 const reducer = combineReducers({
@@ -50,6 +52,8 @@ const store = createStore(
 
 const history = syncHistoryWithStore(browserHistory, store)
 
+
+injectTapEventPlugin();
 render(
     <Provider store={store}>
         { /* Tell the Router to use our enhanced history */ }
@@ -59,6 +63,7 @@ render(
                 <Route path="foo" component={Foo}/>
                 <Route path="bar" component={Bar}/>
                 <Route path="signup" component={Signup}/>
+                <Route path="material" component={Material} />
             </Route>
         </Router>
         {/*<DevTools />*/}
