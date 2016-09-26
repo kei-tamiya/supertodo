@@ -69,15 +69,42 @@ func (s *Server) Route() {
 			"token": csrf.GetToken(c),
 		})
 	})
+	user := &controller.User{DB: s.dbx}
 	todo := &controller.Todo{DB: s.dbx}
-	s.Engine.GET("/api/todos", todo.Get)
-	s.Engine.PUT("/api/todos", todo.Put)
-	s.Engine.POST("/api/todos", todo.Post)
+
+	auth := s.Engine.Group("/")
+	auth.Use(controller.AuthRequired())
+	{
+		auth.GET("/authtest", func(c *gin.Context) {
+			c.String(200, "you're authed")
+		})
+		auth.GET("/new", func(c *gin.Context) {
+			//c.HTML(200, "new.tmpl", gin.H{
+			//	"title":   "New: supertodo",
+			//	"csrf":    csrf.GetToken(c),
+			//	"context": c,
+			//})
+		})
+		//auth.GET("/logout", func(c *gin.Context) {
+		//	c.HTML(http.StatusOK, "logout.tmpl", gin.H{
+		//		"csrf":    csrf.GetToken(c),
+		//		"context": c,
+		//	})
+		//})
+		//auth.POST("/logout", user.Logout)
+
+		s.Engine.GET("/api/todos", todo.Get)
+		s.Engine.PUT("/api/todos", todo.Put)
+		s.Engine.POST("/api/todos", todo.Post)
+
+	}
 
 	board := &controller.Board{DB: s.dbx}
 	s.Engine.GET("/api/boards", board.Get)
 	s.Engine.PUT("/api/boards", board.Put)
 	s.Engine.POST("/api/boards", board.Post)
+
+	s.Engine.POST("api/signup", user.SignUp)
 	//s.Engine.DELETE("/api/todos", todo.Delete)
 	//
 	//s.Engine.DELETE("/api/todos/multi", todo.DeleteMulti)

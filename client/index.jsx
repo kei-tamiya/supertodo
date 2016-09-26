@@ -15,10 +15,12 @@ import TodoApp from './containers/App'
 import update from './reducers/Count'
 import { todo, todos, todosByPetatto } from './reducers/Todo'
 import token from './reducers/token'
+import user from './reducers/User'
 import App from './components/App'
 import Root from './components/Root'
 import Foo from './components/Foo'
 import Bar from './components/Bar'
+import Signup from './containers/Signup'
 
 
 const reducer = combineReducers({
@@ -26,6 +28,7 @@ const reducer = combineReducers({
     todos,
     todosByPetatto,
     token,
+    user,
     routing: routerReducer
 })
 
@@ -55,6 +58,7 @@ render(
                 <IndexRoute component={Root}/>
                 <Route path="foo" component={Foo}/>
                 <Route path="bar" component={Bar}/>
+                <Route path="signup" component={Signup}/>
             </Route>
         </Router>
         {/*<DevTools />*/}

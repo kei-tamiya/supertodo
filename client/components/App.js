@@ -12,6 +12,8 @@ function App({ children }) {
                 <Link to="/foo">Foo</Link>
                 {' '}
                 <Link to="/bar">Bar</Link>
+                {' '}
+                <Link to="/signup">Signup</Link>
             </header>
             <div>
                 <button onClick={() => browserHistory.push('/foo')}>Go to /foo</button>

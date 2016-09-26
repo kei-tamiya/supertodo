@@ -3,24 +3,26 @@ package model
 import (
 	"database/sql"
 	"errors"
+
+	"github.com/jmoiron/sqlx"
 )
 
 // ErrPasswordUnmatch is error for password unmatch when logging in.
 var ErrPasswordUnmatch = errors.New("password unmatch")
 
 // UserOne returns the user for given id
-func UserOne(db *sql.DB, id int64) (User, error) {
+func UserOne(db *sqlx.DB, id int64) (User, error) {
 	return ScanUser(db.QueryRow(`select * from users where user_id = ?`, id))
 }
 
 // UserByEmail fetch user by email.
 // Email is unique key.
-func UserByEmail(db *sql.DB, email string) (User, error) {
+func UserByEmail(db *sqlx.DB, email string) (User, error) {
 	return ScanUser(db.QueryRow(`select * from users where email = ?`, email))
 }
 
 // UserExists check if user is exists by given email.
-func UserExists(db *sql.DB, email string) (bool, error) {
+func UserExists(db *sqlx.DB, email string) (bool, error) {
 	var count int64
 	if err := db.QueryRow(`select count(*) as count from users where email = ?`, email).Scan(&count); err != nil {
 		return false, err
@@ -29,7 +31,7 @@ func UserExists(db *sql.DB, email string) (bool, error) {
 }
 
 // Update updates user by given user.
-func (u *User) Update(tx *sql.Tx) (sql.Result, error) {
+func (u *User) Update(tx *sqlx.Tx) (sql.Result, error) {
 	stmt, err := tx.Prepare(`
 	update users
 		set name = ?, email = ?
@@ -43,7 +45,7 @@ func (u *User) Update(tx *sql.Tx) (sql.Result, error) {
 }
 
 // Insert inserts new user.
-func (u *User) Insert(tx *sql.Tx, password string) (sql.Result, error) {
+func (u *User) Insert(tx *sqlx.Tx, password string) (sql.Result, error) {
 	stmt, err := tx.Prepare(`
 	insert into users (name, email, salt, salted)
 	values(?, ?, ?, ?)
@@ -57,7 +59,7 @@ func (u *User) Insert(tx *sql.Tx, password string) (sql.Result, error) {
 }
 
 // Auth makes user authentication.
-func Auth(db *sql.DB, email, password string) (User, error) {
+func Auth(db *sqlx.DB, email, password string) (User, error) {
 	u, err := UserByEmail(db, email)
 	if err != nil {
 		return User{}, err
