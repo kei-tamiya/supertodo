@@ -1,40 +1,40 @@
-import { createDevTools } from 'redux-devtools'
-import LogMonitor from 'redux-devtools-log-monitor'
-import DockMonitor from 'redux-devtools-dock-monitor'
+import { createDevTools } from 'redux-devtools';
+import LogMonitor from 'redux-devtools-log-monitor';
+import DockMonitor from 'redux-devtools-dock-monitor';
 
-import React from 'react'
-import { render } from 'react-dom'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
+import React from 'react';
+import { render } from 'react-dom';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import createLogger from 'redux-logger';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import injectTapEventPlugin from "react-tap-event-plugin";
-import TodoApp from './containers/App'
-// import * as reducers from './reducers/'
-import update from './reducers/Count'
-import { todos, todosByPetatto } from './reducers/Todo'
-import token from './reducers/token'
-import user from './reducers/User'
-import App from './components/App'
-import Root from './components/Root'
-import Foo from './components/Foo'
-import Bar from './components/Bar'
-import Signup from './containers/Signup'
-import Material from './containers/Material';
+import TodoApp from './containers/App.jsx';
+// import * as reducers from './reducers/';
+import update from './reducers/Count.jsx';
+import { todos, todosByPetatto } from './reducers/Todo.jsx';
+import token from './reducers/Token.jsx';
+import user from './reducers/User.jsx';
+import App from './components/App.jsx';
+import Root from './components/Root.jsx';
+import Foo from './components/Foo.jsx';
+import Bar from './components/Bar.jsx';
+import Signup from './containers/Signup.jsx';
+import Material from './containers/Material.jsx';
 
 
 const reducer = combineReducers({
-    update,
-    todos,
-    todosByPetatto,
-    token,
-    user,
-    routing: routerReducer
-})
+  update,
+  todos,
+  todosByPetatto,
+  token,
+  user,
+  routing: routerReducer
+});
 
-const middleware = [thunk]
+const middleware = [thunk];
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
@@ -48,9 +48,9 @@ const store = createStore(
     reducer,
     applyMiddleware(...middleware),
     // DevTools.instrument()
-)
+);
 
-const history = syncHistoryWithStore(browserHistory, store)
+const history = syncHistoryWithStore(browserHistory, store);
 
 
 injectTapEventPlugin();
@@ -69,7 +69,7 @@ render(
         {/*<DevTools />*/}
     </Provider>,
     document.getElementById('root')
-)
+);
 //
 // render(
 //   <Provider store={store}>

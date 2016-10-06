@@ -11,6 +11,13 @@ module.exports = {
     filename: '[name].js'
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader"
+      }
+    ],
     loaders: [{
       loader: 'babel-loader',
       exclude: /node_modules/,
@@ -19,7 +26,10 @@ module.exports = {
 	cacheDirectory: true,
 	presets: ['react', 'es2015']
       }
-    }]
+    }],
+    eslint: {
+        configFile: './.eslintrc'
+    }
   }
 };
 
