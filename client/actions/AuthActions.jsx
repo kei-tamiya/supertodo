@@ -38,3 +38,27 @@ export const login = () => {
 export const logout = () => {
   type: LOGOUT
 };
+
+export const loginByApi = (email, password) => (dispatch) => {
+  const userToSave = Object.assign({}, {
+    email: email,
+    password: password,
+  });
+  return fetch('http://localhost:8080/api/login', {
+    credentials: 'same-origin',
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': getState().token.token,
+    },
+    body: JSON.stringify(userToSave),
+  })
+    .then(response => response.json())
+    .then(json => {
+      if (json == null) {
+        return;
+      }
+      dispatch(login());
+    })
+};

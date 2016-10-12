@@ -14,9 +14,12 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 
 import { todos, todosByPetatto } from './reducers/Todo.jsx';
 import token from './reducers/Token.jsx';
-import user from './reducers/User.jsx';
+import user from './reducers/AuthReducers.jsx';
 import App from './containers/App.jsx';
-import Signup from './containers/Signup.jsx';
+import Signup from './containers/auth/Signup.jsx';
+import Login from './containers/auth/Login.jsx';
+import UserOnly from './containers/auth/UserOnly.jsx';
+import GuestOnly from './containers/auth/GuestOnly.jsx';
 
 // import material-ui
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
@@ -56,7 +59,12 @@ render(
       { /* Tell the Router to use our enhanced history */ }
       <Router history={history}>
           <Route path="/" component={App}>
+            <Route component={UserOnly}>
+            </Route>
+            <Route component={GuestOnly}>
               <Route path="signup" component={Signup} />
+              <Route path="login" component={Login} />
+            </Route>
           </Route>
       </Router>
       {/*<DevTools />*/}

@@ -19,12 +19,12 @@ module.exports = {
       }
     ],
     loaders: [{
-      loader: 'babel-loader',
+      loader: 'babel',
       exclude: /node_modules/,
       test: /\.js[x]?$/,
       query: {
-	cacheDirectory: true,
-	presets: ['react', 'es2015']
+        // cacheDirectory: true,
+        presets: ['es2015', 'stage-0']
       }
     }],
     eslint: {

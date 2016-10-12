@@ -21,6 +21,14 @@ class App extends Component {
     }
   }
 
+  componentWillMount() {
+    this.props.dispatch(fetchLoginState());
+  }
+
+  handleLogout() {
+    this.props.dispatch(clickLogout());
+  }
+
 //
 // handleRefreshClick = e => {
 //     e.preventDefault()
@@ -31,7 +39,7 @@ class App extends Component {
 // }
 
   render() {
-    const { todos, isFetching } = this.props;
+    const { todos, isFetching, auth, children } = this.props;
 
     let isEmpty = true;
     if (todos !== null) {
@@ -70,6 +78,8 @@ App.propTypes = {
   }).isRequired).isRequired,
   isFetching: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
+  children: PropTypes.object.isRequired,
 };
 
 

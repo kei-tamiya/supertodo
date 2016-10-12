@@ -1,5 +1,5 @@
 import React from 'react';
-import { SIGNUP, LOGIN, LOGOUT  } from '../actions/User.jsx';
+import { SIGNUP, LOGIN, LOGOUT  } from '../actions/AuthActions.jsx';
 
 const user = (state = { }, action) => {
   switch (action.type) {

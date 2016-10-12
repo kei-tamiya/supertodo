@@ -1,7 +1,7 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
-import { signupByApi } from '../actions/User.jsx';
+import { signupByApi } from '../../actions/AuthActions.jsx';
 
 class Signup extends Component {
   render() {
@@ -18,19 +18,10 @@ class Signup extends Component {
                 console.log("invalid value");
                 return
             }
-            console.log("email: " + email);
-            console.log("name:  " + name);
-            console.log("password: "+ password);
             dispatch(signupByApi(email, name, password));
-            console.log("email: " + email);
-            console.log("name:  " + name);
-            console.log("password: "+ password);
             this.refs.email.value = '';
             this.refs.name.value = '';
             this.refs.password.value = '';
-            console.log("email: " + email);
-            console.log("name:  " + name);
-            console.log("password: "+ password);
           }}>
             {/*<input type="hidden" name="_csrf" value={token}/>*/}
             <label htmlFor="email">email</label>
