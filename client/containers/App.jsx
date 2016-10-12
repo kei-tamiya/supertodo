@@ -1,12 +1,16 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchTodosIfNeeded } from '../actions/Todo.jsx';
+import { fetchToken } from '../actions/Token.jsx';
 import TodoList from '../components/TodoList.jsx';
 import AddTodo from './AddTodo.jsx';
+import Board from './Board.jsx'
+import Header from '../components/Header.jsx'
 
 class App extends Component {
   componentDidMount() {
     const { dispatch, todos } = this.props;
+    dispatch(fetchToken());
     dispatch(fetchTodosIfNeeded(todos));
   }
 
@@ -34,13 +38,23 @@ class App extends Component {
       isEmpty = todos.length === 0;
     }
     return (
-      <div>
-        <AddTodo />
-        {/*<TodoList todos={todos}/>*/}
-        {isEmpty
-          ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-          : <TodoList todos={todos} />
-        }
+      <div className="container-fluid">
+        <header>
+          <Header />
+        </header>
+
+        <div className="row">
+          <div className="col-sm-8">
+            <Board />
+          </div>
+          <div className="col-sm-4">
+            <AddTodo />
+            {isEmpty
+              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
+              : <TodoList todos={todos} />
+            }
+          </div>
+        </div>
       </div>
     );
   }

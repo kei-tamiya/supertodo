@@ -70,15 +70,13 @@ header h1 {
   color: #000;
 }
 
-
 .wrapContents {
   position: relative;
 }
 
-
-.wrapTodoBoard {
-  width: 70%;
-}
+/*.wrapTodoBoard {*/
+  /*width: 70%;*/
+/*}*/
 .timeTable {
   margin: 20px 40px;
 }
@@ -95,33 +93,17 @@ header h1 {
 }
 
 .times {
-  width:100px;
+  width:54px;
 }
 
 .times .time {
   margin: 0;
   height: 15px;
   padding: 10px 0 30px;
-  width:100%;
+  width:54px;
   border: 1px solid #ddd;
   border-top: none;
   border-right:none;
   text-align: center;
   vertical-align: middle;
-}
-
-#root {
-  position: absolute;
-  right: 50px;
-  top: 160px;
-}
-
-footer {
-  height: 100px;
-  background: #0573a0;
-  text-align: center;
-}
-
-footer p {
-  padding: 40px;
 }

@@ -40,7 +40,7 @@ func (s *Server) Init(dbconf, env string) {
 	s.Engine.Use(csrf.Middleware(csrf.Options{
 		Secret: "secret",
 		ErrorFunc: func(c *gin.Context) {
-			c.JSON(400, gin.H{"error": "CSRF token mismach"})
+			c.JSON(400, gin.H{"error": "CSRF token mismatch"})
 			c.Abort()
 		},
 	}))
@@ -95,7 +95,7 @@ func (s *Server) Route() {
 
 		s.Engine.GET("/api/todos", todo.Get)
 		s.Engine.PUT("/api/todos", todo.Put)
-		s.Engine.POST("/api/todos", todo.Post)
+		//s.Engine.POST("/api/todos", todo.Post)
 
 	}
 
@@ -103,6 +103,7 @@ func (s *Server) Route() {
 	s.Engine.GET("/api/boards", board.Get)
 	s.Engine.PUT("/api/boards", board.Put)
 	s.Engine.POST("/api/boards", board.Post)
+	s.Engine.POST("/api/todos", todo.Post)
 
 	s.Engine.POST("api/signup", user.SignUp)
 	//s.Engine.DELETE("/api/todos", todo.Delete)

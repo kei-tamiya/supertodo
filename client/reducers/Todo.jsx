@@ -1,5 +1,6 @@
 import {
   ADD_TODO,
+  CHANGE_NEW_TODO_TITLE,
   DELETE_TODO,
   UPDATE_TODO_TITLE,
   UPDATE_TODO_POSITION,
@@ -30,6 +31,7 @@ import {
 // }
 
 const todos = (state = {
+  newTodoTitle: '',
   isFetching: false,
   didInvalidate: false,
   items: [],
@@ -53,21 +55,28 @@ const todos = (state = {
     //     return state.map(t =>
     //         todo(t, action)
     //     )
+    case ADD_TODO:
+      return Object.assign({}, state, {
+        newTodoTitle: '',
+      });
+    case CHANGE_NEW_TODO_TITLE:
+      console.log("action.newTodoTitle," +action.newTodoTitle);
 
+      return Object.assign({}, state, {
+        newTodoTitle: action.newTodoTitle,
+      });
     case REQUEST_TODOS:
-      return {
-        state,
+      return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false,
         items: action.todos,
-      };
+      });
     case RECEIVE_TODOS:
-      return {
-        state,
+      return Object.assign({}, state, {
         isFetching: false,
         didInvalidate: false,
         items: action.todos,
-      };
+      });
     default:
       return state;
   }
@@ -85,10 +94,9 @@ const todosByPetatto = (state = {}, action) => {
       ];
     case RECEIVE_TODOS:
     case REQUEST_TODOS:
-      return {
-        state,
+      return Object.assign({}, state, {
         items: todos(state[action.todos], action),
-      };
+      });
     default:
       return state;
   }

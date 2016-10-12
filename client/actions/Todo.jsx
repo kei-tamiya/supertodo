@@ -1,4 +1,5 @@
 export const ADD_TODO = 'ADD_TODO';
+export const CHANGE_NEW_TODO_TITLE = 'CHANGE_NEW_TODO_TITLE';
 // export const DELETE_TODO = 'DELETE_TODO'
 // export const UPDATE_TODO_TITLE = 'UPDATE_TODO_TITLE'
 // export const UPDATE_TODO_POSITION = 'UPDATE_TODO_POSITION'
@@ -11,8 +12,14 @@ export const addTodo = (json) => ({
   todo: json
 });
 
+export const changeNewTodoTitle = (newTodoTitle) => ({
+  type: CHANGE_NEW_TODO_TITLE,
+  newTodoTitle: newTodoTitle
+});
+
 export const addTodoByApi = (title) => (dispatch, getState) => {
   const todoToSave = Object.assign({}, {title: title});
+  console.log("getState().token.token : "+ getState().token.token);
   return fetch('http://localhost:8080/api/todos', {
     credentials: 'same-origin',
     method: 'POST',
