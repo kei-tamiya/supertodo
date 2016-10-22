@@ -16,12 +16,25 @@ type User struct {
 	DB *sqlx.DB
 }
 
+type NewUser struct {
+	Email    string `json:"email"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+}
+
+type LoggedInUser struct {
+}
+
 func (u *User) SignUp(c *gin.Context) {
 	var m model.User
-	if err := c.BindJSON(&m); err != nil {
+	var n NewUser
+	if err := c.BindJSON(&n); err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
 	}
+
+	m.Email = n.Email
+	m.Name = n.Name
 
 	b, err := model.UserExists(u.DB, m.Email)
 
@@ -33,20 +46,34 @@ func (u *User) SignUp(c *gin.Context) {
 	if b {
 		c.String(200, "given email address is already used.")
 		log.Printf("email : %v", m.Email)
-
 		return
 	}
 
 	TXHandler(c, u.DB, func(tx *sqlx.Tx) error {
-
-		if _, err := m.Insert(tx, m.Password); err != nil {
+		if _, err := m.Insert(tx, n.Password); err != nil {
 			return err
 		}
 
 		return tx.Commit()
 	})
 
+	m, err = model.Auth(u.DB, m.Email, n.Password)
+	if err != nil {
+		log.Printf("auth failed: %s", err)
+		c.String(500, "can't auth")
+		return
+	}
+
+	log.Printf("authed: %#v", m)
+
+	sess := sessions.Default(c)
+	sess.Set("uid", m.ID)
+	sess.Set("name", m.Name)
+	sess.Set("email", m.Email)
+	sess.Save()
+
 	// Todo implement Redirect on React
+	c.JSON(http.StatusOK, gin.H{"data": "ok"})
 }
 
 // Login try login.
@@ -67,6 +94,7 @@ func (u *User) Login(c *gin.Context) {
 	sess.Save()
 
 	c.Redirect(301, "/")
+	// TODO ここは直す
 }
 
 // Logout makes user logged out.

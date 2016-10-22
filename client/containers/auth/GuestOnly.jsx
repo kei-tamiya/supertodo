@@ -11,6 +11,10 @@ class GuestOnly extends Component {
     router: PropTypes.object.isRequired,
   };
 
+  constructor(props) {
+    super(props)
+  }
+
   componentWillMount() {
     this.userWillTransfer(this.props, this.context.router);
   }
@@ -26,7 +30,17 @@ class GuestOnly extends Component {
   }
 
   render() {
-    return <div>{this.props.children}</div>;
+    const { auth } = this.props;
+    return (
+      <div>
+        <h1>{this.props.children}</h1>
+        <h2>fosadkfoaksfokasdofks</h2>
+
+        {auth.error &&
+          <p>{auth.error.message}</p>
+        }
+      </div>
+    );
   }
 }
 

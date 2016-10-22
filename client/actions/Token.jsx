@@ -1,19 +1,12 @@
 import React from 'react';
 
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
-// export const requestToken = (state) => {
-//     return {
-//         state,
-//         isFetched: false,
-//         token: ''
-//     }
-// }
-//
 
 const initialState = {
   isTokenFetched: false,
   token: ""
 };
+
 export const receiveToken = (state = initialState, token) => ({
   type: RECEIVE_TOKEN,
   token: token
