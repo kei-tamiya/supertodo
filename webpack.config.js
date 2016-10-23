@@ -11,15 +11,25 @@ module.exports = {
     filename: '[name].js'
   },
   module: {
+    preLoaders: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: "eslint-loader"
+      }
+    ],
     loaders: [{
-      loader: 'babel-loader',
+      loader: 'babel',
       exclude: /node_modules/,
       test: /\.js[x]?$/,
       query: {
-	cacheDirectory: true,
-	presets: ['react', 'es2015']
+        // cacheDirectory: true,
+        presets: ['es2015', 'stage-0']
       }
-    }]
+    }],
+    eslint: {
+        configFile: './.eslintrc'
+    }
   }
 };
 

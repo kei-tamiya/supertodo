@@ -1,35 +1,38 @@
-import { createDevTools } from 'redux-devtools'
-import LogMonitor from 'redux-devtools-log-monitor'
-import DockMonitor from 'redux-devtools-dock-monitor'
+import { createDevTools } from 'redux-devtools';
+import LogMonitor from 'redux-devtools-log-monitor';
+import DockMonitor from 'redux-devtools-dock-monitor';
 
-import React from 'react'
-import { render } from 'react-dom'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-import TodoApp from './containers/App'
-// import * as reducers from './reducers/'
-import update from './reducers/Count'
-import { todo, todos, todosByPetatto } from './reducers/Todo'
-import token from './reducers/token'
-import App from './components/App'
-import Root from './components/Root'
-import Foo from './components/Foo'
-import Bar from './components/Bar'
+import React from 'react';
+import { render } from 'react-dom';
+import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import createLogger from 'redux-logger';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
+import injectTapEventPlugin from "react-tap-event-plugin";
 
+import { todos, todosByPetatto } from './reducers/Todo.jsx';
+import token from './reducers/Token.jsx';
+import user from './reducers/AuthReducers.jsx';
+import App from './containers/App.jsx';
+import Signup from './containers/auth/Signup.jsx';
+import Login from './containers/auth/Login.jsx';
+import UserOnly from './containers/auth/UserOnly.jsx';
+import GuestOnly from './containers/auth/GuestOnly.jsx';
+
+// import material-ui
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const reducer = combineReducers({
-    update,
-    todos,
-    todosByPetatto,
-    token,
-    routing: routerReducer
-})
+  todos,
+  todosByPetatto,
+  token,
+  user,
+  routing: routerReducer
+});
 
-const middleware = [thunk]
+const middleware = [thunk];
 if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
@@ -40,27 +43,35 @@ if (process.env.NODE_ENV !== 'production') {
 //     </DockMonitor>
 // )
 const store = createStore(
-    reducer,
+  reducer,
+  compose(
     applyMiddleware(...middleware),
-    // DevTools.instrument()
-)
+    window.devToolsExtension ? window.devToolsExtension() : f => f
+  )
+);
 
-const history = syncHistoryWithStore(browserHistory, store)
+const history = syncHistoryWithStore(browserHistory, store);
 
+injectTapEventPlugin();
 render(
+  <MuiThemeProvider>
     <Provider store={store}>
-        { /* Tell the Router to use our enhanced history */ }
-        <Router history={history}>
-            <Route path="/" component={App}>
-                <IndexRoute component={Root}/>
-                <Route path="foo" component={Foo}/>
-                <Route path="bar" component={Bar}/>
+      { /* Tell the Router to use our enhanced history */ }
+      <Router history={history}>
+          <Route path="/" component={App}>
+            <Route component={UserOnly}>
             </Route>
-        </Router>
-        {/*<DevTools />*/}
-    </Provider>,
-    document.getElementById('root')
-)
+            <Route component={GuestOnly}>
+              <Route path="signup" component={Signup} />
+              <Route path="login" component={Login} />
+            </Route>
+          </Route>
+      </Router>
+      {/*<DevTools />*/}
+    </Provider>
+  </MuiThemeProvider>,
+  document.getElementById('root')
+);
 //
 // render(
 //   <Provider store={store}>
