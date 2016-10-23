@@ -11,12 +11,11 @@ class Login extends Component {
   };
 
   handleSubmit(e) {
-    const target = e.target;
     e.preventDefault();
-    this.props.dispatch(loginByApi({
-      email: target.name.value.trim(),
-      password: target.password.value.trim()
-    }));
+    this.props.dispatch(loginByApi(this.refs.email.value.trim(), this.refs.password.value.trim()));
+
+    this.refs.email.value = '';
+    this.refs.password.value = '';
   }
 
   renderSubmit() {
@@ -34,11 +33,11 @@ class Login extends Component {
           <ul>
             <li>
               <p>email</p>
-              <p><input type="text" name="email" required /></p>
+              <p><input type="text" name="email" ref="email" required /></p>
             </li>
             <li>
               <p>Password</p>
-              <p><input type="password" name="password" required /></p>
+              <p><input type="password" name="password" ref="password" required /></p>
             </li>
           </ul>
 

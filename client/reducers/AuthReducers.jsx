@@ -18,15 +18,16 @@ const initialState = {
     isLoggedIn: false,
     user: {
       id: undefined,
+      email: undefined,
       name: undefined,
-      pass: undefined,
+      password: undefined,
     },
     isFetching: false,
     error: undefined,
-  }
+  },
 };
 
-const auth = (state = initialState, action) => {
+const auth = (state = initialState.auth, action) => {
   switch (action.type) {
     case REQUEST_SIGNUP:
       return Object.assign({}, state, {
@@ -41,13 +42,15 @@ const auth = (state = initialState, action) => {
       });
     case EXECUTE_LOGIN:
       return Object.assign({}, state, {
+        user: action.authedUser,
         isFetching: false,
+        isLoggedIn: true,
         error: undefined,
       });
     case REQUEST_LOGOUT:
       return state;
     case EXECUTE_LOGOUT:
-      return state;
+      return Object.assign({}, initialState);
     // case FAIL_SIGNUP:
     //   return Object.assign({}, state, {
     //     isFetching: false,
@@ -73,14 +76,4 @@ const auth = (state = initialState, action) => {
   }
 };
 
-const authedUser = (state = {}, action) => {
-  switch (action.type) {
-    default:
-      return state;
-  }
-};
-
-export {
-  auth,
-  authedUser,
-};
+export default auth;

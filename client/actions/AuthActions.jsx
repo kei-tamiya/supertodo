@@ -26,8 +26,9 @@ export const executeSignup = () => ({
   type: EXECUTE_SIGNUP
 });
 
-export const executeLogin = () => ({
-  type: EXECUTE_LOGIN
+export const executeLogin = (authedUser) => ({
+  type: EXECUTE_LOGIN,
+  authedUser: authedUser
 });
 
 export const executeLogout = () => ({
@@ -82,11 +83,9 @@ export const signupByApi = (email, name, password) => (dispatch, getState) => {
     })
 };
 
-
-
 export const loginByApi = (email, password) => (dispatch, getState) => {
   dispatch(requestLogin());
-  const userToSave = Object.assign({}, {
+  const userToLogin = Object.assign({}, {
     email: email,
     password: password,
   });
@@ -98,21 +97,59 @@ export const loginByApi = (email, password) => (dispatch, getState) => {
       'Content-Type': 'application/json',
       'X-XSRF-TOKEN': getState().token.token,
     },
-    body: JSON.stringify(userToSave),
+    body: JSON.stringify(userToLogin),
   })
     .then(response => response.json())
     .then(json => {
       if (json == null) {
         return;
       }
-      // localStorage.setItem('jwt', jwt);
-      console.log("json  : " + JSON.stringify(json))
 
-      dispatch(executeLogin());
+      userToLogin.id = json.data.id;
+      userToLogin.name = json.data.name;
+
+      localStorage.setItem('isLoggedIn', "true");
+      dispatch(executeLogin(userToLogin));
     })
     .catch((error) => {
       dispatch(failFetchByApi(error));
     })
+};
+
+export const fetchLoggedInUser = () => (dispatch, getState) => {
+  let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
+  
+  if (isLoggedIn) {
+    console.log("kokokok nothing")
+    return fetch('http://localhost:8080/api/loggedinuser', {
+      credentials: 'same-origin',
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'X-XSRF-TOKEN': getState().token.token,
+      }
+    })
+      .then(response => response.json())
+      .then(json => {
+        if (json == null) {
+          return;
+        }
+
+        let data = json.data;
+        console.log("data  : " + json.data);
+        let authedUser = Object.assign({}, {
+          id: data.id,
+          email: data.email,
+          name: data.name,
+        });
+
+        dispatch(executeLogin(authedUser));
+      })
+      .catch((error) => {
+        dispatch(failFetchByApi(error));
+      })
+  }
 };
 
 export const logoutByApi = () => (dispatch, getState) => {
@@ -131,6 +168,7 @@ export const logoutByApi = () => (dispatch, getState) => {
       if (json == null) {
         return;
       }
+      localStorage.setItem('isLoggedIn', "false");
       dispatch(executeLogout());
     })
     .catch((error) => {

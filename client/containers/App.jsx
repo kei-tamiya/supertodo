@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchToken } from '../actions/Token.jsx';
-import { loginByApi, logoutByApi } from '../actions/AuthActions.jsx';
+import { loginByApi, logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
 import Header from '../components/Header.jsx'
 import UserOnly from './auth/UserOnly.jsx'
 import GuestOnly from './auth/GuestOnly.jsx'
@@ -12,14 +12,14 @@ class App extends Component {
     super(props)
   }
 
-  componentDidMount() {
+  componentWillMount() {
     this.props.dispatch(fetchToken());
-
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.token !== '' && this.props.token !== nextProps.token) {
-      this.props.dispatch(loginByApi());
+    const { dispatch, token } = this.props;
+    if (nextProps.isFetchTokenCompleted && token !== nextProps.token) {
+      dispatch(fetchLoggedInUser());
     }
   }
 
@@ -37,7 +37,7 @@ class App extends Component {
     return (
       <div className="container-fluid">
         <header>
-          {auth.isPrepared ? (
+          {auth.isLoggedIn ? (
             <div>
               <Header
                 auth={auth}
@@ -67,12 +67,14 @@ App.propTypes = {
   dispatch: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
   token: PropTypes.string.isRequired,
+  isFetchTokenCompleted: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
     auth: state.auth,
     token: state.token.token,
+    isFetchTokenCompleted: state.token.isCompleted,
   };
 };
 

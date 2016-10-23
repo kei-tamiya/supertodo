@@ -91,7 +91,7 @@ func (s *Server) Route() {
 		//		"context": c,
 		//	})
 		//})
-		//auth.POST("/logout", user.Logout)
+		auth.DELETE("/api/logout", user.Logout)
 		s.Engine.POST("/api/todos", todo.Post)
 		s.Engine.GET("/api/todos", todo.Get)
 		s.Engine.PUT("/api/todos", todo.Put)
@@ -106,6 +106,7 @@ func (s *Server) Route() {
 
 	s.Engine.POST("api/signup", user.SignUp)
 	s.Engine.POST("api/login", user.Login)
+	s.Engine.POST("api/loggedinuser", user.GetLoggedInUser)
 	//s.Engine.DELETE("/api/todos", todo.Delete)
 	//
 	//s.Engine.DELETE("/api/todos/multi", todo.DeleteMulti)
