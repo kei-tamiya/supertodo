@@ -1,100 +1,80 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { fetchTodosIfNeeded } from '../actions/Todo.jsx';
 import { fetchToken } from '../actions/Token.jsx';
-import TodoList from '../components/TodoList.jsx';
-import AddTodo from './AddTodo.jsx';
-import Board from './Board.jsx'
+import { loginByApi, logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
 import Header from '../components/Header.jsx'
+import UserOnly from './auth/UserOnly.jsx'
+import GuestOnly from './auth/GuestOnly.jsx'
+// import Loading from '../components/Loading.jsx'
 
 class App extends Component {
-  componentDidMount() {
-    const { dispatch, todos } = this.props;
-    dispatch(fetchToken());
-    dispatch(fetchTodosIfNeeded(todos));
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.todos !== this.props.todos) {
-      const { dispatch, todos } = nextProps;
-      dispatch(fetchTodosIfNeeded(todos));
-    }
+  constructor(props) {
+    super(props)
   }
 
   componentWillMount() {
-    this.props.dispatch(fetchLoginState());
+    this.props.dispatch(fetchToken());
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { dispatch, token } = this.props;
+    if (nextProps.isFetchTokenCompleted && token !== nextProps.token) {
+      dispatch(fetchLoggedInUser());
+    }
   }
 
   handleLogout() {
-    this.props.dispatch(clickLogout());
+    this.props.dispatch(logoutByApi());
   }
 
-//
-// handleRefreshClick = e => {
-//     e.preventDefault()
-//
-//     const { dispatch, selectedReddit } = this.props
-//     dispatch(invalidateReddit(selectedReddit))
-//     dispatch(fetchPostsIfNeeded(selectedReddit))
-// }
-
   render() {
-    const { todos, isFetching, auth, children } = this.props;
-
-    let isEmpty = true;
-    if (todos !== null) {
-      isEmpty = todos.length === 0;
-    }
+    const { auth } = this.props;
+    // const children = React.Children.map(this.props.children, function (child) {
+    //   return React.cloneElement(child, {
+    //     foo: this.state.foo
+    //   })
+    // });
     return (
       <div className="container-fluid">
         <header>
-          <Header />
+          {auth.isLoggedIn ? (
+            <div>
+              <Header
+                auth={auth}
+                handleLogout={::this.handleLogout}
+              />
+            </div>) : (
+            <div>
+              <Header
+                auth={auth}
+                handleLogout={::this.handleLogout}
+              />
+              {this.props.children}
+            </div>)
+          }
         </header>
 
-        <div className="row">
-          <div className="col-sm-8">
-            <Board />
-          </div>
-          <div className="col-sm-4">
-            <AddTodo />
-            {isEmpty
-              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-              : <TodoList todos={todos} />
-            }
-          </div>
-        </div>
+        {auth.isLoggedIn
+          ? <UserOnly />
+          : <GuestOnly />
+        }
       </div>
     );
   }
 }
 
 App.propTypes = {
-  todos: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    completed: PropTypes.bool.isRequired,
-    title: PropTypes.string.isRequired,
-    top: PropTypes.number.isRequired,
-    left: PropTypes.number.isRequired,
-  }).isRequired).isRequired,
-  isFetching: PropTypes.bool.isRequired,
   dispatch: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired,
-  children: PropTypes.object.isRequired,
+  token: PropTypes.string.isRequired,
+  isFetchTokenCompleted: PropTypes.bool.isRequired,
 };
 
-
 const mapStateToProps = (state) => {
-  const { todosByPetatto } = state;
-  const {
-    isFetching,
-    items: todos,
-  } =  todosByPetatto.items || {
-    isFetching: true,
-    items: [],
-  };
   return {
-    todos,
-    isFetching,
+    auth: state.auth,
+    token: state.token.token,
+    isFetchTokenCompleted: state.token.isCompleted,
   };
 };
 

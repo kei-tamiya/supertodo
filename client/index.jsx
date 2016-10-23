@@ -14,7 +14,7 @@ import injectTapEventPlugin from "react-tap-event-plugin";
 
 import { todos, todosByPetatto } from './reducers/Todo.jsx';
 import token from './reducers/Token.jsx';
-import user from './reducers/AuthReducers.jsx';
+import auth from './reducers/AuthReducers.jsx';
 import App from './containers/App.jsx';
 import Signup from './containers/auth/Signup.jsx';
 import Login from './containers/auth/Login.jsx';
@@ -28,7 +28,7 @@ const reducer = combineReducers({
   todos,
   todosByPetatto,
   token,
-  user,
+  auth,
   routing: routerReducer
 });
 

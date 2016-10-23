@@ -27,12 +27,11 @@ type Todo struct {
 }
 
 type User struct {
-	ID       int64      `db:"user_id" json:"id"`
-	Name     string     `json:"name"`
-	Email    string     `json:"email"`
-	Password string     `json:"password"`
-	Salt     string     `json:"salt"`
-	Salted   string     `json:"salted"`
-	Created  *time.Time `json:"created"`
-	Updated  *time.Time `json:"updated"`
+	ID      int64      `db:"user_id" json:"id"`
+	Name    string     `json:"name"`
+	Email   string     `json:"email"`
+	Salt    string     `json:"salt"`
+	Salted  string     `json:"salted"`
+	Created *time.Time `json:"created"`
+	Updated *time.Time `json:"updated"`
 }

@@ -16,12 +16,24 @@ type User struct {
 	DB *sqlx.DB
 }
 
+type AuthedUser struct {
+	ID       int64  `json:"id"`
+	Email    string `json:"email"`
+	Name     string `json:"name"`
+	Password string `json:"password"`
+}
+
 func (u *User) SignUp(c *gin.Context) {
 	var m model.User
-	if err := c.BindJSON(&m); err != nil {
+	var a AuthedUser
+	if err := c.BindJSON(&a); err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
 	}
+
+	m.Email = a.Email
+
+	m.Name = a.Name
 
 	b, err := model.UserExists(u.DB, m.Email)
 
@@ -33,25 +45,36 @@ func (u *User) SignUp(c *gin.Context) {
 	if b {
 		c.String(200, "given email address is already used.")
 		log.Printf("email : %v", m.Email)
-
 		return
 	}
 
 	TXHandler(c, u.DB, func(tx *sqlx.Tx) error {
-
-		if _, err := m.Insert(tx, m.Password); err != nil {
+		if _, err := m.Insert(tx, a.Password); err != nil {
 			return err
 		}
 
 		return tx.Commit()
 	})
 
+	m, err = model.Auth(u.DB, m.Email, a.Password)
+	if err != nil {
+		log.Printf("auth failed: %s", err)
+		c.String(500, "can't auth")
+		return
+	}
+
 	// Todo implement Redirect on React
+	c.JSON(http.StatusOK, gin.H{"data": "Signup successed"})
 }
 
 // Login try login.
 func (u *User) Login(c *gin.Context) {
-	m, err := model.Auth(u.DB, c.PostForm("email"), c.PostForm("password"))
+	var a AuthedUser
+	if err := c.BindJSON(&a); err != nil {
+		c.JSON(500, gin.H{"err": err.Error()})
+		return
+	}
+	m, err := model.Auth(u.DB, a.Email, a.Password)
 	if err != nil {
 		log.Printf("auth failed: %s", err)
 		c.String(500, "can't auth")
@@ -66,7 +89,21 @@ func (u *User) Login(c *gin.Context) {
 	sess.Set("email", m.Email)
 	sess.Save()
 
-	c.Redirect(301, "/")
+	a.ID = m.ID
+	a.Name = m.Name
+	a.Password = ""
+
+	c.JSON(http.StatusOK, gin.H{"data": &a})
+}
+
+func (u *User) GetLoggedInUser(c *gin.Context) {
+	var a AuthedUser
+	sess := sessions.Default(c)
+	a.ID = sess.Get("uid").(int64)
+	a.Email = sess.Get("email").(string)
+	a.Name = sess.Get("name").(string)
+
+	c.JSON(http.StatusOK, gin.H{"data": &a})
 }
 
 // Logout makes user logged out.
@@ -84,7 +121,7 @@ func (u *User) Logout(c *gin.Context) {
 		Expires: time.Now().AddDate(0, -1, 0),
 	})
 
-	c.Redirect(301, "/")
+	c.JSON(http.StatusOK, gin.H{"data": "Logout successed"})
 }
 
 // LoggedIn returns if current session user is logged in or not.
