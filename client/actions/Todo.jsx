@@ -86,7 +86,10 @@ const fetchTodos = (todos, userId) => (dispatch, getState) => {
   })
     .then(response => response.json())
     .then(json => {
-        dispatch(receiveTodos(json))
+      if (json == null) {
+        return;
+      }
+      dispatch(receiveTodos(json))
     })
     // デバッグ用
     .catch((error) => {
