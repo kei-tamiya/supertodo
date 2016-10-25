@@ -7,96 +7,73 @@ import {
   TOGGLE_TODO,
   REQUEST_TODOS,
   RECEIVE_TODOS,
+  CLEAR_TODOS,
 } from '../actions/Todo.jsx';
 
-// const todo = (state = {}, action) => {
-//     switch (action.type) {
-//         case ADD_TODO:
-//             return {
-//                 state,
-//                 todo: action.todo
-//             }
-//         // case TOGGLE_TODO:
-//         //     if (state.id !== action.id) {
-//         //         return state
-//         //     }
-//         //
-//         //     return {
-//         //         state,
-//         //         completed: !state.completed
-//         //     }
-//         default:
-//             return state
-//     }
-// }
+const initialState = {
+  todos: {
+    newTodoTitle: '',
+    items: undefined,
+  },
+  todosByPetatto: {
+    isFetching: false,
+    didInvalidate: false,
+    todos: undefined,
+  }
+};
 
-const todos = (state = {
-  newTodoTitle: '',
-  isFetching: false,
-  didInvalidate: false,
-  items: [],
-}, action) => {
+const todos = (state = initialState.todos, action) => {
   switch (action.type) {
-    // case ADD_TODO:
-    //     // const todos = Object.assign({}, getState().todos, action.todos)
-    //     // console.log("createdTodos : " + todos)
-    //     const myMap = new Map()
-    //     myMap.set(Object.keys(state.items).length, action.todo)
-    //     const test = Object.assign({}, state.items, myMap)
-    //     console.log("test : " + test)
-    //     console.log("myMap : " + myMap)
-    //
-    //     return {
-    //         state,
-    //         isFetching: false,
-    //         items: test
-    //     }
-    // case DELETE_TODO:
-    //     return state.map(t =>
-    //         todo(t, action)
-    //     )
     case ADD_TODO:
       return Object.assign({}, state, {
         newTodoTitle: '',
       });
     case CHANGE_NEW_TODO_TITLE:
-      console.log("action.newTodoTitle," +action.newTodoTitle);
-
       return Object.assign({}, state, {
         newTodoTitle: action.newTodoTitle,
       });
     case REQUEST_TODOS:
       return Object.assign({}, state, {
-        isFetching: true,
-        didInvalidate: false,
         items: action.todos,
       });
     case RECEIVE_TODOS:
       return Object.assign({}, state, {
-        isFetching: false,
-        didInvalidate: false,
         items: action.todos,
       });
+    case CLEAR_TODOS:
+      return Object.assign({}, initialState.todos);
     default:
       return state;
   }
 };
 
-const todosByPetatto = (state = {}, action) => {
+const todosByPetatto = (state = initialState.todosByPetatto, action) => {
   switch (action.type) {
     case ADD_TODO:
       const myMap = new Map();
       myMap.set(Object.keys(state.items).length, action.todo);
-      // const test = Object.assign({}, state.items, myMap)
-      return [
-        ...state.items,
-        myMap
-      ];
-    case RECEIVE_TODOS:
-    case REQUEST_TODOS:
       return Object.assign({}, state, {
-        items: todos(state[action.todos], action),
+        todos: [
+          ...state.items,
+          myMap
+        ],
       });
+
+    case REQUEST_TODOS:
+      console.log("tetetete : " + JSON.stringify(todos(state[action.todos], action)))
+      return Object.assign({}, state, {
+        isFetching: true,
+        didInvalidate: false,
+        todos: action.todos.items,
+      });
+    case RECEIVE_TODOS:
+      return Object.assign({}, state, {
+        isFetching: false,
+        didInvalidate: false,
+        todos: action.todos,
+      });
+    case CLEAR_TODOS:
+      return Object.assign({});
     default:
       return state;
   }

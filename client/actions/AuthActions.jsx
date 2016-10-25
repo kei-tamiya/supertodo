@@ -9,7 +9,6 @@ export const EXECUTE_LOGOUT = 'EXECUTE_LOGOUT';
 // export const FAIL_LOGOUT = 'FAIL_LOGOUT';
 export const FAIL_FETCH_BY_API = 'FAIL_FETCH_BY_API';
 
-
 export const requestSignup = () => ({
   type: REQUEST_SIGNUP
 });
@@ -120,10 +119,9 @@ export const fetchLoggedInUser = () => (dispatch, getState) => {
   let isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
   
   if (isLoggedIn) {
-    console.log("kokokok nothing")
     return fetch('http://localhost:8080/api/loggedinuser', {
       credentials: 'same-origin',
-      method: 'POST',
+      method: 'GET',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',

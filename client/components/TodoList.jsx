@@ -3,7 +3,6 @@ import Todo from './Todo.jsx';
 
 class TodoList extends Component {
   render() {
-    // todos = this.props.todos
     return (
       <div>
         <ul>

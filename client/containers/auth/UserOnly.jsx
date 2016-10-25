@@ -11,6 +11,7 @@ class UserOnly extends Component {
   }
 
   static propTypes = {
+    isFetching: PropTypes.bool.isRequired,
     todos: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       completed: PropTypes.bool.isRequired,
@@ -18,7 +19,6 @@ class UserOnly extends Component {
       top: PropTypes.number.isRequired,
       left: PropTypes.number.isRequired,
     }).isRequired).isRequired,
-    isFetching: PropTypes.bool.isRequired,
     children: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
   };
@@ -40,16 +40,9 @@ class UserOnly extends Component {
     dispatch(fetchTodosIfNeeded(todos));
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.todos !== this.props.todos) {
-      const { dispatch, todos } = nextProps;
-      dispatch(fetchTodosIfNeeded(todos));
-    }
-  }
-
   guestWillTransfer(props, router) {
     if (!props.auth.isLoggedIn) {
-      router.replace('/login');
+      router.push('/login');
     }
   }
 
@@ -57,9 +50,11 @@ class UserOnly extends Component {
     const { todos, isFetching, auth } = this.props;
 
     let isEmpty = true;
-    if (todos !== null) {
+    if (todos !== undefined) {
       isEmpty = todos.length === 0;
     }
+    console.log("todos jsonstringify:  " + JSON.stringify(todos))
+
     return (
       <div className="row">
         <div className="col-sm-8">
@@ -80,18 +75,17 @@ class UserOnly extends Component {
 
 const mapStateToProps = (state) => {
   const { todosByPetatto } = state;
-  const {
-    isFetching,
-    items: todos,
-  } =  todosByPetatto.items || {
-    isFetching: true,
-    items: [],
-  };
-  const auth = state.auth;
+  const isFetching = todosByPetatto.isFetching || true;
+  const todos = todosByPetatto.todos || [];
+
+  // const auth = state.auth;
+  // const authedUser = auth.user;
+
   return {
-    todos,
     isFetching,
-    auth,
+    todos,
+    // auth,
+    // authedUser,
   };
 };
 

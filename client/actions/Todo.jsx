@@ -6,6 +6,7 @@ export const CHANGE_NEW_TODO_TITLE = 'CHANGE_NEW_TODO_TITLE';
 // export const TOGGLE_TODO = 'TOGGLE_TODO'
 export const REQUEST_TODOS = 'REQUEST_TODOS';
 export const RECEIVE_TODOS = 'RECEIVE_TODOS';
+export const CLEAR_TODOS = 'CLEAR_TODOS';
 
 export const addTodo = (json) => ({
   type: ADD_TODO,
@@ -19,7 +20,6 @@ export const changeNewTodoTitle = (newTodoTitle) => ({
 
 export const addTodoByApi = (title) => (dispatch, getState) => {
   const todoToSave = Object.assign({}, {title: title});
-  console.log("getState().token.token : "+ getState().token.token);
   return fetch('http://localhost:8080/api/todos', {
     credentials: 'same-origin',
     method: 'POST',
@@ -69,10 +69,21 @@ export const receiveTodos = (json) => ({
   todos: json.data
 });
 
-const fetchTodos = (todos) => dispatch => {
-  dispatch(requestTodos(todos))
-  return fetch('http://localhost:8080/api/todos')
-    // .then(console.log(fetch(`http://localhost:8080/api/todos`)))
+export const clearTodos = () => ({
+  type: CLEAR_TODOS
+});
+
+const fetchTodos = (todos, userId) => (dispatch, getState) => {
+  dispatch(requestTodos(todos));
+  return fetch('http://localhost:8080/api/todos', {
+    credentials: 'same-origin',
+    method: 'GET',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': getState().token.token,
+    },
+  })
     .then(response => response.json())
     .then(json => {
         dispatch(receiveTodos(json))
@@ -84,14 +95,14 @@ const fetchTodos = (todos) => dispatch => {
 };
 
 const shouldFetchTodos = (state) => {
-  const todos = state.todosByPetatto.items;
-  if (!todos) {
+  const todosByPetatto = state.todosByPetatto;
+  if (!todosByPetatto.todos) {
     return true
   }
-  if (todos.isFetching) {
+  if (todosByPetatto.isFetching) {
     return false
   }
-  return todos.didInvalidate
+  return todosByPetatto.didInvalidate
 };
 
 export const fetchTodosIfNeeded = (todos) => (dispatch, getState) => {

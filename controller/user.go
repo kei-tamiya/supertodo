@@ -96,7 +96,7 @@ func (u *User) Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": &a})
 }
 
-func (u *User) GetLoggedInUser(c *gin.Context) {
+func (u *User) FetchLoggedInUser(c *gin.Context) {
 	var a AuthedUser
 	sess := sessions.Default(c)
 	a.ID = sess.Get("uid").(int64)
