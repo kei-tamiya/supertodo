@@ -19,27 +19,25 @@ import (
 //}
 
 func TodoOne(db *sqlx.DB, id int64) (Todo, error) {
-	return ScanTodo(db.QueryRow(`select * from todos where todo_id = ?`, id))
+	return ScanTodo(db.QueryRow(`select * from todos WHERE todo_id = ?`, id))
 }
 
-func TodosAll(dbx *sqlx.DB) (todos []Todo, err error) {
-	if err = dbx.Select(&todos, "SELECT * FROM todos"); err != nil {
+func TodosAll(dbx *sqlx.DB, userId int64) (todos []Todo, err error) {
+	if err = dbx.Select(&todos, "SELECT * FROM todos WHERE user_id = ?", userId); err != nil {
 		return nil, err
 	}
 	return todos, nil
 }
-
-func (t *Todo) Insert(tx *sqlx.Tx) (sql.Result, error) {
+func (t *Todo) Insert(tx *sqlx.Tx, userId int64) (sql.Result, error) {
 	stmt, err := tx.Prepare(`
-	INSERT INTO todos (board_id, title, completed)
-	VALUES (?, ?, ?)
+	INSERT INTO todos (board_id, user_id, title, completed)
+	VALUES (?, ?, ?, ?)
 	`)
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	//return stmt.Exec(t.BoardID, t.Title, t.Completed)
-	return stmt.Exec(2, t.Title, t.Completed)
+	return stmt.Exec(2, userId, t.Title, t.Completed)
 }
 
 //func (t *Todo) fetchBoardID(tx *sqlx.Tx, date string) (sql.Result, error) {

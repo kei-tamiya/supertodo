@@ -5,8 +5,10 @@ import (
 
 	"github.com/kei-tamiya/supertodo/model"
 
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
+	"github.com/kotakanbe/go-cve-dictionary/log"
 )
 
 // Todo はTodoへのリクエストに関する制御をします
@@ -14,14 +16,16 @@ type Todo struct {
 	DB *sqlx.DB
 }
 
-// GetはDBからユーザを取得して結果を返します
+// GetはDBからtodoを取得して結果を返します
 func (t *Todo) Get(c *gin.Context) {
-	todos, err := model.TodosAll(t.DB)
+	sess := sessions.Default(c)
+	log.Printf("uid : %v", sess.Get("uid").(int64))
+	todos, err := model.TodosAll(t.DB, sess.Get("uid").(int64))
 	if err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{"data": todos})
+	c.JSON(http.StatusOK, gin.H{"data": &todos})
 }
 
 func (t *Todo) Post(c *gin.Context) {
@@ -31,8 +35,10 @@ func (t *Todo) Post(c *gin.Context) {
 		return
 	}
 
+	sess := sessions.Default(c)
+
 	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-		result, err := todo.Insert(tx)
+		result, err := todo.Insert(tx, sess.Get("uid").(int64))
 		if err != nil {
 			return err
 		}
@@ -59,8 +65,10 @@ func (t *Todo) Put(c *gin.Context) {
 		return
 	}
 
+	sess := sessions.Default(c)
+
 	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-		result, err := todo.Insert(tx)
+		result, err := todo.Insert(tx, sess.Get("uid").(int64))
 		if err != nil {
 			return err
 		}

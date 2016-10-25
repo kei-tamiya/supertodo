@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchToken } from '../actions/Token.jsx';
-import { loginByApi, logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
+import { clearTodos } from '../actions/Todo.jsx';
+import { logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
 import Header from '../components/Header.jsx'
 import UserOnly from './auth/UserOnly.jsx'
 import GuestOnly from './auth/GuestOnly.jsx'
@@ -24,6 +25,7 @@ class App extends Component {
   }
 
   handleLogout() {
+    this.props.dispatch(clearTodos());
     this.props.dispatch(logoutByApi());
   }
 
@@ -55,7 +57,7 @@ class App extends Component {
         </header>
 
         {auth.isLoggedIn
-          ? <UserOnly />
+          ? <UserOnly auth={auth} />
           : <GuestOnly />
         }
       </div>

@@ -38,52 +38,6 @@ func ScanBoards(rs *sql.Rows) ([]Board, error) {
 	return structs, nil
 }
 
-func ScanTodo(r *sql.Row) (Todo, error) {
-	var s Todo
-	if err := r.Scan(
-		&s.ID,
-		&s.Board_Id,
-		&s.Title,
-		&s.Completed,
-		&s.Top,
-		&s.Left,
-		&s.Width,
-		&s.Height,
-		&s.Created,
-		&s.Updated,
-	); err != nil {
-		return Todo{}, err
-	}
-	return s, nil
-}
-
-func ScanTodos(rs *sql.Rows) ([]Todo, error) {
-	structs := make([]Todo, 0, 16)
-	var err error
-	for rs.Next() {
-		var s Todo
-		if err = rs.Scan(
-			&s.ID,
-			&s.Board_Id,
-			&s.Title,
-			&s.Completed,
-			&s.Top,
-			&s.Left,
-			&s.Width,
-			&s.Height,
-			&s.Created,
-			&s.Updated,
-		); err != nil {
-			return nil, err
-		}
-		structs = append(structs, s)
-	}
-	if err = rs.Err(); err != nil {
-		return nil, err
-	}
-	return structs, nil
-}
-
 func ScanUser(r *sql.Row) (User, error) {
 	var s User
 	if err := r.Scan(
@@ -111,6 +65,54 @@ func ScanUsers(rs *sql.Rows) ([]User, error) {
 			&s.Email,
 			&s.Salt,
 			&s.Salted,
+			&s.Created,
+			&s.Updated,
+		); err != nil {
+			return nil, err
+		}
+		structs = append(structs, s)
+	}
+	if err = rs.Err(); err != nil {
+		return nil, err
+	}
+	return structs, nil
+}
+
+func ScanTodo(r *sql.Row) (Todo, error) {
+	var s Todo
+	if err := r.Scan(
+		&s.ID,
+		&s.Board_Id,
+		&s.User_Id,
+		&s.Title,
+		&s.Completed,
+		&s.Top,
+		&s.Left,
+		&s.Width,
+		&s.Height,
+		&s.Created,
+		&s.Updated,
+	); err != nil {
+		return Todo{}, err
+	}
+	return s, nil
+}
+
+func ScanTodos(rs *sql.Rows) ([]Todo, error) {
+	structs := make([]Todo, 0, 16)
+	var err error
+	for rs.Next() {
+		var s Todo
+		if err = rs.Scan(
+			&s.ID,
+			&s.Board_Id,
+			&s.User_Id,
+			&s.Title,
+			&s.Completed,
+			&s.Top,
+			&s.Left,
+			&s.Width,
+			&s.Height,
 			&s.Created,
 			&s.Updated,
 		); err != nil {

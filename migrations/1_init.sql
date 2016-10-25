@@ -9,3 +9,4 @@ CREATE TABLE `boards` (
   ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='list of board';
 
 -- +migrate Down
+DROP TABLE boards;

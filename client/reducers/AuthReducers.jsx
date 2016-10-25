@@ -50,7 +50,7 @@ const auth = (state = initialState.auth, action) => {
     case REQUEST_LOGOUT:
       return state;
     case EXECUTE_LOGOUT:
-      return Object.assign({}, initialState);
+      return Object.assign({}, initialState.auth);
     // case FAIL_SIGNUP:
     //   return Object.assign({}, state, {
     //     isFetching: false,

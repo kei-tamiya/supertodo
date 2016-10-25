@@ -10,6 +10,13 @@ class Login extends Component {
     auth: PropTypes.object.isRequired,
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isLoggedIn) {
+      console.log("test")
+      this.context.router.replace("/");
+    }
+  }
+
   handleSubmit(e) {
     e.preventDefault();
     this.props.dispatch(loginByApi(this.refs.email.value.trim(), this.refs.password.value.trim()));
