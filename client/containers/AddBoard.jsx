@@ -1,12 +1,8 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { addBoardByApi } from '../actions/Todo.jsx';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+import { fetchOrAddBoardByApi } from '../actions/BoardActions.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
-import Divider from 'material-ui/Divider';
-import Paper from 'material-ui/Paper';
-import TextField from 'material-ui/TextField';
+import DatePicker from 'material-ui/DatePicker'
 
 class AddBoard extends Component {
   // constructor(props) {
@@ -14,13 +10,13 @@ class AddBoard extends Component {
   //   this.handleChange = this.handleChange.bind(this);
   // }
 
-  handleChange(e) {
+  handleChange = (e) => {
     e.preventDefault();
-    this.props.dispatch(changeNewTodoTitle(e.target.value))
-  }
+    this.props.dispatch(fetchOrAddBoardByApi(date));
+  };
 
   render() {
-    const { dispatch, newTodoTitle } = this.props;
+    const { dispatch } = this.props;
     const styles = {
       errorStyle: {
         color: ORANGE,
@@ -37,35 +33,26 @@ class AddBoard extends Component {
     };
 
     return (
-      <form onSubmit={e => {
-        e.preventDefault();
-        let addTodoInput = this.refs.addTodoInput;
-        let todoTitle = addTodoInput.getValue().trim();
-        if (!todoTitle) {
-            return
-        }
-        dispatch(addTodoByApi(todoTitle));
-      }}>
-        <Paper zDepth={2}>
-          <TextField ref='addTodoInput' hintText='New To Do' underlineStyle={styles.underlineStyle} value={newTodoTitle} onChange={(event) => this.handleChange(event)} />
-          <Divider />
-        </Paper>
-        <FloatingActionButton backgroundColor={GREEN} type='submit'>
-          <ContentAdd />
-        </FloatingActionButton>
-      </form>
+      <div>
+        <DatePicker hintText="Portrait Dialog"
+                    autoOk={true}
+                    defaultDate={new Date()}
+                    formatDate={(dt) => `${dt.getFullYear()}/${dt.getMonth() + 1}/${dt.getDate()}`}
+                    onChange={this.handleChange}
+        />
+      </div>
     );
   }
 }
 
 AddBoard.propTypes = {
-  newTodoTitle: PropTypes.string.isRequired,
+  selectedValue: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    newTodoTitle: state.todos.newTodoTitle,
+    selectedValue: state.boards.selectedValue,
   };
 };
 

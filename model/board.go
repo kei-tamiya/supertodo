@@ -7,8 +7,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (t *Board) BoardsAll(dbx *sqlx.DB) (boards []Board, err error) {
-	if err = dbx.Select(&boards, "SELECT * FROM boards"); err != nil {
+func BoardOne(db *sqlx.DB, boardId int64) (Board, error) {
+	return ScanBoard(db.QueryRow(`select * from boards WHERE board_id = ?`, boardId))
+}
+
+func BoardsAll(dbx *sqlx.DB, userId int64) (boards []Board, err error) {
+	if err = dbx.Select(&boards, "SELECT * FROM boards WHERE user_id = ?", userId); err != nil {
 		return nil, err
 	}
 	return boards, nil

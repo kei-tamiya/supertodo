@@ -1,6 +1,6 @@
 import {
   ADD_BOARD,
-  CHANGE_NEW_BOARD_TITLE,
+  CHANGE_SELECTED_VALUE,
   DELETE_BOARD,
   UPDATE_BOARD_TITLE,
   UPDATE_BOARD_POSITION,
@@ -12,10 +12,10 @@ import {
 
 const initialState = {
   boards: {
-    newTodoTitle: '',
+    selectedValue: '',
     items: undefined,
   },
-  boardsByPetatto: {
+  boardsByApi: {
     isFetching: false,
     didInvalidate: false,
     boards: undefined,
@@ -28,9 +28,9 @@ const boards = (state = initialState.boards, action) => {
       return Object.assign({}, state, {
         newTodoTitle: '',
       });
-    case CHANGE_NEW_BOARD_TITLE:
+    case CHANGE_SELECTED_VALUE:
       return Object.assign({}, state, {
-        newTodoTitle: action.newTodoTitle,
+        selectedValue: action.selectedValue,
       });
     case REQUEST_BOARDS:
       return Object.assign({}, state, {
@@ -47,7 +47,7 @@ const boards = (state = initialState.boards, action) => {
   }
 };
 
-const boardsByApi = (state = initialState.boardsByPetatto, action) => {
+const boardsByApi = (state = initialState.boardsByApi, action) => {
   switch (action.type) {
     case ADD_BOARD:
       const myMap = new Map();
@@ -58,9 +58,7 @@ const boardsByApi = (state = initialState.boardsByPetatto, action) => {
           myMap
         ],
       });
-
     case REQUEST_BOARDS:
-      console.log("tetetete : " + JSON.stringify(boards(state[action.boards], action)))
       return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false,

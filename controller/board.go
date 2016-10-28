@@ -7,6 +7,7 @@ import (
 
 	"fmt"
 
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 )
@@ -16,10 +17,10 @@ type Board struct {
 	DB *sqlx.DB
 }
 
-// GetはDBからユーザを取得して結果を返します
+// GetはDBから現在ログインしているユーザのBoardを取得して結果を返します
 func (t *Board) Get(c *gin.Context) {
-	var board model.Board
-	boards, err := board.BoardsAll(t.DB)
+	sess := sessions.Default(c)
+	boards, err := model.BoardsAll(t.DB, sess.Get("uid").(int64))
 	if err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return

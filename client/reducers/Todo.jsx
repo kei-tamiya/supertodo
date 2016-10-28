@@ -60,7 +60,6 @@ const todosByPetatto = (state = initialState.todosByPetatto, action) => {
       });
 
     case REQUEST_TODOS:
-      console.log("tetetete : " + JSON.stringify(todos(state[action.todos], action)))
       return Object.assign({}, state, {
         isFetching: true,
         didInvalidate: false,

@@ -7,6 +7,7 @@ import "time"
 // 行動予定タグをまとめる板となるもの
 type Board struct {
 	ID      int64      `db:"board_id" json:"id"`
+	User_Id int64      `json:"user_id"`
 	Date    string     `json:"date"`
 	Created *time.Time `json:"created"`
 	Updated *time.Time `json:"updated"`

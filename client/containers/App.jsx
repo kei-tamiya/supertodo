@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { fetchToken } from '../actions/Token.jsx';
+import { clearBoards } from '../actions/BoardActions.jsx';
 import { clearTodos } from '../actions/Todo.jsx';
 import { logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
 import Header from '../components/Header.jsx'
@@ -26,6 +27,7 @@ class App extends Component {
 
   handleLogout() {
     this.props.dispatch(clearTodos());
+    this.props.dispatch(clearBoards());
     this.props.dispatch(logoutByApi());
   }
 
