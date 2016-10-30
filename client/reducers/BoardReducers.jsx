@@ -1,5 +1,6 @@
 import {
   ADD_BOARD,
+  SELECT_BOARD,
   CHANGE_SELECTED_VALUE,
   DELETE_BOARD,
   UPDATE_BOARD_TITLE,
@@ -8,11 +9,13 @@ import {
   REQUEST_BOARDS,
   RECEIVE_BOARDS,
   CLEAR_BOARDS,
+  REQUEST_BOARD_ONE,
+  RECEIVE_BOARD_ONE,
 } from '../actions/BoardActions.jsx';
 
 const initialState = {
   boards: {
-    selectedValue: '',
+    selectedBoard: '',
     items: undefined,
   },
   boardsByApi: {
@@ -28,9 +31,13 @@ const boards = (state = initialState.boards, action) => {
       return Object.assign({}, state, {
         newTodoTitle: '',
       });
+    case SELECT_BOARD:
+      return Object.assign({}, state, {
+        selectedBoard: action.selectedBoard,
+      });
     case CHANGE_SELECTED_VALUE:
       return Object.assign({}, state, {
-        selectedValue: action.selectedValue,
+        selectedBoard: action.selectedBoard,
       });
     case REQUEST_BOARDS:
       return Object.assign({}, state, {
@@ -58,6 +65,15 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
           myMap
         ],
       });
+    case REQUEST_BOARD_ONE:
+
+    case RECEIVE_BOARD_ONE:
+      if (action.board.date) {
+        return Object.assign({}, state, {
+          [action.board.date]: action.board,
+        });
+      }
+      return state;
     case REQUEST_BOARDS:
       return Object.assign({}, state, {
         isFetching: true,
@@ -69,6 +85,8 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
         isFetching: false,
         didInvalidate: false,
         boards: action.boards,
+        [action.board.date]: action.board,
+
       });
     case CLEAR_BOARDS:
       return Object.assign({});

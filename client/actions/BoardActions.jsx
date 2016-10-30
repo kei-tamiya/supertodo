@@ -14,6 +14,11 @@ export const addBoard = (board) => ({
   board
 });
 
+export const selectBoard = (board) => ({
+  type: SELECT_BOARD,
+  selectedBoard: board
+});
+
 export const clearBoards = () => ({
   type: CLEAR_BOARDS
 });
