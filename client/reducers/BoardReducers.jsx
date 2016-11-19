@@ -65,8 +65,9 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
           myMap
         ],
       });
-    case REQUEST_BOARD_ONE:
+    case SELECT_BOARD:
 
+    case REQUEST_BOARD_ONE:
     case RECEIVE_BOARD_ONE:
       if (action.board.date) {
         return Object.assign({}, state, {

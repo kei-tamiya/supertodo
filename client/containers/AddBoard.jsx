@@ -10,10 +10,13 @@ class AddBoard extends Component {
   //   this.handleChange = this.handleChange.bind(this);
   // }
 
-  handleChange = (e) => {
-    e.preventDefault();
-    let date = '20161010';
-    this.props.dispatch(fetchBoardOneByApiIfNeeded(date));
+  handleChange = (e, date) => {
+    // event.preventDefault();
+    let selectedDate = JSON.stringify(date).slice(1, 11);
+    selectedDate = selectedDate.replace("-", "");
+    console.log("selectedDate" + selectedDate);
+    // console.log("event" + JSON.stringify(x));
+    // this.props.dispatch(fetchBoardOneByApiIfNeeded(date));
   };
 
   render() {
@@ -39,7 +42,7 @@ class AddBoard extends Component {
           autoOk={true}
           defaultDate={new Date()}
           formatDate={(dt) => `${dt.getFullYear()}/${dt.getMonth() + 1}/${dt.getDate()}`}
-          onChange={this.handleChange}
+          onChange={(e, date) => this.handleChange(e, date)}
         />
       </div>
     );
