@@ -11,12 +11,9 @@ class AddBoard extends Component {
   // }
 
   handleChange = (e, date) => {
-    // event.preventDefault();
     let selectedDate = JSON.stringify(date).slice(1, 11);
-    selectedDate = selectedDate.replace("-", "");
-    console.log("selectedDate" + selectedDate);
-    // console.log("event" + JSON.stringify(x));
-    // this.props.dispatch(fetchBoardOneByApiIfNeeded(date));
+    selectedDate = selectedDate.split("-").join("");
+    this.props.dispatch(fetchBoardOneByApiIfNeeded(this.props.boards, selectedDate));
   };
 
   render() {
@@ -50,13 +47,17 @@ class AddBoard extends Component {
 }
 
 AddBoard.propTypes = {
+  boards: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    date: PropTypes.string.isRequired,
+  }).isRequired).isRequired,
   selectedBoard: PropTypes.string.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => {
   return {
-    selectedBoard: state.boards.selectedBoard,
+    selectedBoard: state.selectedBoard.board,
   };
 };
 

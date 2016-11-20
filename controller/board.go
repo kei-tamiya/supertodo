@@ -18,13 +18,26 @@ type Board struct {
 }
 
 // GetはDBから現在ログインしているユーザのBoardを取得して結果を返します
-func (t *Board) Get(c *gin.Context) {
+func (b *Board) Get(c *gin.Context) {
 	sess := sessions.Default(c)
-	boards, err := model.BoardsAll(t.DB, sess.Get("uid").(int64))
+	boards, err := model.BoardsAll(b.DB, sess.Get("uid").(int64))
 	if err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
 	}
+
+	// Find today's board and insert if
+	//todayBoard, err := model.TodayBoard(b.DB, userId)
+	//date := todayBoard.Date
+	//isToday := false
+	//for _, b := range boards {
+	//	if b.Date == date {
+	//		isToday = true
+	//	}
+	//}
+	//if !isToday {
+	//	boards = append(boards, todayBoard)
+	//}
 	c.JSON(http.StatusOK, boards)
 }
 

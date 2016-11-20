@@ -72,7 +72,7 @@ class UserOnly extends Component {
         <div className="col-sm-8">
         </div>
         <div className="col-sm-4">
-          <AddBoard />
+          <AddBoard boards={boards} />
 
           {isBoardsEmpty
             ? (isBoardsFetching ? <h2>Board Loading...</h2> : <h2>Boardを作ろう！</h2>)

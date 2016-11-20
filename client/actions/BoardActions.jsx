@@ -8,6 +8,7 @@ export const REQUEST_BOARD_ONE = 'REQUEST_BOARD_ONE';
 export const RECEIVE_BOARD_ONE = 'RECEIVE_BOARD_ONE';
 export const REQUEST_BOARDS = 'REQUEST_BOARDS';
 export const RECEIVE_BOARDS = 'RECEIVE_BOARDS';
+export const SYNC_TODOS = 'SYNC_TODOS';
 
 export const addBoard = (board) => ({
   type: ADD_BOARD,
@@ -16,7 +17,7 @@ export const addBoard = (board) => ({
 
 export const selectBoard = (board) => ({
   type: SELECT_BOARD,
-  selectedBoard: board
+  board: board
 });
 
 export const clearBoards = () => ({
@@ -41,6 +42,12 @@ export const requestBoards = (boards = []) => ({
 export const receiveBoards = (boards) => ({
   type: RECEIVE_BOARDS,
   boards
+});
+
+export const syncTodos = (boards, todos) => ({
+  type: SYNC_TODOS,
+  boards: boards,
+  todos: todos
 });
 
 export const fetchOrAddBoardByApi = (date) => (dispatch, getState) => {
@@ -115,6 +122,7 @@ const fetchBoardsByApi = () => (dispatch, getState) => {
       if (json == null) {
         return;
       }
+      console.log("receive : " + JSON.stringify(json));
       dispatch(receiveBoards(json.data))
     })
     .catch(error => {

@@ -13,7 +13,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import injectTapEventPlugin from "react-tap-event-plugin";
 
 import { todos, todosByPetatto } from './reducers/Todo.jsx';
-import { boards, boardsByApi } from './reducers/BoardReducers.jsx';
+import { selectedBoard, boardsByApi } from './reducers/BoardReducers.jsx';
 import token from './reducers/Token.jsx';
 import auth from './reducers/AuthReducers.jsx';
 import App from './containers/App.jsx';
@@ -28,7 +28,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 const reducer = combineReducers({
   todos,
   todosByPetatto,
-  boards,
+  selectedBoard,
   boardsByApi,
   token,
   auth,

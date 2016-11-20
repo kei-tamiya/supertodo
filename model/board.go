@@ -3,6 +3,8 @@ package model
 import (
 	"database/sql"
 
+	"time"
+
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 )
@@ -16,6 +18,13 @@ func BoardsAll(dbx *sqlx.DB, userId int64) (boards []Board, err error) {
 		return nil, err
 	}
 	return boards, nil
+}
+
+func TodayBoard(db *sqlx.DB, userId int64) (Board, error) {
+	date := time.Now().Format("20060102")
+	board, err := ScanBoard(db.QueryRow(`SELECT * FROM boards WHERE (user_id, date) = (?, ?)`, userId, date))
+	board.Date = date
+	return board, err
 }
 
 func (t *Board) CheckLatestDate(dbx *sqlx.DB) (board Board, err error) {
