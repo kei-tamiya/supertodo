@@ -17,10 +17,32 @@ type Board struct {
 	DB *sqlx.DB
 }
 
+type Todos struct {
+	Todos map[string][]model.Todo `json:"todos"`
+}
+
 // GetはDBから現在ログインしているユーザのBoardを取得して結果を返します
 func (b *Board) Get(c *gin.Context) {
 	sess := sessions.Default(c)
-	boards, err := model.BoardsAll(b.DB, sess.Get("uid").(int64))
+	userId := sess.Get("uid").(int64)
+	boards, err := model.BoardsAll(b.DB, userId)
+	if err != nil {
+		c.JSON(500, gin.H{"err": err.Error()})
+		return
+	}
+
+	arr := []string{}
+	t := &Todos{}
+	for _, board := range boards {
+		date := board.Date
+		arr = append(arr, date)
+		todos, err := model.TodosAllOfBoard(b.DB, userId, board.ID)
+		if err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
+		}
+		t.Todos[date] = todos
+	}
+
 	if err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
@@ -38,7 +60,8 @@ func (b *Board) Get(c *gin.Context) {
 	//if !isToday {
 	//	boards = append(boards, todayBoard)
 	//}
-	c.JSON(http.StatusOK, boards)
+
+	c.JSON(http.StatusOK, gin.H{"data": &t})
 }
 
 func (t *Board) Post(c *gin.Context) {
@@ -60,7 +83,7 @@ func (t *Board) Post(c *gin.Context) {
 		return err
 	})
 
-	c.JSON(http.StatusOK, board)
+	c.JSON(http.StatusOK, gin.H{"data": &board})
 }
 
 //PutはタスクをDBに追加します
@@ -98,7 +121,7 @@ func (t *Board) Put(c *gin.Context) {
 		return err
 	})
 
-	c.JSON(http.StatusCreated, board)
+	c.JSON(http.StatusCreated, gin.H{"data": &board})
 	return
 }
 

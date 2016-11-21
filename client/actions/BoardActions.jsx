@@ -122,7 +122,8 @@ const fetchBoardsByApi = () => (dispatch, getState) => {
       if (json == null) {
         return;
       }
-      console.log("receive : " + JSON.stringify(json));
+      console.log("json  : " + JSON.stringify(json))
+
       dispatch(receiveBoards(json.data))
     })
     .catch(error => {

@@ -16,12 +16,12 @@ import {
 
 const initialState = {
   board: {
-    date: undefined,
     isFetching: false,
     didInvalidate: false,
     todos: undefined,
   },
   boardsByApi: {
+    dates: [],
   }
 };
 
@@ -38,26 +38,26 @@ const selectedBoard = (state = {}, action) => {
 
 const board = (state = initialState.board, action) => {
   switch (action.type) {
-    case ADD_BOARD:
-      return Object.assign({}, state, {
-        newTodoTitle: '',
-      });
-    case SELECT_BOARD:
-      return Object.assign({}, state, {
-        selectedBoard: action.selectedBoard,
-      });
-    case CHANGE_SELECTED_VALUE:
-      return Object.assign({}, state, {
-        selectedBoard: action.selectedBoard,
-      });
-    case REQUEST_BOARDS:
-      return Object.assign({}, state, {
-        todos: action.boards,
-      });
-    case RECEIVE_BOARDS:
-      return Object.assign({}, state, {
-        todos: action.boards,
-      });
+    // case ADD_BOARD:
+    //   return Object.assign({}, state, {
+    //     newTodoTitle: '',
+    //   });
+    // case SELECT_BOARD:
+    //   return Object.assign({}, state, {
+    //     selectedBoard: action.selectedBoard,
+    //   });
+    // case CHANGE_SELECTED_VALUE:
+    //   return Object.assign({}, state, {
+    //     selectedBoard: action.selectedBoard,
+    //   });
+    // case REQUEST_BOARDS:
+    //   return Object.assign({}, state, {
+    //     todos: action.boards,
+    //   });
+    // case RECEIVE_BOARDS:
+    //   return Object.assign({}, state, {
+    //     todos: action.boards,
+    //   });
     case SYNC_TODOS:
       return Object.assing({}, state, {
         todos: action.todos[state.date],
@@ -71,42 +71,44 @@ const board = (state = initialState.board, action) => {
 
 const boardsByApi = (state = initialState.boardsByApi, action) => {
   switch (action.type) {
-    case ADD_BOARD:
-      const myMap = new Map();
-      myMap.set(Object.keys(state.todos).length, action.board);
-      return Object.assign({}, state, {
-        boards: [
-          ...state.todos,
-          myMap
-        ],
-      });
-    case SELECT_BOARD:
-
-    case REQUEST_BOARD_ONE:
-      return Object.assign({}, state, {
-        isFetching: true,
-        didInvalidate: false,
-        boards: action.boards.todos,
-      });
-    case RECEIVE_BOARD_ONE:
-      if (action.board.date) {
-        return Object.assign({}, state, {
-          [action.board.date]: action.board,
+    // case ADD_BOARD:
+    //   const myMap = new Map();
+    //   myMap.set(Object.keys(state.todos).length, action.board);
+    //   return Object.assign({}, state, {
+    //     boards: [
+    //       ...state.todos,
+    //       myMap
+    //     ],
+    //   });
+    // case SELECT_BOARD:
+    //
+    // case REQUEST_BOARD_ONE:
+    //   return Object.assign({}, state, {
+    //     boards: action.boards.todos,
+    //   });
+    // case RECEIVE_BOARD_ONE:
+    //   if (action.board.date) {
+    //     return Object.assign({}, state, {
+    //       [action.board.date]: action.board,
+    //     });
+    //   }
+    //   return state;
+    // case REQUEST_BOARDS:
+    //   return Object.assign({}, state, {
+    //     boards: action.boards.todos,
+    //   });
+    case RECEIVE_BOARDS:
+      const boardsAllMap = {};
+      let dateArr = [];
+      if (action.boards.todos) {
+        action.boards.forEach((item) => {
+          boardsAllMap[item.date] = board(state = initialState.board, action);
+          dateArr.push(item.date);
         });
       }
-      return state;
-    case REQUEST_BOARDS:
       return Object.assign({}, state, {
-        isFetching: true,
-        didInvalidate: false,
-        boards: action.boards.todos,
-      });
-    case RECEIVE_BOARDS:
-      return Object.assign({}, state, {
-        isFetching: false,
-        didInvalidate: false,
-        boards: action.boards,
-        [action.board.date]: action.board,
+        ...boardsAllMap,
+        date: dateArr,
       });
     case CLEAR_BOARDS:
       return Object.assign({});

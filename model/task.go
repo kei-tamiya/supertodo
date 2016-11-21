@@ -28,6 +28,14 @@ func TodosAll(dbx *sqlx.DB, userId int64) (todos []Todo, err error) {
 	}
 	return todos, nil
 }
+
+func TodosAllOfBoard(dbx *sqlx.DB, userId int64, boardId int64) (todos []Todo, err error) {
+	if err = dbx.Select(&todos, "SELECT * FORM todos WHERE (user_id, board_id) = (?, ?)", userId, boardId); err != nil {
+		return nil, err
+	}
+	return todos, nil
+}
+
 func (t *Todo) Insert(tx *sqlx.Tx, userId int64) (sql.Result, error) {
 	stmt, err := tx.Prepare(`
 	INSERT INTO todos (board_id, user_id, title, completed)
