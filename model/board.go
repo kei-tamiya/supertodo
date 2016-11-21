@@ -39,25 +39,25 @@ func (t *Board) CheckLatestDate(dbx *sqlx.DB) (board Board, err error) {
 	return boards[0], nil
 }
 
-func (t *Board) Insert(tx *sqlx.Tx) (sql.Result, error) {
+func (b *Board) Insert(tx *sqlx.Tx) (sql.Result, error) {
 	stmt, err := tx.Prepare(`
-	INSERT INTO boards (date)
-	VALUES (?)
+	INSERT INTO boards (user_id, date)
+	VALUES (?, ?)
 	`)
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	return stmt.Exec(t.Date)
+	return stmt.Exec(b.User_Id, b.Date)
 }
 
-func (t *Board) Update(tx *sqlx.Tx) (sql.Result, error) {
+func (b *Board) Update(tx *sqlx.Tx) (sql.Result, error) {
 	stmt, err := tx.Prepare(`
-	update boards set date = ? where board_id = ?
+	update boards set date = ? where (board_id, user_id) = (?, ?)
 	`)
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	return stmt.Exec(t.Date, t.ID)
+	return stmt.Exec(b.Date, b.ID, b.User_Id)
 }

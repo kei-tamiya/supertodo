@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/kei-tamiya/supertodo/model"
@@ -17,8 +18,12 @@ type Board struct {
 	DB *sqlx.DB
 }
 
+type BoardTodos struct {
+	BoardTodos map[string]Todos `json:"todos"`
+}
+
 type Todos struct {
-	Todos map[string][]model.Todo `json:"todos"`
+	Todos []model.Todo
 }
 
 // GetはDBから現在ログインしているユーザのBoardを取得して結果を返します
@@ -32,7 +37,7 @@ func (b *Board) Get(c *gin.Context) {
 	}
 
 	arr := []string{}
-	t := &Todos{}
+	t := &BoardTodos{}
 	for _, board := range boards {
 		date := board.Date
 		arr = append(arr, date)
@@ -40,7 +45,7 @@ func (b *Board) Get(c *gin.Context) {
 		if err != nil {
 			c.JSON(500, gin.H{"err": err.Error()})
 		}
-		t.Todos[date] = todos
+		t.BoardTodos[date] = todos
 	}
 
 	if err != nil {
@@ -61,18 +66,21 @@ func (b *Board) Get(c *gin.Context) {
 	//	boards = append(boards, todayBoard)
 	//}
 
+	log.Printf("todos : %v", &t)
 	c.JSON(http.StatusOK, gin.H{"data": &t})
 }
 
 func (t *Board) Post(c *gin.Context) {
 	var board model.Board
+	sess := sessions.Default(c)
 	if err := c.BindJSON(&board); err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
 	}
+	board.User_Id = sess.Get("uid").(int64)
 
 	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-		result, err := board.Update(tx)
+		result, err := board.Insert(tx)
 		if err != nil {
 			return err
 		}

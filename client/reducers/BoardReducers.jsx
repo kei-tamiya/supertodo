@@ -21,7 +21,7 @@ const initialState = {
     todos: undefined,
   },
   boardsByApi: {
-    dates: [],
+    dates: undefined,
   }
 };
 
@@ -71,15 +71,10 @@ const board = (state = initialState.board, action) => {
 
 const boardsByApi = (state = initialState.boardsByApi, action) => {
   switch (action.type) {
-    // case ADD_BOARD:
-    //   const myMap = new Map();
-    //   myMap.set(Object.keys(state.todos).length, action.board);
-    //   return Object.assign({}, state, {
-    //     boards: [
-    //       ...state.todos,
-    //       myMap
-    //     ],
-    //   });
+    case ADD_BOARD:
+      return Object.assign({}, state, {
+        [action.date] : board(state = initialState.board, action)
+      });
     // case SELECT_BOARD:
     //
     // case REQUEST_BOARD_ONE:

@@ -10,15 +10,26 @@ export const REQUEST_BOARDS = 'REQUEST_BOARDS';
 export const RECEIVE_BOARDS = 'RECEIVE_BOARDS';
 export const SYNC_TODOS = 'SYNC_TODOS';
 
-export const addBoard = (board) => ({
+export const addBoard = (date) => ({
   type: ADD_BOARD,
-  board
+  date
 });
 
-export const selectBoard = (board) => ({
+export const selectBoard = (date) => ({
   type: SELECT_BOARD,
-  board: board
+  date
 });
+
+export const selectOrAddBoard = (date) => (dispatch, getState) => {
+  const boardDates = getState().boardsByApi.dates;
+  if (boardDates && boardDates.includes(date)) {
+    dispatch(selectBoard(date));
+    return
+  }
+  dispatch(addBoardOneByApi(date)).then(() => {
+    dispatch(selectBoard(date))
+  });
+};
 
 export const clearBoards = () => ({
   type: CLEAR_BOARDS
@@ -58,7 +69,7 @@ export const fetchOrAddBoardByApi = (date) => (dispatch, getState) => {
 };
 
 export const addBoardOneByApi = (date) => (dispatch, getState) => {
-  // const todoToSave = Object.assign({}, {title: title});
+  const boardToSave = Object.assign({}, {date: date});
   let apiUrl = API_ROOT_URL + 'api/boards/';
   return fetch(apiUrl, {
     credentials: 'same-origin',
@@ -68,14 +79,14 @@ export const addBoardOneByApi = (date) => (dispatch, getState) => {
       'Content-Type': 'application/json',
       'X-XSRF-TOKEN': getState().token.token
     },
-    // body: JSON.stringify(todoToSave)
+    body: JSON.stringify(boardToSave),
   })
     .then(response => response.json())
     .then(json => {
       if (json == null) {
         return
       }
-      dispatch(addBoard(json.data));
+      dispatch(addBoard(date));
     })
 };
 
@@ -122,8 +133,6 @@ const fetchBoardsByApi = () => (dispatch, getState) => {
       if (json == null) {
         return;
       }
-      console.log("json  : " + JSON.stringify(json))
-
       dispatch(receiveBoards(json.data))
     })
     .catch(error => {
@@ -144,7 +153,7 @@ const shouldFetchBoardOne = (state, date) => {
 
 const shouldFetchBoards = (state) => {
   let boardsByApi = state.boardsByApi;
-  if (!boardsByApi.boards) {
+  if (!boardsByApi.dates) {
     return true;
   }
   if (boardsByApi.isFetching) {

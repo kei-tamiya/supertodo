@@ -4,7 +4,7 @@ import AddTodo from '../AddTodo.jsx'
 import TodoList from '../../components/TodoList.jsx'
 import AddBoard from '../AddBoard.jsx'
 import BoardList from '../../components/BoardList.jsx'
-import { fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
+import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
 import { fetchTodosIfNeeded } from '../../actions/Todo.jsx';
 
 class UserOnly extends Component {
@@ -44,8 +44,14 @@ class UserOnly extends Component {
 
   componentDidMount() {
     const { dispatch, boards, todos } = this.props;
-    dispatch(fetchBoardsByApiIfNeeded(boards));
-    dispatch(fetchTodosIfNeeded(todos));
+    dispatch(fetchBoardsByApiIfNeeded(boards)).then(() => {
+      let d = new Date();
+      let year = d.getFullYear();
+      let month = d.getMonth()+1;
+      let date = d.getDate();
+      let today = `${year}${month}${date}`;
+      dispatch(selectOrAddBoard(today));
+    });
   }
 
   guestWillTransfer(props, router) {
