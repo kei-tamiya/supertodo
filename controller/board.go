@@ -1,7 +1,6 @@
 package controller
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/kei-tamiya/supertodo/model"
@@ -36,21 +35,18 @@ func (b *Board) Get(c *gin.Context) {
 		return
 	}
 
-	arr := []string{}
+	dateArr := []string{}
 	t := &BoardTodos{}
+	t.BoardTodos = map[string][]model.Todo{}
 	for _, board := range boards {
 		date := board.Date
-		arr = append(arr, date)
+		dateArr = append(dateArr, date)
 		todos, err := model.TodosAllOfBoard(b.DB, userId, board.ID)
 		if err != nil {
 			c.JSON(500, gin.H{"err": err.Error()})
 		}
-		if todos != nil {
-			t.BoardTodos[date] = todos
-		}
+		t.BoardTodos[date] = todos
 	}
-
-	log.Printf("t  : %v", &t)
 
 	if err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
@@ -70,7 +66,6 @@ func (b *Board) Get(c *gin.Context) {
 	//	boards = append(boards, todayBoard)
 	//}
 
-	log.Printf("todos : %v", &t)
 	c.JSON(http.StatusOK, gin.H{"data": &t})
 }
 

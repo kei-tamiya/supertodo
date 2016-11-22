@@ -30,7 +30,7 @@ func TodosAll(dbx *sqlx.DB, userId int64) (todos []Todo, err error) {
 }
 
 func TodosAllOfBoard(dbx *sqlx.DB, userId int64, boardId int64) (todos []Todo, err error) {
-	if err = dbx.Select(&todos, "SELECT * FORM todos WHERE (user_id, board_id) = (?, ?)", userId, boardId); err != nil {
+	if err = dbx.Select(&todos, "SELECT * FROM todos WHERE (user_id, board_id) = (?, ?)", userId, boardId); err != nil {
 		return nil, err
 	}
 	return todos, nil
