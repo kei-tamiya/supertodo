@@ -19,7 +19,7 @@ type Board struct {
 }
 
 type BoardTodos struct {
-	BoardTodos map[string]Todos `json:"todos"`
+	BoardTodos map[string][]model.Todo `json:"todos"`
 }
 
 type Todos struct {
@@ -45,8 +45,12 @@ func (b *Board) Get(c *gin.Context) {
 		if err != nil {
 			c.JSON(500, gin.H{"err": err.Error()})
 		}
-		t.BoardTodos[date] = todos
+		if todos != nil {
+			t.BoardTodos[date] = todos
+		}
 	}
+
+	log.Printf("t  : %v", &t)
 
 	if err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
