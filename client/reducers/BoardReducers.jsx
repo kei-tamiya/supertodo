@@ -95,15 +95,19 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
     case RECEIVE_BOARDS:
       const boardsAllMap = {};
       let dateArr = [];
-      if (action.boards.todos) {
-        action.boards.forEach((item) => {
-          boardsAllMap[item.date] = board(state = initialState.board, action);
-          dateArr.push(item.date);
+      if (action.boards) {
+        Object.keys(action.boards).forEach((key) => {
+          let boardState = Object.assign({}, initialState.board);
+          if (action.boards[key]) {
+            boardState.todos = action.boards[key]
+          }
+          boardsAllMap[key] = board(state = boardState, action);
+          dateArr.push(key);
         });
       }
       return Object.assign({}, state, {
         ...boardsAllMap,
-        date: dateArr,
+        dates: dateArr,
       });
     case CLEAR_BOARDS:
       return Object.assign({});

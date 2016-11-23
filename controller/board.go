@@ -18,7 +18,7 @@ type Board struct {
 }
 
 type BoardTodos struct {
-	BoardTodos map[string][]model.Todo `json:"todos"`
+	BoardTodos map[string][]model.Todo `json:"boardTodos"`
 }
 
 type Todos struct {

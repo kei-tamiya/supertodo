@@ -44,14 +44,14 @@ class UserOnly extends Component {
 
   componentDidMount() {
     const { dispatch, boards, todos } = this.props;
-    dispatch(fetchBoardsByApiIfNeeded(boards)).then(() => {
-      let d = new Date();
-      let year = d.getFullYear();
-      let month = d.getMonth()+1;
-      let date = d.getDate();
-      let today = `${year}${month}${date}`;
-      dispatch(selectOrAddBoard(today));
-    });
+    dispatch(fetchBoardsByApiIfNeeded(boards));
+
+    // let d = new Date();
+    // let year = d.getFullYear();
+    // let month = d.getMonth()+1;
+    // let date = d.getDate();
+    // let today = `${year}${month}${date}`;
+    // dispatch(selectOrAddBoard(today));
   }
 
   guestWillTransfer(props, router) {

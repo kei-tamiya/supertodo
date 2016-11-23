@@ -133,7 +133,15 @@ const fetchBoardsByApi = () => (dispatch, getState) => {
       if (json == null) {
         return;
       }
-      dispatch(receiveBoards(json.data))
+      dispatch(receiveBoards(json.data.boardTodos))
+    })
+    .then(() => {
+      let d = new Date();
+      let year = d.getFullYear();
+      let month = d.getMonth()+1;
+      let date = d.getDate();
+      let today = `${year}${month}${date}`;
+      dispatch(selectOrAddBoard(today));
     })
     .catch(error => {
       console.error(error);
@@ -173,3 +181,9 @@ export const fetchBoardsByApiIfNeeded = () => (dispatch, getState) => {
     dispatch(fetchBoardsByApi());
   }
 };
+
+// export const fetchBoardAndSelectTodayWhenComponentDidMount = () => (dispatch, getState) => {
+//   if (shouldFetchBoards(getState())) {
+//     dispatch(fetchBoardsByApi());
+//   }
+// }
