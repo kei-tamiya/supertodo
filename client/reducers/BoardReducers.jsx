@@ -99,7 +99,10 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
 
       let date = action.date;
       let currentBoard = state[date];
-      let newTodos = currentBoard.todos.slice();
+      let newTodos = [];
+      if (currentBoard.todos !== undefined) {
+        newTodos = currentBoard.todos.slice();
+      }
       newTodos.push(action.todo);
       let boardMap = Object.assign({}, currentBoard, {
         todos: newTodos,

@@ -2,7 +2,8 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 import { fetchBoardOneByApiIfNeeded } from '../actions/BoardActions.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
-import DatePicker from 'material-ui/DatePicker'
+import DatePicker from 'material-ui/DatePicker';
+import ja from 'moment/locale/ja';
 
 class AddBoard extends Component {
   constructor(props) {
@@ -10,9 +11,11 @@ class AddBoard extends Component {
   }
 
   handleChange = (e, date) => {
+
+    console.log("aaaaaa:  " + JSON.stringify(date))
     let selectedDate = JSON.stringify(date).slice(1, 11);
     selectedDate = selectedDate.split("-").join("");
-    this.props.dispatch(fetchBoardOneByApiIfNeeded(selectedDate));
+    this.props.dispatch(fetchBoardOneByApiIfNeeded(parseInt(selectedDate)+1));
   };
 
   render() {
@@ -34,10 +37,10 @@ class AddBoard extends Component {
 
     return (
       <div>
-        <DatePicker hintText="Portrait Dialog"
+        <DatePicker hintText="Let's Select Todo's Board."
           autoOk={true}
           defaultDate={new Date()}
-          formatDate={(dt) => `${dt.getFullYear()}/${dt.getMonth() + 1}/${dt.getDate()}`}
+          formatDate={(date) => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`}
           onChange={(e, date) => this.handleChange(e, date)}
         />
       </div>

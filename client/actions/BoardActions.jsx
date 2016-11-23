@@ -168,9 +168,11 @@ const fetchBoardsByApi = () => (dispatch, getState) => {
 const shouldFetchBoardOne = (state, date) => {
   let board = state.boardsByApi[date];
   if (!board) {
+    console.log("kore")
     return true;
   }
   if (board.isFetching) {
+    console.log("kore22")
     return false;
   }
   return board.didInvalidate;
@@ -190,6 +192,8 @@ const shouldFetchBoards = (state) => {
 export const fetchBoardOneByApiIfNeeded = (date) => (dispatch, getState) => {
   if (shouldFetchBoardOne(getState(), date)) {
     dispatch(fetchBoardOneByApi(date));
+  } else {
+    dispatch(selectBoard(getState().boardsByApi[date]))
   }
 };
 
