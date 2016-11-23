@@ -66,7 +66,7 @@ AddTodo.propTypes = {
 
 const mapStateToProps = (state) => {
   return {
-    newTodoTitle: state.todos.newTodoTitle,
+    newTodoTitle: state.selectedBoard.newTodoTitle,
   };
 };
 

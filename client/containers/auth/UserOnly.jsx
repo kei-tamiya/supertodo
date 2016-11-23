@@ -94,10 +94,10 @@ const mapStateToProps = (state) => {
   const {
     isFetching,
     todos
-  } = selectedBoard || {
+  } = selectedBoard.board || {
     isFetching: true,
     todos: []
-  }
+  };
 
   // const auth = state.auth;
   // const authedUser = auth.user;

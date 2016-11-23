@@ -14,14 +14,22 @@ import {
   SYNC_TODOS,
 } from '../actions/BoardActions.jsx';
 
+import {
+  ADD_TODO,
+  CHANGE_NEW_TODO_TITLE,
+} from '../actions/Todo.jsx';
+
 const initialState = {
   selectedBoard: {
     board: undefined,
+    newTodoTitle: '',
   },
   board: {
+    id: undefined,
     isFetching: false,
     didInvalidate: false,
     todos: undefined,
+    date: undefined,
   },
   boardsByApi: {
     dates: undefined,
@@ -33,6 +41,14 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
     case SELECT_BOARD:
       return Object.assign({}, state, {
         board: action.board,
+      });
+    case ADD_TODO:
+      return Object.assign({}, state, {
+        newTodoTitle: '',
+      });
+    case CHANGE_NEW_TODO_TITLE:
+      return Object.assign({}, state, {
+        newTodoTitle: action.newTodoTitle,
       });
     default:
       return state
@@ -76,10 +92,21 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
   switch (action.type) {
     case ADD_BOARD:
       return Object.assign({}, state, {
-        [action.date] : board(state = initialState.board, action)
+        [action.date]: board(initialState.board, action)
       });
-    // case SELECT_BOARD:
-    //
+    case ADD_TODO:
+      // const todosMap = new Map();
+
+      let date = action.date;
+      let currentBoard = state[date];
+      let newTodos = currentBoard.todos.slice();
+      newTodos.push(action.todo);
+      let boardMap = Object.assign({}, currentBoard, {
+        todos: newTodos,
+      });
+      return Object.assign({}, state, {
+        [date]: boardMap,
+      });
     // case REQUEST_BOARD_ONE:
     //   return Object.assign({}, state, {
     //     boards: action.boards.todos,
@@ -99,13 +126,16 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
       const boardsAllMap = {};
       let dateArr = [];
       if (action.boards) {
-        Object.keys(action.boards).forEach((key) => {
-          let boardState = Object.assign({}, initialState.board);
-          if (action.boards[key]) {
-            boardState.todos = action.boards[key]
+        action.boards.forEach((item) => {
+          const boardState = Object.assign({}, initialState.board);
+          if (item.todos) {
+            boardState.todos = item.todos;
           }
-          boardsAllMap[key] = board(state = boardState, action);
-          dateArr.push(key);
+          boardState.id = item.board_id;
+          let date = item.date;
+          boardState.date = date;
+          boardsAllMap[item.date] = board(boardState, action);
+          dateArr.push(date);
         });
       }
       return Object.assign({}, state, {
@@ -126,6 +156,6 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
 };
 
 export {
-  selectedBoard,
   boardsByApi,
+  selectedBoard,
 };

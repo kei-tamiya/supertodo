@@ -2,6 +2,9 @@ import { API_ROOT_URL } from '../constant/Url.jsx';
 
 export const ADD_BOARD = 'ADD_BOARD';
 export const SELECT_BOARD = 'SELECT_BOARD';
+export const ADD_TODO = 'ADD_TODO';
+export const CHANGE_NEW_TODO_TITLE = 'CHANGE_NEW_TODO_TITLE';
+
 export const CHANGE_SELECTED_VALUE = 'CHANGE_SELECTED_VALUE';
 export const CLEAR_BOARDS = 'CLEAR_BOARDS';
 export const REQUEST_BOARD_ONE = 'REQUEST_BOARD_ONE';
@@ -18,6 +21,16 @@ export const addBoard = (date) => ({
 export const selectBoard = (board) => ({
   type: SELECT_BOARD,
   board
+});
+
+export const addTodo = (json) => ({
+  type: ADD_TODO,
+  todo: json
+});
+
+export const changeNewTodoTitle = (newTodoTitle) => ({
+  type: CHANGE_NEW_TODO_TITLE,
+  newTodoTitle: newTodoTitle
 });
 
 export const selectOrAddBoard = (date) => (dispatch, getState) => {
@@ -137,7 +150,7 @@ const fetchBoardsByApi = () => (dispatch, getState) => {
       if (json == null) {
         return;
       }
-      dispatch(receiveBoards(json.data.boardTodos))
+      dispatch(receiveBoards(json.data.boards));
     })
     .then(() => {
       let d = new Date();

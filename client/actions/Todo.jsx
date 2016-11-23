@@ -1,3 +1,7 @@
+import {
+  selectBoard
+} from './BoardActions.jsx';
+
 export const ADD_TODO = 'ADD_TODO';
 export const CHANGE_NEW_TODO_TITLE = 'CHANGE_NEW_TODO_TITLE';
 // export const DELETE_TODO = 'DELETE_TODO'
@@ -8,9 +12,11 @@ export const REQUEST_TODOS = 'REQUEST_TODOS';
 export const RECEIVE_TODOS = 'RECEIVE_TODOS';
 export const CLEAR_TODOS = 'CLEAR_TODOS';
 
-export const addTodo = (json) => ({
+
+export const addTodo = (json, date) => ({
   type: ADD_TODO,
-  todo: json
+  todo: json,
+  date
 });
 
 export const changeNewTodoTitle = (newTodoTitle) => ({
@@ -19,7 +25,8 @@ export const changeNewTodoTitle = (newTodoTitle) => ({
 });
 
 export const addTodoByApi = (title) => (dispatch, getState) => {
-  const todoToSave = Object.assign({}, {title: title});
+  const todoToSave = Object.assign({}, {board_id: getState().selectedBoard.board.id, title: title});
+  const date = getState().selectedBoard.board.date;
   return fetch('http://localhost:8080/api/todos', {
     credentials: 'same-origin',
     method: 'POST',
@@ -28,14 +35,17 @@ export const addTodoByApi = (title) => (dispatch, getState) => {
         'Content-Type': 'application/json',
         'X-XSRF-TOKEN': getState().token.token
     },
-    body: JSON.stringify(todoToSave)
+    body: JSON.stringify(todoToSave),
   })
     .then(response => response.json())
     .then(json => {
         if (json == null) {
             return
         }
-        dispatch(addTodo(json))
+        dispatch(addTodo(json, date))
+    })
+    .then(() => {
+      dispatch(selectBoard(getState().boardsByApi[date]));
     })
 };
 

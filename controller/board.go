@@ -17,12 +17,14 @@ type Board struct {
 	DB *sqlx.DB
 }
 
-type BoardTodos struct {
-	BoardTodos map[string][]model.Todo `json:"boardTodos"`
+type BoardInfos struct {
+	Boards []BoardTodos `json:"boards"`
 }
 
-type Todos struct {
-	Todos []model.Todo
+type BoardTodos struct {
+	BoardId int64        `json:"board_id"`
+	Date    string       `json:"date"`
+	Todos   []model.Todo `json:"todos"`
 }
 
 // GetはDBから現在ログインしているユーザのBoardを取得して結果を返します
@@ -36,16 +38,20 @@ func (b *Board) Get(c *gin.Context) {
 	}
 
 	dateArr := []string{}
-	t := &BoardTodos{}
-	t.BoardTodos = map[string][]model.Todo{}
+
+	bi := &BoardInfos{}
 	for _, board := range boards {
+		t := &BoardTodos{}
 		date := board.Date
+		t.BoardId = board.ID
+		t.Date = date
 		dateArr = append(dateArr, date)
 		todos, err := model.TodosAllOfBoard(b.DB, userId, board.ID)
 		if err != nil {
 			c.JSON(500, gin.H{"err": err.Error()})
 		}
-		t.BoardTodos[date] = todos
+		t.Todos = todos
+		bi.Boards = append(bi.Boards, *t)
 	}
 
 	if err != nil {
@@ -66,7 +72,7 @@ func (b *Board) Get(c *gin.Context) {
 	//	boards = append(boards, todayBoard)
 	//}
 
-	c.JSON(http.StatusOK, gin.H{"data": &t})
+	c.JSON(http.StatusOK, gin.H{"data": &bi})
 }
 
 func (t *Board) Post(c *gin.Context) {
