@@ -5,6 +5,8 @@ import (
 
 	"github.com/kei-tamiya/supertodo/model"
 
+	"strconv"
+
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
@@ -83,24 +85,25 @@ func (t *Todo) Put(c *gin.Context) {
 	return
 }
 
-//
-//func (t *Todo) Delete(c *gin.Context) {
-//	var todo model.Todo
-//	if err := c.BindJSON(&todo); err != nil {
-//		c.JSON(500, gin.H{"err": err.Error()})
-//		return
-//	}
-//
-//	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-//		_, err := todo.Delete(tx)
-//		if err != nil {
-//			return err
-//		}
-//		return tx.Commit()
-//	})
-//
-//	c.Status(http.StatusOK)
-//}
+func (t *Todo) Delete(c *gin.Context) {
+	var todo model.Todo
+	id, err := strconv.ParseInt(c.Param("id"), 10, 64)
+	if err != nil {
+		c.JSON(400, gin.H{"err": err.Error()})
+		return
+	}
+
+	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
+		_, err := todo.Delete(tx, id)
+		if err != nil {
+			return err
+		}
+		return tx.Commit()
+	})
+
+	c.Status(http.StatusOK)
+}
+
 //
 //func (t *Todo) DeleteMulti(c *gin.Context) {
 //	var todos []model.Todo

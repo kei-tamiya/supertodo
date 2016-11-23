@@ -67,3 +67,12 @@ func (t *Todo) Update(tx *sqlx.Tx) (sql.Result, error) {
 	defer stmt.Close()
 	return stmt.Exec(t.Title, t.ID)
 }
+
+func (t *Todo) Delete(tx *sqlx.Tx, id int64) (sql.Result, error) {
+	stmt, err := tx.Prepare(`DELETE FROM todos WHERE todo_id = ?`)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	return stmt.Exec(id)
+}
