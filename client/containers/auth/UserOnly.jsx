@@ -2,7 +2,9 @@ import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 import AddTodo from '../AddTodo.jsx'
 import TodoList from '../../components/TodoList.jsx'
-import Board from '../Board.jsx'
+import AddBoard from '../AddBoard.jsx'
+import BoardList from '../../components/BoardList.jsx'
+import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
 import { fetchTodosIfNeeded } from '../../actions/Todo.jsx';
 
 class UserOnly extends Component {
@@ -11,7 +13,7 @@ class UserOnly extends Component {
   }
 
   static propTypes = {
-    isFetching: PropTypes.bool.isRequired,
+    // isTodosFetching: PropTypes.bool.isRequired,
     todos: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       completed: PropTypes.bool.isRequired,
@@ -19,8 +21,14 @@ class UserOnly extends Component {
       top: PropTypes.number.isRequired,
       left: PropTypes.number.isRequired,
     }).isRequired).isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    // boards: PropTypes.arrayOf(PropTypes.shape({
+    //   id: PropTypes.number.isRequired,
+    //   date: PropTypes.string.isRequired,
+    // }).isRequired).isRequired,
     children: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
+    selectedBoard: PropTypes.object.isRequired,
   };
 
   static contextTypes = {
@@ -36,8 +44,15 @@ class UserOnly extends Component {
   }
 
   componentDidMount() {
-    const { dispatch, todos } = this.props;
-    dispatch(fetchTodosIfNeeded(todos));
+    const { dispatch, boards, todos } = this.props;
+    dispatch(fetchBoardsByApiIfNeeded(boards));
+
+    // let d = new Date();
+    // let year = d.getFullYear();
+    // let month = d.getMonth()+1;
+    // let date = d.getDate();
+    // let today = `${year}${month}${date}`;
+    // dispatch(selectOrAddBoard(today));
   }
 
   guestWillTransfer(props, router) {
@@ -47,36 +62,42 @@ class UserOnly extends Component {
   }
 
   render() {
-    const { todos, isFetching, auth } = this.props;
+    const { isFetching, todos, auth, selectedBoard } = this.props;
 
-    let isEmpty = true;
+    let isTodosEmpty = true;
+
     if (todos !== undefined) {
-      isEmpty = todos.length === 0;
+      isTodosEmpty = todos.length === 0;
     }
-    console.log("todos jsonstringify:  " + JSON.stringify(todos))
 
     return (
       <div className="row">
         <div className="col-sm-8">
-          <Board />
         </div>
         <div className="col-sm-4">
+          <AddBoard selectedBoard={selectedBoard} />
           <AddTodo />
-          {isEmpty
+
+          {isTodosEmpty
             ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
             : <TodoList todos={todos} />
           }
         </div>
       </div>
     );
-
   }
 }
 
 const mapStateToProps = (state) => {
-  const { todosByPetatto } = state;
-  const isFetching = todosByPetatto.isFetching || true;
-  const todos = todosByPetatto.todos || [];
+  const { selectedBoard } = state;
+
+  const {
+    isFetching,
+    todos
+  } = selectedBoard.board || {
+    isFetching: true,
+    todos: []
+  };
 
   // const auth = state.auth;
   // const authedUser = auth.user;

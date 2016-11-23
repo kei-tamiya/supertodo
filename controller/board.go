@@ -7,6 +7,7 @@ import (
 
 	"fmt"
 
+	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/jmoiron/sqlx"
 )
@@ -16,26 +17,62 @@ type Board struct {
 	DB *sqlx.DB
 }
 
-// GetはDBからユーザを取得して結果を返します
-func (t *Board) Get(c *gin.Context) {
-	var board model.Board
-	boards, err := board.BoardsAll(t.DB)
+type BoardInfos struct {
+	Boards []BoardTodos `json:"boards"`
+}
+
+type BoardTodos struct {
+	BoardId int64        `json:"board_id"`
+	Date    string       `json:"date"`
+	Todos   []model.Todo `json:"todos"`
+}
+
+// GetはDBから現在ログインしているユーザのBoardを取得して結果を返します
+func (b *Board) Get(c *gin.Context) {
+	sess := sessions.Default(c)
+	userId := sess.Get("uid").(int64)
+	boards, err := model.BoardsAll(b.DB, userId)
 	if err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
 	}
-	c.JSON(http.StatusOK, boards)
-}
 
-func (t *Board) Post(c *gin.Context) {
-	var board model.Board
-	if err := c.BindJSON(&board); err != nil {
+	dateArr := []string{}
+
+	bi := &BoardInfos{}
+	for _, board := range boards {
+		t := &BoardTodos{}
+		date := board.Date
+		t.BoardId = board.ID
+		t.Date = date
+		dateArr = append(dateArr, date)
+		todos, err := model.TodosAllOfBoard(b.DB, userId, board.ID)
+		if err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
+		}
+		t.Todos = todos
+		bi.Boards = append(bi.Boards, *t)
+	}
+
+	if err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
 		return
 	}
 
+	c.JSON(http.StatusOK, gin.H{"data": &bi})
+}
+
+func (t *Board) Post(c *gin.Context) {
+	var board model.Board
+	sess := sessions.Default(c)
+	if err := c.BindJSON(&board); err != nil {
+		c.JSON(500, gin.H{"err": err.Error()})
+		return
+	}
+	board.User_Id = sess.Get("uid").(int64)
+
 	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-		result, err := board.Update(tx)
+		result, err := board.Insert(tx)
 		if err != nil {
 			return err
 		}
@@ -46,7 +83,7 @@ func (t *Board) Post(c *gin.Context) {
 		return err
 	})
 
-	c.JSON(http.StatusOK, board)
+	c.JSON(http.StatusOK, gin.H{"data": &board})
 }
 
 //PutはタスクをDBに追加します
@@ -84,7 +121,7 @@ func (t *Board) Put(c *gin.Context) {
 		return err
 	})
 
-	c.JSON(http.StatusCreated, board)
+	c.JSON(http.StatusCreated, gin.H{"data": &board})
 	return
 }
 

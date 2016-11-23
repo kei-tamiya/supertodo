@@ -8,6 +8,7 @@ func ScanBoard(r *sql.Row) (Board, error) {
 	var s Board
 	if err := r.Scan(
 		&s.ID,
+		&s.User_Id,
 		&s.Date,
 		&s.Created,
 		&s.Updated,
@@ -24,6 +25,7 @@ func ScanBoards(rs *sql.Rows) ([]Board, error) {
 		var s Board
 		if err = rs.Scan(
 			&s.ID,
+			&s.User_Id,
 			&s.Date,
 			&s.Created,
 			&s.Updated,
