@@ -91,8 +91,11 @@ const board = (state = initialState.board, action) => {
 const boardsByApi = (state = initialState.boardsByApi, action) => {
   switch (action.type) {
     case ADD_BOARD:
+      let boardState = Object.assign({}, initialState.board, {
+        date: action.date,
+      });
       return Object.assign({}, state, {
-        [action.date]: board(initialState.board, action)
+        [action.date]: board(boardState, action)
       });
     case ADD_TODO:
       // const todosMap = new Map();

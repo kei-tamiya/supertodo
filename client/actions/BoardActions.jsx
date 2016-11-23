@@ -105,32 +105,32 @@ export const addBoardOneByApi = (date) => (dispatch, getState) => {
     })
 };
 
-const fetchBoardOneByApi = (date) => (dispatch, getState) => {
-  dispatch(requestBoardOne());
-  const boardToSave = Object.assign({}, {date: date});
-
-  let apiUrl = API_ROOT_URL + 'api/board/';
-  return fetch(apiUrl, {
-    credentials: 'same-origin',
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': getState().token.token,
-    },
-    body: JSON.stringify(boardToSave),
-  })
-    .then(response => response.json())
-    .then(json => {
-      if (json == null) {
-        return;
-      }
-      dispatch(receiveBoardOne(json.data))
-    })
-    .catch(error => {
-      console.error(error);
-    })
-};
+// const fetchOrAddBoardOneByApi = (date) => (dispatch, getState) => {
+//   dispatch(requestBoardOne());
+//   const boardToSave = Object.assign({}, {date: date});
+//
+//   let apiUrl = API_ROOT_URL + 'api/boards/';
+//   return fetch(apiUrl, {
+//     credentials: 'same-origin',
+//     method: 'PUT',
+//     headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json',
+//       'X-XSRF-TOKEN': getState().token.token,
+//     },
+//     body: JSON.stringify(boardToSave),
+//   })
+//     .then(response => response.json())
+//     .then(json => {
+//       if (json == null) {
+//         return;
+//       }
+//       dispatch(receiveBoardOne(json.data))
+//     })
+//     .catch(error => {
+//       console.error(error);
+//     })
+// };
 
 const fetchBoardsByApi = () => (dispatch, getState) => {
   dispatch(requestBoards());
@@ -168,11 +168,9 @@ const fetchBoardsByApi = () => (dispatch, getState) => {
 const shouldFetchBoardOne = (state, date) => {
   let board = state.boardsByApi[date];
   if (!board) {
-    console.log("kore")
     return true;
   }
   if (board.isFetching) {
-    console.log("kore22")
     return false;
   }
   return board.didInvalidate;
@@ -189,9 +187,9 @@ const shouldFetchBoards = (state) => {
   return boardsByApi.didInvalidate;
 };
 
-export const fetchBoardOneByApiIfNeeded = (date) => (dispatch, getState) => {
+export const fetchOrAddBoardOneByApiIfNeeded = (date) => (dispatch, getState) => {
   if (shouldFetchBoardOne(getState(), date)) {
-    dispatch(fetchBoardOneByApi(date));
+    dispatch(addBoardOneByApi(date));
   } else {
     dispatch(selectBoard(getState().boardsByApi[date]))
   }

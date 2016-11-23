@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { fetchBoardOneByApiIfNeeded } from '../actions/BoardActions.jsx';
+import { fetchOrAddBoardOneByApiIfNeeded } from '../actions/BoardActions.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 import DatePicker from 'material-ui/DatePicker';
 import ja from 'moment/locale/ja';
@@ -11,11 +11,10 @@ class AddBoard extends Component {
   }
 
   handleChange = (e, date) => {
-
-    console.log("aaaaaa:  " + JSON.stringify(date))
     let selectedDate = JSON.stringify(date).slice(1, 11);
     selectedDate = selectedDate.split("-").join("");
-    this.props.dispatch(fetchBoardOneByApiIfNeeded(parseInt(selectedDate)+1));
+    let fixedDate = parseInt(selectedDate)+1;
+    this.props.dispatch(fetchOrAddBoardOneByApiIfNeeded(fixedDate.toString()));
   };
 
   render() {
