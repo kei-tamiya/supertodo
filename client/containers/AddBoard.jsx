@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import { fetchOrAddBoardOneByApiIfNeeded } from '../actions/BoardActions.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 import DatePicker from 'material-ui/DatePicker';
-import ja from 'moment/locale/ja';
 
 class AddBoard extends Component {
   constructor(props) {

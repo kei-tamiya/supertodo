@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import Rnd from 'react-rnd'
 
-const Todo = ({ completed, title }) => (
+const Todo = ({ id, completed, title, deleteTodo }) => (
   <Rnd
     initial={{
       x: 0,
@@ -32,6 +32,7 @@ const Todo = ({ completed, title }) => (
         </li>
         <li
          className={"removeBtn"}
+         onClick={() => deleteTodo(id)}
         >
          <button>×</button>
         </li>
@@ -43,8 +44,10 @@ const Todo = ({ completed, title }) => (
 
 Todo.propTypes = {
   // onClick: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired,
   completed: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
+  deleteTodo: PropTypes.func.isRequired,
 };
 
 export default Todo;

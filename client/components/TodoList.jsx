@@ -2,13 +2,20 @@ import React, { PropTypes, Component } from 'react';
 import Todo from './Todo.jsx';
 
 class TodoList extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
+    const { todos, deleteTodo } = this.props;
+
     return (
       <div>
         <ul>
-          {this.props.todos.map(todo =>
+          {todos.map((todo) =>
             <Todo
               key={todo.id}
+              deleteTodo={() => deleteTodo(todo.id)}
               {...todo}
             />
           )}
@@ -16,7 +23,7 @@ class TodoList extends Component {
       </div>
     );
   }
-}
+};
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
@@ -24,6 +31,7 @@ TodoList.propTypes = {
       completed: PropTypes.bool.isRequired,
       title: PropTypes.string.isRequired,
   }).isRequired).isRequired,
+  deleteTodo: PropTypes.func.isRequired,
 };
 
 export default TodoList;

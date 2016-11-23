@@ -95,6 +95,7 @@ func (s *Server) Route() {
 		s.Engine.POST("/api/todos", todo.Post)
 		s.Engine.GET("/api/todos", todo.Get)
 		s.Engine.PUT("/api/todos", todo.Put)
+		s.Engine.DELETE("/api/todos/:id", todo.Delete)
 	}
 
 	board := &controller.Board{DB: s.dbx}
@@ -105,7 +106,6 @@ func (s *Server) Route() {
 	s.Engine.POST("api/signup", user.SignUp)
 	s.Engine.POST("api/login", user.Login)
 	s.Engine.GET("api/loggedinuser", user.FetchLoggedInUser)
-	//s.Engine.DELETE("/api/todos", todo.Delete)
 	//
 	//s.Engine.DELETE("/api/todos/multi", todo.DeleteMulti)
 	//
