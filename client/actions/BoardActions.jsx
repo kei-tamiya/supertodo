@@ -13,24 +13,14 @@ export const REQUEST_BOARDS = 'REQUEST_BOARDS';
 export const RECEIVE_BOARDS = 'RECEIVE_BOARDS';
 export const SYNC_TODOS = 'SYNC_TODOS';
 
-export const addBoard = (date) => ({
+export const addBoard = (board) => ({
   type: ADD_BOARD,
-  date
+  board
 });
 
 export const selectBoard = (board) => ({
   type: SELECT_BOARD,
   board
-});
-
-export const addTodo = (json) => ({
-  type: ADD_TODO,
-  todo: json
-});
-
-export const changeNewTodoTitle = (newTodoTitle) => ({
-  type: CHANGE_NEW_TODO_TITLE,
-  newTodoTitle: newTodoTitle
 });
 
 export const selectOrAddBoard = (date) => (dispatch, getState) => {
@@ -98,7 +88,7 @@ export const addBoardOneByApi = (date) => (dispatch, getState) => {
       if (json == null) {
         return
       }
-      dispatch(addBoard(date));
+      dispatch(addBoard(json.data, date));
     })
     .then(() => {
       dispatch(selectBoard(getState().boardsByApi[date]));

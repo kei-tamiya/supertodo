@@ -59,19 +59,6 @@ func (b *Board) Get(c *gin.Context) {
 		return
 	}
 
-	// Find today's board and insert if
-	//todayBoard, err := model.TodayBoard(b.DB, userId)
-	//date := todayBoard.Date
-	//isToday := false
-	//for _, b := range boards {
-	//	if b.Date == date {
-	//		isToday = true
-	//	}
-	//}
-	//if !isToday {
-	//	boards = append(boards, todayBoard)
-	//}
-
 	c.JSON(http.StatusOK, gin.H{"data": &bi})
 }
 
