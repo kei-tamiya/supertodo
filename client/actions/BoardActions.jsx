@@ -15,20 +15,19 @@ export const addBoard = (date) => ({
   date
 });
 
-export const selectBoard = (date) => ({
+export const selectBoard = (board) => ({
   type: SELECT_BOARD,
-  date
+  board
 });
 
 export const selectOrAddBoard = (date) => (dispatch, getState) => {
-  const boardDates = getState().boardsByApi.dates;
+  let boardsByApiState = getState().boardsByApi;
+  const boardDates = boardsByApiState.dates;
   if (boardDates && boardDates.includes(date)) {
-    dispatch(selectBoard(date));
+    dispatch(selectBoard(boardsByApiState[date]));
     return
   }
-  dispatch(addBoardOneByApi(date)).then(() => {
-    dispatch(selectBoard(date))
-  });
+  dispatch(addBoardOneByApi(date));
 };
 
 export const clearBoards = () => ({
@@ -87,6 +86,9 @@ export const addBoardOneByApi = (date) => (dispatch, getState) => {
         return
       }
       dispatch(addBoard(date));
+    })
+    .then(() => {
+      dispatch(selectBoard(getState().boardsByApi[date]));
     })
 };
 
