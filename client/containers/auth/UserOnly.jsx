@@ -13,7 +13,7 @@ class UserOnly extends Component {
   }
 
   static propTypes = {
-    isTodosFetching: PropTypes.bool.isRequired,
+    // isTodosFetching: PropTypes.bool.isRequired,
     todos: PropTypes.arrayOf(PropTypes.shape({
       id: PropTypes.number.isRequired,
       completed: PropTypes.bool.isRequired,
@@ -21,13 +21,14 @@ class UserOnly extends Component {
       top: PropTypes.number.isRequired,
       left: PropTypes.number.isRequired,
     }).isRequired).isRequired,
-    isBoardsFetching: PropTypes.bool.isRequired,
-    boards: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      date: PropTypes.string.isRequired,
-    }).isRequired).isRequired,
+    isFetching: PropTypes.bool.isRequired,
+    // boards: PropTypes.arrayOf(PropTypes.shape({
+    //   id: PropTypes.number.isRequired,
+    //   date: PropTypes.string.isRequired,
+    // }).isRequired).isRequired,
     children: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
+    selectedBoard: PropTypes.object.isRequired,
   };
 
   static contextTypes = {
@@ -61,14 +62,10 @@ class UserOnly extends Component {
   }
 
   render() {
-    const { boards, isBoardsFetching, todos, isTodosFetching, auth } = this.props;
+    const { isFetching, todos, auth, selectedBoard } = this.props;
 
-    let isBoardsEmpty = true;
     let isTodosEmpty = true;
 
-    if (boards !== undefined) {
-      isBoardsEmpty = boards.length === 0;
-    }
     if (todos !== undefined) {
       isTodosEmpty = todos.length === 0;
     }
@@ -78,17 +75,11 @@ class UserOnly extends Component {
         <div className="col-sm-8">
         </div>
         <div className="col-sm-4">
-          <AddBoard boards={boards} />
-
-          {isBoardsEmpty
-            ? (isBoardsFetching ? <h2>Board Loading...</h2> : <h2>Boardを作ろう！</h2>)
-            : <BoardList boards={boards} />
-          }
-
+          <AddBoard selectedBoard={selectedBoard} />
           <AddTodo />
 
           {isTodosEmpty
-            ? (isTodosFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
+            ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
             : <TodoList todos={todos} />
           }
         </div>
@@ -98,21 +89,22 @@ class UserOnly extends Component {
 }
 
 const mapStateToProps = (state) => {
-  const { todosByPetatto, boardsByApi } = state;
-  const isTodosFetching = todosByPetatto.isFetching || true;
-  const todos = todosByPetatto.todos || [];
+  const { selectedBoard } = state;
 
-  const isBoardsFetching = boardsByApi.isFetching || true;
-  const boards = boardsByApi.boards || [];
+  const {
+    isFetching,
+    todos
+  } = selectedBoard || {
+    isFetching: true,
+    todos: []
+  }
 
   // const auth = state.auth;
   // const authedUser = auth.user;
 
   return {
-    isTodosFetching,
+    isFetching,
     todos,
-    isBoardsFetching,
-    boards,
     // auth,
     // authedUser,
   };

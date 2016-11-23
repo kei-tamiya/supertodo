@@ -5,15 +5,14 @@ import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 import DatePicker from 'material-ui/DatePicker'
 
 class AddBoard extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.handleChange = this.handleChange.bind(this);
-  // }
+  constructor(props) {
+    super(props);
+  }
 
   handleChange = (e, date) => {
     let selectedDate = JSON.stringify(date).slice(1, 11);
     selectedDate = selectedDate.split("-").join("");
-    this.props.dispatch(fetchBoardOneByApiIfNeeded(this.props.boards, selectedDate));
+    this.props.dispatch(fetchBoardOneByApiIfNeeded(selectedDate));
   };
 
   render() {
@@ -47,11 +46,11 @@ class AddBoard extends Component {
 }
 
 AddBoard.propTypes = {
-  boards: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    date: PropTypes.string.isRequired,
-  }).isRequired).isRequired,
-  selectedBoard: PropTypes.string.isRequired,
+  // boards: PropTypes.arrayOf(PropTypes.shape({
+  //   id: PropTypes.number.isRequired,
+  //   date: PropTypes.string.isRequired,
+  // }).isRequired).isRequired,
+  selectedBoard: PropTypes.object.isRequired,
   dispatch: PropTypes.func.isRequired,
 };
 

@@ -15,6 +15,9 @@ import {
 } from '../actions/BoardActions.jsx';
 
 const initialState = {
+  selectedBoard: {
+    board: undefined,
+  },
   board: {
     isFetching: false,
     didInvalidate: false,
@@ -25,7 +28,7 @@ const initialState = {
   }
 };
 
-const selectedBoard = (state = {}, action) => {
+const selectedBoard = (state = initialState.selectedBoard, action) => {
   switch (action.type) {
     case SELECT_BOARD:
       return Object.assign({}, state, {

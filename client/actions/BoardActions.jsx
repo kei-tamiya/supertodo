@@ -92,8 +92,9 @@ export const addBoardOneByApi = (date) => (dispatch, getState) => {
     })
 };
 
-const fetchBoardOneByApi = () => (dispatch, getState) => {
+const fetchBoardOneByApi = (date) => (dispatch, getState) => {
   dispatch(requestBoardOne());
+  const boardToSave = Object.assign({}, {date: date});
 
   let apiUrl = API_ROOT_URL + 'api/board/';
   return fetch(apiUrl, {
@@ -104,6 +105,7 @@ const fetchBoardOneByApi = () => (dispatch, getState) => {
       'Content-Type': 'application/json',
       'X-XSRF-TOKEN': getState().token.token,
     },
+    body: JSON.stringify(boardToSave),
   })
     .then(response => response.json())
     .then(json => {
@@ -172,9 +174,9 @@ const shouldFetchBoards = (state) => {
   return boardsByApi.didInvalidate;
 };
 
-export const fetchBoardOneByApiIfNeeded = (boards, date) => (dispatch, getState) => {
+export const fetchBoardOneByApiIfNeeded = (date) => (dispatch, getState) => {
   if (shouldFetchBoardOne(getState(), date)) {
-    dispatch(fetchBoardOneByApi());
+    dispatch(fetchBoardOneByApi(date));
   }
 };
 
