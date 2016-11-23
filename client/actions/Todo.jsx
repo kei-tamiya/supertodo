@@ -1,17 +1,18 @@
 import {
-  selectBoard
+  selectBoard,
 } from './BoardActions.jsx';
+import { API_ROOT_URL } from '../constant/Url.jsx';
 
 export const ADD_TODO = 'ADD_TODO';
 export const CHANGE_NEW_TODO_TITLE = 'CHANGE_NEW_TODO_TITLE';
-// export const DELETE_TODO = 'DELETE_TODO'
+export const DELETE_TODO = 'DELETE_TODO';
+export const REQUEST_DELETE_TODO = 'REQUEST_DELETE_TODO';
 // export const UPDATE_TODO_TITLE = 'UPDATE_TODO_TITLE'
 // export const UPDATE_TODO_POSITION = 'UPDATE_TODO_POSITION'
 // export const TOGGLE_TODO = 'TOGGLE_TODO'
 export const REQUEST_TODOS = 'REQUEST_TODOS';
 export const RECEIVE_TODOS = 'RECEIVE_TODOS';
 export const CLEAR_TODOS = 'CLEAR_TODOS';
-
 
 export const addTodo = (json, date) => ({
   type: ADD_TODO,
@@ -49,10 +50,15 @@ export const addTodoByApi = (title) => (dispatch, getState) => {
     })
 };
 
-// export const deleteTodo = petaTodos => ({
-//     type: DELETE_TODO,
-//     petaTodos
-// })
+export const deleteTodo = (id) => ({
+    type: DELETE_TODO,
+    id
+});
+
+export const requestDeleteTodo = (todo) => ({
+  type: REQUEST_DELETE_TODO,
+  todo
+});
 //
 // export const updateTodoTitle = petaTodos => ({
 //     type: UPDATE_TODO_TITLE,
@@ -107,6 +113,26 @@ const fetchTodos = (todos, userId) => (dispatch, getState) => {
     })
 };
 
+const deleteTodoByApi = (id) => (dispatch, getState) => {
+  let apiUrl = API_ROOT_URL + 'api/todos/' + id;
+  fetch(apiUrl, {
+    credential: 'same-origin',
+    method: 'DELETE',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': getState().token.token,
+    }
+  })
+    .then((response) => response.json())
+    .then((json) => {
+      if (json == null) {
+        return;
+      }
+      dispatch(deleteTodo(id))
+    })
+};
+
 const shouldFetchTodos = (state) => {
   const todosByPetatto = state.todosByPetatto;
   if (!todosByPetatto.todos) {
@@ -120,6 +146,20 @@ const shouldFetchTodos = (state) => {
 
 export const fetchTodosIfNeeded = (todos) => (dispatch, getState) => {
   if (shouldFetchTodos(getState())) {
-      return dispatch(fetchTodos(todos))
+      return dispatch(fetchTodos(todos));
+  }
+};
+
+const canDeleteTodo = (state) => {
+  const currentBoard = state.selectedBoard.board;
+  if (currentBoard.isFetching) {
+    return false;
+  }
+  return true;
+};
+
+export const deleteTodoIfPossible = (id) => (dispatch, getState) => {
+  if (canDeleteTodo(getState())) {
+    dispatch(deleteTodoByApi(id));
   }
 };

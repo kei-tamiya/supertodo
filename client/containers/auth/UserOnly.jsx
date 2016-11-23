@@ -1,11 +1,12 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
+// import { bindActionCreators } from 'redux'
 import AddTodo from '../AddTodo.jsx'
 import TodoList from '../../components/TodoList.jsx'
 import AddBoard from '../AddBoard.jsx'
 import BoardList from '../../components/BoardList.jsx'
 import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
-import { fetchTodosIfNeeded } from '../../actions/Todo.jsx';
+import { deleteTodoIfPossible } from '../../actions/Todo.jsx';
 
 class UserOnly extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class UserOnly extends Component {
     //   id: PropTypes.number.isRequired,
     //   date: PropTypes.string.isRequired,
     // }).isRequired).isRequired,
+    dispatch: PropTypes.func.isRequired,
     children: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
     selectedBoard: PropTypes.object.isRequired,
@@ -46,19 +48,16 @@ class UserOnly extends Component {
   componentDidMount() {
     const { dispatch, boards, todos } = this.props;
     dispatch(fetchBoardsByApiIfNeeded(boards));
-
-    // let d = new Date();
-    // let year = d.getFullYear();
-    // let month = d.getMonth()+1;
-    // let date = d.getDate();
-    // let today = `${year}${month}${date}`;
-    // dispatch(selectOrAddBoard(today));
   }
 
   guestWillTransfer(props, router) {
     if (!props.auth.isLoggedIn) {
       router.push('/login');
     }
+  }
+
+  deleteTodo = (id) => {
+    this.props.dispatch(deleteTodoIfPossible(id));
   }
 
   render() {
@@ -80,7 +79,7 @@ class UserOnly extends Component {
 
           {isTodosEmpty
             ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-            : <TodoList todos={todos} />
+            : <TodoList todos={todos} deleteTodo={this.deleteTodo} />
           }
         </div>
       </div>
@@ -110,4 +109,10 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps)(UserOnly);
+// const mapDispatchToProps = dispatch => ({
+//   actions: bindActionCreators(TodoActions, dispatch)
+// });
+
+export default connect(
+  mapStateToProps
+)(UserOnly);

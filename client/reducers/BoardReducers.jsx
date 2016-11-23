@@ -17,6 +17,8 @@ import {
 import {
   ADD_TODO,
   CHANGE_NEW_TODO_TITLE,
+  DELETE_TODO,
+  REQUEST_DELETE_TODO,
 } from '../actions/Todo.jsx';
 
 const initialState = {
