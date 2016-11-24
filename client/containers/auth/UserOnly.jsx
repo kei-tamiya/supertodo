@@ -6,7 +6,7 @@ import TodoList from '../../components/TodoList.jsx'
 import AddBoard from '../AddBoard.jsx'
 import BoardList from '../../components/BoardList.jsx'
 import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
-import { deleteTodoIfPossible } from '../../actions/Todo.jsx';
+import { deleteTodoIfPossible, changeTodoTitle } from '../../actions/Todo.jsx';
 
 class UserOnly extends Component {
   constructor(props) {
@@ -58,7 +58,12 @@ class UserOnly extends Component {
 
   deleteTodo = (id) => {
     this.props.dispatch(deleteTodoIfPossible(id));
-  }
+  };
+
+  changeTodoTitle = (e, id) => {
+    e.preventDefault();
+    this.props.dispatch(changeTodoTitle(id, e.target.value))
+  };
 
   render() {
     const { isFetching, todos, auth, selectedBoard } = this.props;
@@ -79,7 +84,7 @@ class UserOnly extends Component {
 
           {isTodosEmpty
             ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-            : <TodoList todos={todos} deleteTodo={this.deleteTodo} />
+            : <TodoList todos={todos} deleteTodo={this.deleteTodo} changeTodoTitle={this.changeTodoTitle} />
           }
         </div>
       </div>

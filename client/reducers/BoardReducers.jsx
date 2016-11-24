@@ -60,9 +60,10 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
           { ...todo, title: action.title } :
           todo
       );
-      console.log("newTodos of CHANGE_TODO_TITLE REDUCER : " + newTodos);
       return Object.assign({}, state, {
-        board: Object.assing({}, newTodos)
+        board: Object.assign({}, {
+          todos: newTodos
+        })
       });
     default:
       return state

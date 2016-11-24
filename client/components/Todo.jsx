@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Rnd from 'react-rnd'
 import TodoTitleInput from './TodoTitleInput.jsx';
 
-const Todo = ({ id, completed, title, deleteTodo }) => (
+const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle }) => (
   <Rnd
     initial={{
       x: 0,
@@ -17,7 +17,7 @@ const Todo = ({ id, completed, title, deleteTodo }) => (
     className={'todo'}
   >
     <span className="box">
-      {title}
+      <TodoTitleInput title={title} changeTodoTitle={(e) => changeTodoTitle(e, id)} />
       <ul
         className={"todoBtnList"}
       >
