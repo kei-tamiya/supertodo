@@ -101,7 +101,7 @@ func (t *Todo) Delete(c *gin.Context) {
 		return tx.Commit()
 	})
 
-	c.Status(http.StatusOK)
+	c.JSON(http.StatusOK, gin.H{"data": "Delete todo successed"})
 }
 
 //

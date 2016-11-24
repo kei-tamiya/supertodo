@@ -35,6 +35,7 @@ const initialState = {
   },
   boardsByApi: {
     dates: undefined,
+    isDeleting: false,
   }
 };
 
@@ -79,10 +80,6 @@ const board = (state = initialState.board, action) => {
     //   return Object.assign({}, state, {
     //     todos: action.boards,
     //   });
-    case SYNC_TODOS:
-      return Object.assing({}, state, {
-        todos: action.todos[state.date],
-      });
     case CLEAR_BOARDS:
       return Object.assign({}, initialState.boards);
     default:
@@ -95,7 +92,7 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
     case ADD_BOARD:
       const boardOne = action.board;
       const boardDate = action.board.date;
-      let boardState = Object.assign({}, initialState.board, {
+      const boardState = Object.assign({}, initialState.board, {
         id: boardOne.id,
         date: boardDate,
       });
@@ -105,14 +102,14 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
     case ADD_TODO:
       // const todosMap = new Map();
 
-      let date = action.date;
-      let currentBoard = state[date];
+      const date = action.date;
+      const currentBoard = state[date];
       let newTodos = [];
       if (currentBoard.todos !== undefined) {
         newTodos = currentBoard.todos.slice();
       }
       newTodos.push(action.todo);
-      let boardMap = Object.assign({}, currentBoard, {
+      const boardMap = Object.assign({}, currentBoard, {
         todos: newTodos,
       });
       return Object.assign({}, state, {
@@ -155,12 +152,20 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
       });
     case CLEAR_BOARDS:
       return Object.assign({});
-    case SYNC_TODOS:
-      const boardsMap = new Map();
-      Object.keys(action.todos).forEach((key) =>
-        boardsMap.set(key, board({date: key}, action))
-      );
-      return Object.assign({}, state, myMap);
+    case REQUEST_DELETE_TODO:
+      return Object.assign({}, state, {
+        isDeleting: true,
+      });
+    case DELETE_TODO:
+      const newCurrentBoard = Object.assign({}, action.board, {
+        todos: action.board.todos.filter((todo) => {
+          todo.id !== action.id
+        }),
+      });
+      return Object.assign({}, state, {
+        isDeleting: false,
+        [action.board.date]: newCurrentBoard,
+      });
     default:
       return state;
   }
