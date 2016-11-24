@@ -50,14 +50,14 @@ export const addTodoByApi = (title) => (dispatch, getState) => {
     })
 };
 
-export const deleteTodo = (id) => ({
-    type: DELETE_TODO,
-    id
+export const deleteTodo = (id, board) => ({
+  type: DELETE_TODO,
+  id,
+  board
 });
 
-export const requestDeleteTodo = (todo) => ({
-  type: REQUEST_DELETE_TODO,
-  todo
+export const requestDeleteTodo = () => ({
+  type: REQUEST_DELETE_TODO
 });
 //
 // export const updateTodoTitle = petaTodos => ({
@@ -114,6 +114,8 @@ const fetchTodos = (todos, userId) => (dispatch, getState) => {
 };
 
 const deleteTodoByApi = (id) => (dispatch, getState) => {
+  dispatch(requestDeleteTodo());
+  const date = getState().selectedBoard.board.date;
   let apiUrl = API_ROOT_URL + 'api/todos/' + id;
   fetch(apiUrl, {
     credential: 'same-origin',
@@ -121,7 +123,7 @@ const deleteTodoByApi = (id) => (dispatch, getState) => {
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': getState().token.token,
+      'X-XSRF-TOKEN': getState().token.token
     }
   })
     .then((response) => response.json())
@@ -129,7 +131,10 @@ const deleteTodoByApi = (id) => (dispatch, getState) => {
       if (json == null) {
         return;
       }
-      dispatch(deleteTodo(id))
+      dispatch(deleteTodo(id, getState().boardsByApi[date]));
+    })
+    .then(() => {
+      dispatch(selectBoard(getState().boardsByApi[date]))
     })
 };
 

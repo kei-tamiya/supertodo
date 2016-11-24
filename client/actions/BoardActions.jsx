@@ -88,7 +88,7 @@ export const addBoardOneByApi = (date) => (dispatch, getState) => {
       if (json == null) {
         return
       }
-      dispatch(addBoard(json.data, date));
+      dispatch(addBoard(json.data));
     })
     .then(() => {
       dispatch(selectBoard(getState().boardsByApi[date]));
