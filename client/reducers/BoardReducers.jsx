@@ -158,9 +158,9 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
       });
     case DELETE_TODO:
       const newCurrentBoard = Object.assign({}, action.board, {
-        todos: action.board.todos.filter((todo) => {
+        todos: action.board.todos.filter((todo) =>
           todo.id !== action.id
-        }),
+        ),
       });
       return Object.assign({}, state, {
         isDeleting: false,
