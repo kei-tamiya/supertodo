@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import Rnd from 'react-rnd'
+import TodoTitleInput from './TodoTitleInput.jsx';
 
 const Todo = ({ id, completed, title, deleteTodo }) => (
   <Rnd
@@ -48,6 +49,7 @@ Todo.propTypes = {
   completed: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
   deleteTodo: PropTypes.func.isRequired,
+  changeTodoTitle: PropTypes.func.isRequired,
 };
 
 export default Todo;

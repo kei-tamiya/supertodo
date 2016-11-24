@@ -11,7 +11,6 @@ import {
   CLEAR_BOARDS,
   REQUEST_BOARD_ONE,
   RECEIVE_BOARD_ONE,
-  SYNC_TODOS,
 } from '../actions/BoardActions.jsx';
 
 import {
@@ -19,6 +18,8 @@ import {
   CHANGE_NEW_TODO_TITLE,
   DELETE_TODO,
   REQUEST_DELETE_TODO,
+  CHANGE_TODO_TITLE,
+  UPDATE_TODO_TITLE,
 } from '../actions/Todo.jsx';
 
 const initialState = {
@@ -52,6 +53,16 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
     case CHANGE_NEW_TODO_TITLE:
       return Object.assign({}, state, {
         newTodoTitle: action.newTodoTitle,
+      });
+    case CHANGE_TODO_TITLE:
+      const newTodos = state.board.todos.map((todo) =>
+        todo.id === action.id ?
+          { ...todo, title: action.title } :
+          todo
+      );
+      console.log("newTodos of CHANGE_TODO_TITLE REDUCER : " + newTodos);
+      return Object.assign({}, state, {
+        board: Object.assing({}, newTodos)
       });
     default:
       return state

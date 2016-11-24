@@ -13,6 +13,11 @@ export const REQUEST_DELETE_TODO = 'REQUEST_DELETE_TODO';
 export const REQUEST_TODOS = 'REQUEST_TODOS';
 export const RECEIVE_TODOS = 'RECEIVE_TODOS';
 export const CLEAR_TODOS = 'CLEAR_TODOS';
+export const REQUEST_UPDATE_TODO = 'REQUEST_UPDATE_TODO';
+export const CHANGE_TODO_TITLE = 'CHANGE_TODO_TITLE';
+export const UPDATE_TODO_TITLE = 'UPDATE_TODO_TITLE';
+// export const UPDATE_TODO_SIZE = 'UPDATE_TODO_SIZE';
+// export const UPDATE_TODO_POSITION = 'UPDATE_TODO_POSITION';
 
 export const addTodo = (json, date) => ({
   type: ADD_TODO,
@@ -24,6 +29,63 @@ export const changeNewTodoTitle = (newTodoTitle) => ({
   type: CHANGE_NEW_TODO_TITLE,
   newTodoTitle: newTodoTitle
 });
+
+export const changeTodoTitle = (id, title) => ({
+  type: CHANGE_TODO_TITLE,
+  id,
+  title
+});
+
+export const updateTodoTitle = (todo) => ({
+  type: UPDATE_TODO_TITLE,
+  todo
+});
+
+// export const updateTodoSize = (id, width, height) => ({
+//   type: UPDATE_TODO_SIZE,
+//   todo
+// });
+//
+// export const updateTodoPosition = (id, x, y) => ({
+//   type: UPDATE_TODO_TITLE,
+//   todo
+// });
+
+export const requestUpdateTodo = () => ({
+  type: REQUEST_UPDATE_TODO
+});
+
+const updateTodoByApi = (todoToUpdate) => {
+  const apiUrl = API_ROOT_URL + 'api/todos/' + id;
+  fetch(apiUrl, {
+    credential: 'same-origin',
+    method: 'PUT',
+    headers: {
+      'ACCEPT': 'application/json',
+      'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': getState().token.token,
+    },
+    body: JSON.stringify(todoToUpdate),
+  })
+    .then((response) => response.json)
+    .then((json) => {
+      if (json == null) {
+        return null;
+      }
+      return json.data;
+    })
+    .catch((error) => {
+      console.error(error);
+    })
+};
+
+export const updateTodoTitleByApi = (id) => (dispatch, getState) => {
+  dispatch(requestUpdateTodo());
+  const todoToUpdate = Object.assign({}, );
+  const apiUrl = API_ROOT_URL + 'api/todos/' + id;
+  const updatedTodo = updateTodoByApi(todoToUpdate);
+  dispatch(updateTodoTitle(todo));
+};
 
 export const addTodoByApi = (title) => (dispatch, getState) => {
   const todoToSave = Object.assign({}, {board_id: getState().selectedBoard.board.id, title: title});
