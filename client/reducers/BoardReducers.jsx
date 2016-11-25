@@ -11,7 +11,6 @@ import {
   CLEAR_BOARDS,
   REQUEST_BOARD_ONE,
   RECEIVE_BOARD_ONE,
-  SYNC_TODOS,
 } from '../actions/BoardActions.jsx';
 
 import {
@@ -19,6 +18,9 @@ import {
   CHANGE_NEW_TODO_TITLE,
   DELETE_TODO,
   REQUEST_DELETE_TODO,
+  CHANGE_TODO_TITLE,
+  UPDATE_TODO_TITLE,
+  REQUEST_UPDATE_TODO,
 } from '../actions/Todo.jsx';
 
 const initialState = {
@@ -36,6 +38,7 @@ const initialState = {
   boardsByApi: {
     dates: undefined,
     isDeleting: false,
+    isUpdating: false,
   }
 };
 
@@ -52,6 +55,17 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
     case CHANGE_NEW_TODO_TITLE:
       return Object.assign({}, state, {
         newTodoTitle: action.newTodoTitle,
+      });
+    case CHANGE_TODO_TITLE:
+      const newTodos = state.board.todos.map((todo) =>
+        todo.id === action.id ?
+          { ...todo, title: action.title } :
+          todo
+      );
+      return Object.assign({}, state, {
+        board: Object.assign({}, [state.board], {
+          todos: newTodos
+        })
       });
     default:
       return state
@@ -165,6 +179,17 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
       return Object.assign({}, state, {
         isDeleting: false,
         [action.board.date]: newCurrentBoard,
+      });
+    case REQUEST_UPDATE_TODO:
+      return Object.assign({}, state, {
+        isUpdateing: true,
+      });
+    case UPDATE_TODO_TITLE:
+      return Object.assign({}, state, {
+        isUpdateing: false,
+        [action.date]: {
+          todos: action.todos.slice(),
+        },
       });
     default:
       return state;

@@ -16,7 +16,6 @@ class AddTodo extends Component {
 
   handleChange(e) {
     e.preventDefault();
-    console.log("e.target.value" + e.target.value)
     this.props.dispatch(changeNewTodoTitle(e.target.value))
   }
 
