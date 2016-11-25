@@ -94,7 +94,7 @@ func (s *Server) Route() {
 		auth.DELETE("/api/logout", user.Logout)
 		s.Engine.POST("/api/todos", todo.Post)
 		s.Engine.GET("/api/todos", todo.Get)
-		s.Engine.PUT("/api/todos", todo.Put)
+		s.Engine.PATCH("/api/todos", todo.PatchTitle)
 		s.Engine.DELETE("/api/todos/:id", todo.Delete)
 	}
 

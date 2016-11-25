@@ -63,7 +63,7 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
           todo
       );
       return Object.assign({}, state, {
-        board: Object.assign({}, {
+        board: Object.assign({}, state.board, {
           todos: newTodos
         })
       });
@@ -186,8 +186,9 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
       });
     case UPDATE_TODO_TITLE:
       return Object.assign({}, state, {
+        isUpdateing: false,
         [action.date]: {
-          todos: action.todos,
+          todos: action.todos.slice(),
         },
       });
     default:

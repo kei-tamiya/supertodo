@@ -38,6 +38,7 @@ func (t *Todo) Post(c *gin.Context) {
 	}
 
 	sess := sessions.Default(c)
+	log.Printf("uid post : %v", sess.Get("uid"))
 
 	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
 		result, err := todo.Insert(tx, sess.Get("uid").(int64))
@@ -60,7 +61,7 @@ func (t *Todo) Post(c *gin.Context) {
 
 //PutはタスクをDBに追加します
 //todoをJSONとして受け取ることを想定しています。
-func (t *Todo) Put(c *gin.Context) {
+func (t *Todo) PatchTitle(c *gin.Context) {
 	var todo model.Todo
 	if err := c.BindJSON(&todo); err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
@@ -70,18 +71,19 @@ func (t *Todo) Put(c *gin.Context) {
 	sess := sessions.Default(c)
 
 	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-		result, err := todo.Insert(tx, sess.Get("uid").(int64))
+		_, err := todo.PatchTitle(tx, sess.Get("uid").(int64))
 		if err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
 			return err
 		}
 		if err := tx.Commit(); err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
 			return err
 		}
-		todo.ID, err = result.LastInsertId()
 		return err
 	})
 
-	c.JSON(http.StatusCreated, todo)
+	c.JSON(http.StatusOK, gin.H{"data": &todo})
 	return
 }
 

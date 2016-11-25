@@ -56,24 +56,26 @@ export const requestUpdateTodo = () => ({
   type: REQUEST_UPDATE_TODO
 });
 
-const updateTodoByApi = (todoToUpdate) => {
-  const apiUrl = API_ROOT_URL + 'api/todos/' + id;
+const updateTodoByApi = (todoToUpdate, selectedTodos) => (dispatch, getState) => {
+  // const apiUrl = API_ROOT_URL + 'api/todos/' + todoToUpdate.id;
+  const apiUrl = API_ROOT_URL + 'api/todos/';
   fetch(apiUrl, {
-    credential: 'same-origin',
-    method: 'PUT',
+    credentials: 'same-origin',
+    method: 'PATCH',
     headers: {
-      'ACCEPT': 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': getState().token.token,
+      'X-XSRF-TOKEN': getState().token.token
     },
     body: JSON.stringify(todoToUpdate),
   })
     .then((response) => response.json)
     .then((json) => {
       if (json == null) {
-        return null;
+        return;
       }
-      return json.data;
+      const selectedBoard = getState().selectedBoard.board;
+      dispatch(updateTodoTitle(selectedBoard.date, selectedBoard.todos));
     })
     .catch((error) => {
       console.error(error);
@@ -93,8 +95,7 @@ export const updateTodoTitleByApi = (id) => (dispatch, getState) => {
   if (!todoToUpdate) {
     return
   }
-  const updatedTodo = updateTodoByApi(todoToUpdate);
-  dispatch(updateTodoTitle(selectedBoard.date, selectedTodos));
+  dispatch(updateTodoByApi(todoToUpdate, selectedTodos));
 };
 
 export const addTodoByApi = (title) => (dispatch, getState) => {
