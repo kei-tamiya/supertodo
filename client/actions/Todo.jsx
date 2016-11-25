@@ -36,9 +36,10 @@ export const changeTodoTitle = (id, title) => ({
   title
 });
 
-export const updateTodoTitle = (todo) => ({
+export const updateTodoTitle = (date, todos) => ({
   type: UPDATE_TODO_TITLE,
-  todo
+  date,
+  todos
 });
 
 // export const updateTodoSize = (id, width, height) => ({
@@ -81,10 +82,19 @@ const updateTodoByApi = (todoToUpdate) => {
 
 export const updateTodoTitleByApi = (id) => (dispatch, getState) => {
   dispatch(requestUpdateTodo());
-  const todoToUpdate = Object.assign({}, );
-  const apiUrl = API_ROOT_URL + 'api/todos/' + id;
+  let todoToUpdate = null;
+  const selectedBoard = getState().selectedBoard.board;
+  const selectedTodos = selectedBoard.todos;
+  selectedTodos.forEach((todo) => {
+    if (todo.id === id) {
+      todoToUpdate = todo;
+    }
+  });
+  if (!todoToUpdate) {
+    return
+  }
   const updatedTodo = updateTodoByApi(todoToUpdate);
-  dispatch(updateTodoTitle(todo));
+  dispatch(updateTodoTitle(selectedBoard.date, selectedTodos));
 };
 
 export const addTodoByApi = (title) => (dispatch, getState) => {

@@ -20,6 +20,7 @@ import {
   REQUEST_DELETE_TODO,
   CHANGE_TODO_TITLE,
   UPDATE_TODO_TITLE,
+  REQUEST_UPDATE_TODO,
 } from '../actions/Todo.jsx';
 
 const initialState = {
@@ -37,6 +38,7 @@ const initialState = {
   boardsByApi: {
     dates: undefined,
     isDeleting: false,
+    isUpdating: false,
   }
 };
 
@@ -177,6 +179,16 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
       return Object.assign({}, state, {
         isDeleting: false,
         [action.board.date]: newCurrentBoard,
+      });
+    case REQUEST_UPDATE_TODO:
+      return Object.assign({}, state, {
+        isUpdateing: true,
+      });
+    case UPDATE_TODO_TITLE:
+      return Object.assign({}, state, {
+        [action.date]: {
+          todos: action.todos,
+        },
       });
     default:
       return state;
