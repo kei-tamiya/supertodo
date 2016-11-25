@@ -87,6 +87,33 @@ func (t *Todo) PatchTitle(c *gin.Context) {
 	return
 }
 
+// PatchComleted patches task's completed param
+func (t *Todo) PatchCompleted(c *gin.Context) {
+	var todo model.Todo
+	if err := c.BindJSON(&todo); err != nil {
+		c.JSON(500, gin.H{"err": err.Error()})
+		return
+	}
+
+	sess := sessions.Default(c)
+
+	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
+		_, err := todo.PatchCompleted(tx, sess.Get("uid").(int64))
+		if err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
+			return
+		}
+		if err := tx.Commit(); err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
+			return
+		}
+		return
+	})
+
+	c.JSON(http.StatusOK, gin.H{"data": &todo})
+	return
+}
+
 func (t *Todo) Delete(c *gin.Context) {
 	var todo model.Todo
 	id, err := strconv.ParseInt(c.Param("id"), 10, 64)

@@ -95,6 +95,7 @@ func (s *Server) Route() {
 		s.Engine.POST("/api/todos", todo.Post)
 		s.Engine.GET("/api/todos", todo.Get)
 		s.Engine.PATCH("/api/todos", todo.PatchTitle)
+		s.Engine.PATCH("/api/todos", todo.PatchCompleted)
 		s.Engine.DELETE("/api/todos/:id", todo.Delete)
 	}
 
