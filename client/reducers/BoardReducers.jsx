@@ -63,7 +63,7 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
           todo
       );
       return Object.assign({}, state, {
-        board: Object.assign({}, state.board, {
+        board: Object.assign({}, [state.board], {
           todos: newTodos
         })
       });
