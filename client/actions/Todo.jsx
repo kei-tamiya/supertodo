@@ -13,6 +13,7 @@ export const CLEAR_TODOS = 'CLEAR_TODOS';
 export const REQUEST_UPDATE_TODO = 'REQUEST_UPDATE_TODO';
 export const CHANGE_TODO_TITLE = 'CHANGE_TODO_TITLE';
 export const UPDATE_TODO = 'UPDATE_TODO';
+export const TOGGLE_TODO_COMPLETED = 'TOGGLE_TODO_COMPLETED';
 // export const UPDATE_TODO_SIZE = 'UPDATE_TODO_SIZE';
 // export const UPDATE_TODO_POSITION = 'UPDATE_TODO_POSITION';
 
@@ -70,7 +71,7 @@ const updateTodoByApi = (id) => (dispatch, getState) => {
   if (!todoToUpdate) {
     return
   }
-  const apiUrl = API_ROOT_URL + 'api/todos/';
+  const apiUrl = API_ROOT_URL + 'api/todos';
   dispatch(requestUpdateTodo());
   fetch(apiUrl, {
     credentials: 'same-origin',

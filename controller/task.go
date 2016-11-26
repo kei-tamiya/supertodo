@@ -59,9 +59,8 @@ func (t *Todo) Post(c *gin.Context) {
 	c.JSON(http.StatusOK, &todo)
 }
 
-//PutはタスクをDBに追加します
-//todoをJSONとして受け取ることを想定しています。
-func (t *Todo) PatchTitle(c *gin.Context) {
+// Patch patches task's param on DB
+func (t *Todo) Patch(c *gin.Context) {
 	var todo model.Todo
 	if err := c.BindJSON(&todo); err != nil {
 		c.JSON(500, gin.H{"err": err.Error()})
@@ -71,7 +70,7 @@ func (t *Todo) PatchTitle(c *gin.Context) {
 	sess := sessions.Default(c)
 
 	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-		_, err := todo.PatchTitle(tx, sess.Get("uid").(int64))
+		_, err := todo.Patch(tx, sess.Get("uid").(int64))
 		if err != nil {
 			c.JSON(500, gin.H{"err": err.Error()})
 			return err
@@ -88,31 +87,31 @@ func (t *Todo) PatchTitle(c *gin.Context) {
 }
 
 // PatchComleted patches task's completed param
-func (t *Todo) PatchCompleted(c *gin.Context) {
-	var todo model.Todo
-	if err := c.BindJSON(&todo); err != nil {
-		c.JSON(500, gin.H{"err": err.Error()})
-		return
-	}
-
-	sess := sessions.Default(c)
-
-	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
-		_, err := todo.PatchCompleted(tx, sess.Get("uid").(int64))
-		if err != nil {
-			c.JSON(500, gin.H{"err": err.Error()})
-			return err
-		}
-		if err := tx.Commit(); err != nil {
-			c.JSON(500, gin.H{"err": err.Error()})
-			return err
-		}
-		return err
-	})
-
-	c.JSON(http.StatusOK, gin.H{"data": &todo})
-	return
-}
+//func (t *Todo) PatchCompleted(c *gin.Context) {
+//	var todo model.Todo
+//	if err := c.BindJSON(&todo); err != nil {
+//		c.JSON(500, gin.H{"err": err.Error()})
+//		return
+//	}
+//
+//	sess := sessions.Default(c)
+//
+//	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
+//		_, err := todo.PatchCompleted(tx, sess.Get("uid").(int64))
+//		if err != nil {
+//			c.JSON(500, gin.H{"err": err.Error()})
+//			return err
+//		}
+//		if err := tx.Commit(); err != nil {
+//			c.JSON(500, gin.H{"err": err.Error()})
+//			return err
+//		}
+//		return err
+//	})
+//
+//	c.JSON(http.StatusOK, gin.H{"data": &todo})
+//	return
+//}
 
 func (t *Todo) Delete(c *gin.Context) {
 	var todo model.Todo

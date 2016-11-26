@@ -1,20 +1,18 @@
 import React, { PropTypes } from 'react';
-import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
+import { GREEN, BLUE, ORANGE, DEEPGREEN } from '../constant/Color.jsx';
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
 const TodoTitleInput = ({id, title, changeTodoTitle, updateTodo}) => (
-  <input
-    type="text"
-    value={title}
-    onChange={(e) => changeTodoTitle(e, id)}
-    onBlur={() => updateTodo(id)}
-  />
-  // <Paper zDepth={2}>
-  //   <TextField ref='addTodoInput' hintText='New To Do' underlineStyle={styles.underlineStyle} value={newTodoTitle} onChange={(event) => changeTodoTitle(event)} />
-  // <Divider />
-  // </Paper>
+  <form onSubmit={(e) => {
+    e.preventDefault();
+    changeTodoTitle(e, id)}} >
+    <Paper zDepth={2}>
+      <TextField hintText='New To Do' className={'todoText'} underlineStyle={{borderColor: ORANGE}} value={title} onChange={(e) => changeTodoTitle(e, id)} onBlur={() => updateTodo(id)} />
+    <Divider />
+    </Paper>
+  </form>
 );
 
 TodoTitleInput.PropTypes = {

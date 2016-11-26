@@ -58,26 +58,21 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
         newTodoTitle: action.newTodoTitle,
       });
     case CHANGE_TODO_TITLE:
-      const newTodos = state.board.todos.map((todo) =>
+      const changeTodoTitleState = Object.assign({}, state);
+      changeTodoTitleState.board.todos = state.board.todos.map((todo) =>
         todo.id === action.id ?
-          { ...todo, title: action.title } :
+          {...todo, title: action.title } :
           todo
       );
-      return Object.assign({}, state, {
-        board: Object.assign({}, [state.board], {
-          todos: newTodos,
-        })
-      });
+      return changeTodoTitleState;
     case TOGGLE_TODO_COMPLETED:
-      return Object.assign({}, state, {
-        board: Object.assign({}, [state.board], {
-          todos: state.board.todos.map((todo) =>
-            todo.id === action.id ?
-              { ...todo, completed: !todo.completed } :
-              todo
-          ),
-        })
-      });
+      const toggeleTodoCompletedState = Object.assign({}, state);
+      toggeleTodoCompletedState.board.todos = state.board.todos.map((todo) =>
+        todo.id === action.id ?
+          { ...todo, completed: !todo.completed } :
+          todo
+      );
+      return toggeleTodoCompletedState;
     default:
       return state
   }

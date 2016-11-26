@@ -1,20 +1,25 @@
 import React, { PropTypes } from 'react';
 import Rnd from 'react-rnd'
 import TodoTitleInput from './TodoTitleInput.jsx';
+import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 
 const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted }) => (
   <Rnd
     initial={{
       x: 0,
       y: 0,
-      width: 200,
-      height: 200,
+      width: 320,
+      height: 240,
     }}
     minWidth={300}
     minHeight={160}
     maxWidth={800}
     maxHeight={300}
     className={'todo'}
+    style={{
+      opacity: completed ? '0.8' : '1',
+      backgroundColor: GREEN
+    }}
   >
     <span className="box">
       <TodoTitleInput title={title} changeTodoTitle={(e) => changeTodoTitle(e, id)} updateTodo={() => updateTodo(id)} />
@@ -22,30 +27,21 @@ const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo, t
         className={"todoBtnList"}
       >
         <li
-         className={"finishBtn"}
-         onclick={() => toggleTodoCompleted(id)}
+         onClick={() => toggleTodoCompleted(id)}
         >
-         <button>Finish</button>
+         <button className={"finishBtn btn btn-default"}>Finish</button>
         </li>
         <li
-         className={"updateBtn"}
-        >
-         <button>Update</button>
-        </li>
-        <li
-         className={"removeBtn"}
          onClick={() => deleteTodo(id)}
         >
-         <button>×</button>
+         <button className={"removeBtn btn  btn-default"}>×</button>
         </li>
       </ul>
     </span>
-
   </Rnd>
 );
 
 Todo.propTypes = {
-  // onClick: PropTypes.func.isRequired,
   id: PropTypes.number.isRequired,
   completed: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
