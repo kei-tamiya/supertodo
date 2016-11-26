@@ -57,16 +57,28 @@ func (t *Todo) Insert(tx *sqlx.Tx, userId int64) (sql.Result, error) {
 //	}
 //
 //}
-func (t *Todo) PatchTitle(tx *sqlx.Tx, userId int64) (sql.Result, error) {
+
+func (t *Todo) Patch(tx *sqlx.Tx, userId int64) (sql.Result, error) {
 	stmt, err := tx.Prepare(`
-	UPDATE todos SET title = ? WHERE (todo_id, user_id) = (?, ?)
+	UPDATE todos SET title = ?, completed = ? WHERE (todo_id, user_id) = (?, ?)
 	`)
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	return stmt.Exec(t.Title, t.ID, userId)
+	return stmt.Exec(t.Title, t.Completed, t.ID, userId)
 }
+
+//func (t *Todo) PatchCompleted(tx *sqlx.Tx, userId int64) (sql.Result, error) {
+//	stmt, err := tx.Prepare(`
+//	UPDATE todos SET completed WHERE (todo_id, user_id) = (?, ?)
+//	`)
+//	if err != nil {
+//		return nil, err
+//	}
+//	defer stmt.Close()
+//	return stmt.Exec(t.Completed, t.ID, userId)
+//}
 
 func (t *Todo) Delete(tx *sqlx.Tx, id int64) (sql.Result, error) {
 	stmt, err := tx.Prepare(`DELETE FROM todos WHERE todo_id = ?`)

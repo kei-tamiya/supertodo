@@ -1,5 +1,4 @@
 .todo {
-    background: url("../images/star.png") center center no-repeat;
     -webkit-background-size: auto 100%;
     background-size: auto 100%;
     background-color: #9fffb3;
@@ -14,6 +13,10 @@
 
 .form {
     padding: 20px 0;
+}
+
+.todoText {
+    width: 100% !important;
 }
 
 #dateTarget {

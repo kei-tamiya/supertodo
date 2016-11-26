@@ -46,13 +46,20 @@ class AddTodo extends Component {
         }
         dispatch(addTodoByApi(todoTitle));
       }}>
-        <Paper zDepth={2}>
-          <TextField ref='addTodoInput' hintText='New To Do' underlineStyle={styles.underlineStyle} value={newTodoTitle} onChange={(event) => this.handleChange(event)} />
-          <Divider />
-        </Paper>
-        <FloatingActionButton backgroundColor={GREEN} type='submit'>
-          <ContentAdd />
-        </FloatingActionButton>
+        <div className="row">
+          <div className="col-sm-9 col-xs-9">
+            <Paper zDepth={2}>
+              <TextField ref='addTodoInput' hintText='New To Do' className={'todoText'} underlineStyle={styles.underlineStyle} value={newTodoTitle} onChange={(event) => this.handleChange(event)} />
+              <Divider />
+            </Paper>
+          </div>
+          <div className="col-sm-3 col-xs-3">
+            <FloatingActionButton backgroundColor={GREEN} type='submit'>
+              <ContentAdd />
+            </FloatingActionButton>
+          </div>
+        </div>
+
       </form>
     );
   }

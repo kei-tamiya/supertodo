@@ -7,15 +7,13 @@ export const ADD_TODO = 'ADD_TODO';
 export const CHANGE_NEW_TODO_TITLE = 'CHANGE_NEW_TODO_TITLE';
 export const DELETE_TODO = 'DELETE_TODO';
 export const REQUEST_DELETE_TODO = 'REQUEST_DELETE_TODO';
-// export const UPDATE_TODO_TITLE = 'UPDATE_TODO_TITLE'
-// export const UPDATE_TODO_POSITION = 'UPDATE_TODO_POSITION'
-// export const TOGGLE_TODO = 'TOGGLE_TODO'
 export const REQUEST_TODOS = 'REQUEST_TODOS';
 export const RECEIVE_TODOS = 'RECEIVE_TODOS';
 export const CLEAR_TODOS = 'CLEAR_TODOS';
 export const REQUEST_UPDATE_TODO = 'REQUEST_UPDATE_TODO';
 export const CHANGE_TODO_TITLE = 'CHANGE_TODO_TITLE';
-export const UPDATE_TODO_TITLE = 'UPDATE_TODO_TITLE';
+export const UPDATE_TODO = 'UPDATE_TODO';
+export const TOGGLE_TODO_COMPLETED = 'TOGGLE_TODO_COMPLETED';
 // export const UPDATE_TODO_SIZE = 'UPDATE_TODO_SIZE';
 // export const UPDATE_TODO_POSITION = 'UPDATE_TODO_POSITION';
 
@@ -36,8 +34,13 @@ export const changeTodoTitle = (id, title) => ({
   title
 });
 
-export const updateTodoTitle = (date, todos) => ({
-  type: UPDATE_TODO_TITLE,
+export const toggleTodoCompleted = (id) => ({
+  type: TOGGLE_TODO_COMPLETED,
+  id
+});
+
+export const updateTodo = (date, todos) => ({
+  type: UPDATE_TODO,
   date,
   todos
 });
@@ -56,9 +59,20 @@ export const requestUpdateTodo = () => ({
   type: REQUEST_UPDATE_TODO
 });
 
-const updateTodoByApi = (todoToUpdate, selectedTodos) => (dispatch, getState) => {
-  // const apiUrl = API_ROOT_URL + 'api/todos/' + todoToUpdate.id;
-  const apiUrl = API_ROOT_URL + 'api/todos/';
+const updateTodoByApi = (id) => (dispatch, getState) => {
+  let todoToUpdate = null;
+  const selectedBoard = getState().selectedBoard.board;
+  const selectedTodos = selectedBoard.todos;
+  selectedTodos.forEach((todo) => {
+    if (todo.id === id) {
+      todoToUpdate = todo;
+    }
+  });
+  if (!todoToUpdate) {
+    return
+  }
+  const apiUrl = API_ROOT_URL + 'api/todos';
+  dispatch(requestUpdateTodo());
   fetch(apiUrl, {
     credentials: 'same-origin',
     method: 'PATCH',
@@ -74,28 +88,11 @@ const updateTodoByApi = (todoToUpdate, selectedTodos) => (dispatch, getState) =>
       if (json == null) {
         return;
       }
-      const selectedBoard = getState().selectedBoard.board;
-      dispatch(updateTodoTitle(selectedBoard.date, selectedBoard.todos));
+      dispatch(updateTodo(selectedBoard.date, selectedTodos));
     })
     .catch((error) => {
       console.error(error);
     })
-};
-
-export const updateTodoTitleByApi = (id) => (dispatch, getState) => {
-  dispatch(requestUpdateTodo());
-  let todoToUpdate = null;
-  const selectedBoard = getState().selectedBoard.board;
-  const selectedTodos = selectedBoard.todos;
-  selectedTodos.forEach((todo) => {
-    if (todo.id === id) {
-      todoToUpdate = todo;
-    }
-  });
-  if (!todoToUpdate) {
-    return
-  }
-  dispatch(updateTodoByApi(todoToUpdate, selectedTodos));
 };
 
 export const addTodoByApi = (title) => (dispatch, getState) => {
@@ -133,7 +130,7 @@ export const requestDeleteTodo = () => ({
   type: REQUEST_DELETE_TODO
 });
 //
-// export const updateTodoTitle = petaTodos => ({
+// export const updateTodo = petaTodos => ({
 //     type: UPDATE_TODO_TITLE,
 //     petaTodos
 // })
@@ -239,5 +236,26 @@ const canDeleteTodo = (state) => {
 export const deleteTodoIfPossible = (id) => (dispatch, getState) => {
   if (canDeleteTodo(getState())) {
     dispatch(deleteTodoByApi(id));
+  }
+};
+
+const canUpdateTodo = (state) => {
+  const currentBoard = state.selectedBoard.board;
+  if (currentBoard.isUpdating) {
+    return false;
+  }
+  return true;
+};
+
+export const updateTodoIfPossible = (id) => (dispatch, getState) => {
+  if (canUpdateTodo(getState())) {
+    dispatch(updateTodoByApi(id))
+  }
+};
+
+export const updateTodoCompletedIfPossible = (id) => (dispatch, getState) => {
+  dispatch(toggleTodoCompleted(id));
+  if (canUpdateTodo(getState())) {
+    dispatch(updateTodoByApi(id))
   }
 };
