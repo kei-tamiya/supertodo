@@ -101,13 +101,13 @@ func (t *Todo) PatchCompleted(c *gin.Context) {
 		_, err := todo.PatchCompleted(tx, sess.Get("uid").(int64))
 		if err != nil {
 			c.JSON(500, gin.H{"err": err.Error()})
-			return
+			return err
 		}
 		if err := tx.Commit(); err != nil {
 			c.JSON(500, gin.H{"err": err.Error()})
-			return
+			return err
 		}
-		return
+		return err
 	})
 
 	c.JSON(http.StatusOK, gin.H{"data": &todo})
