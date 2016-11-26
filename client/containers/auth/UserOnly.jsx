@@ -6,7 +6,7 @@ import TodoList from '../../components/TodoList.jsx'
 import AddBoard from '../AddBoard.jsx'
 import BoardList from '../../components/BoardList.jsx'
 import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
-import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible } from '../../actions/Todo.jsx';
+import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible, updateTodoCompletedIfPossible } from '../../actions/Todo.jsx';
 
 class UserOnly extends Component {
   constructor(props) {
@@ -69,6 +69,10 @@ class UserOnly extends Component {
     this.props.dispatch(updateTodoIfPossible(id));
   };
 
+  toggleTodoCompleted = (id) => {
+    this.props.dispatch(updateTodoCompletedIfPossible(id));
+  };
+
   render() {
     const { isFetching, todos, auth, selectedBoard } = this.props;
 
@@ -88,7 +92,7 @@ class UserOnly extends Component {
 
           {isTodosEmpty
             ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-            : <TodoList todos={todos} deleteTodo={this.deleteTodo} changeTodoTitle={this.changeTodoTitle} updateTodo={this.updateTodo} />
+            : <TodoList todos={todos} deleteTodo={this.deleteTodo} changeTodoTitle={this.changeTodoTitle} updateTodo={this.updateTodo} toggleTodoCompleted={this.toggleTodoCompleted} />
           }
         </div>
       </div>

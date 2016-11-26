@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Rnd from 'react-rnd'
 import TodoTitleInput from './TodoTitleInput.jsx';
 
-const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo }) => (
+const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted }) => (
   <Rnd
     initial={{
       x: 0,
@@ -23,6 +23,7 @@ const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo })
       >
         <li
          className={"finishBtn"}
+         onclick={() => toggleTodoCompleted(id)}
         >
          <button>Finish</button>
         </li>
@@ -51,6 +52,7 @@ Todo.propTypes = {
   deleteTodo: PropTypes.func.isRequired,
   changeTodoTitle: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
+  toggleTodoCompleted: PropTypes.func.isRequired,
 };
 
 export default Todo;

@@ -33,6 +33,11 @@ export const changeTodoTitle = (id, title) => ({
   title
 });
 
+export const toggleTodoCompleted = (id) => ({
+  type: TOGGLE_TODO_COMPLETED,
+  id
+});
+
 export const updateTodo = (date, todos) => ({
   type: UPDATE_TODO,
   date,
@@ -245,4 +250,11 @@ export const updateTodoIfPossible = (id) => (dispatch, getState) => {
   if (canUpdateTodo(getState())) {
     dispatch(updateTodoByApi(id))
   }
-}
+};
+
+export const updateTodoCompletedIfPossible = (id) => (dispatch, getState) => {
+  dispatch(toggleTodoCompleted(id));
+  if (canUpdateTodo(getState())) {
+    dispatch(updateTodoByApi(id))
+  }
+};

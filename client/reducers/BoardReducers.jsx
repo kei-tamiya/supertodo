@@ -21,6 +21,7 @@ import {
   CHANGE_TODO_TITLE,
   UPDATE_TODO,
   REQUEST_UPDATE_TODO,
+  TOGGLE_TODO_COMPLETED,
 } from '../actions/Todo.jsx';
 
 const initialState = {
@@ -64,7 +65,17 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
       );
       return Object.assign({}, state, {
         board: Object.assign({}, [state.board], {
-          todos: newTodos
+          todos: newTodos,
+        })
+      });
+    case TOGGLE_TODO_COMPLETED:
+      return Object.assign({}, state, {
+        board: Object.assign({}, [state.board], {
+          todos: state.board.todos.map((todo) =>
+            todo.id === action.id ?
+              { ...todo, completed: !todo.completed } :
+              todo
+          ),
         })
       });
     default:
