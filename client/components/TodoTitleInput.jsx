@@ -4,12 +4,12 @@ import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 
-const TodoTitleInput = ({id, title, changeTodoTitle, updateTodoTitle}) => (
+const TodoTitleInput = ({id, title, changeTodoTitle, updateTodo}) => (
   <input
     type="text"
     value={title}
     onChange={(e) => changeTodoTitle(e, id)}
-    onBlur={() => updateTodoTitle(id)}
+    onBlur={() => updateTodo(id)}
   />
   // <Paper zDepth={2}>
   //   <TextField ref='addTodoInput' hintText='New To Do' underlineStyle={styles.underlineStyle} value={newTodoTitle} onChange={(event) => changeTodoTitle(event)} />
@@ -21,7 +21,7 @@ TodoTitleInput.PropTypes = {
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
   changeTodoTitle: PropTypes.func.isRequired,
-  updateTodoTitle: PropTypes.func.isRequired,
+  updateTodo: PropTypes.func.isRequired,
 };
 
 export default TodoTitleInput;

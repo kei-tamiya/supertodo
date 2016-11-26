@@ -19,7 +19,7 @@ import {
   DELETE_TODO,
   REQUEST_DELETE_TODO,
   CHANGE_TODO_TITLE,
-  UPDATE_TODO_TITLE,
+  UPDATE_TODO,
   REQUEST_UPDATE_TODO,
 } from '../actions/Todo.jsx';
 
@@ -184,7 +184,7 @@ const boardsByApi = (state = initialState.boardsByApi, action) => {
       return Object.assign({}, state, {
         isUpdateing: true,
       });
-    case UPDATE_TODO_TITLE:
+    case UPDATE_TODO:
       return Object.assign({}, state, {
         isUpdateing: false,
         [action.date]: {

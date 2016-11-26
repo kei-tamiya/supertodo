@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Rnd from 'react-rnd'
 import TodoTitleInput from './TodoTitleInput.jsx';
 
-const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodoTitle }) => (
+const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo }) => (
   <Rnd
     initial={{
       x: 0,
@@ -17,7 +17,7 @@ const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodoTit
     className={'todo'}
   >
     <span className="box">
-      <TodoTitleInput title={title} changeTodoTitle={(e) => changeTodoTitle(e, id)} updateTodoTitle={() => updateTodoTitle(id)} />
+      <TodoTitleInput title={title} changeTodoTitle={(e) => changeTodoTitle(e, id)} updateTodo={() => updateTodo(id)} />
       <ul
         className={"todoBtnList"}
       >
@@ -50,7 +50,7 @@ Todo.propTypes = {
   title: PropTypes.string.isRequired,
   deleteTodo: PropTypes.func.isRequired,
   changeTodoTitle: PropTypes.func.isRequired,
-  updateTodoTitle: PropTypes.func.isRequired,
+  updateTodo: PropTypes.func.isRequired,
 };
 
 export default Todo;
