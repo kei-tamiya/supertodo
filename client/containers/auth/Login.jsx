@@ -49,9 +49,6 @@ class Login extends Component {
   }
 
   renderSubmit() {
-    const styles = {
-
-    }
     return this.props.auth.isFetching ? <Loading /> : <RaisedButton label="Login"><input type="submit" value="" className="submitBtn" /></RaisedButton>;
   }
 
