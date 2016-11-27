@@ -39,7 +39,7 @@ class App extends Component {
     //   })
     // });
     return (
-      <div className="container-fluid">
+      <div>
         <header>
           {auth.isLoggedIn ? (
             <div>

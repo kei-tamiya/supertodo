@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 
 const Header = ({ auth, handleLogout }) => (
   <div>
-    <AppBar title="Petatto - My Todo App" />
+    <AppBar title="Petatto - My Todo App" showMenuIconButton={false} />
     {auth.isLoggedIn
       ? <button onClick={handleLogout}>Logout</button>
       : (
