@@ -4,6 +4,30 @@ import { connect } from 'react-redux';
 import { loginByApi } from '../../actions/AuthActions.jsx';
 import Loading from '../../components/Loading.jsx';
 
+import { GREEN, BLUE, ORANGE } from '../../constant/Color.jsx';
+import Divider from 'material-ui/Divider';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
+const styles = {
+  errorStyle: {
+    color: ORANGE,
+  },
+  underlineStyle: {
+    borderColor: ORANGE,
+  },
+  floatingLabelStyle: {
+    color: ORANGE,
+  },
+  floatingLabelFocusStyle: {
+    color: BLUE,
+  },
+  inputMargin: {
+    marginBottom: 20,
+  }
+};
+
 class Login extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
@@ -12,48 +36,50 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isLoggedIn) {
-      console.log("test")
       this.context.router.replace("/");
     }
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    this.props.dispatch(loginByApi(this.refs.email.value.trim(), this.refs.password.value.trim()));
+    this.props.dispatch(loginByApi(this.refs.email.getInputNode().value.trim(), this.refs.password.getInputNode().value.trim()));
 
-    this.refs.email.value = '';
-    this.refs.password.value = '';
+    this.refs.email.getInputNode().value = '';
+    this.refs.password.getInputNode().value = '';
   }
 
   renderSubmit() {
-    return this.props.auth.isFetching ? <Loading /> : <input type="submit" value="Send" />;
+    const styles = {
+
+    }
+    return this.props.auth.isFetching ? <Loading /> : <RaisedButton label="Login"><input type="submit" value="" className="submitBtn" /></RaisedButton>;
   }
 
   render() {
     const { auth } = this.props;
-
     return (
-      <div>
-        <h1>Log in</h1>
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-4 col-sm-offset-4">
+            <h1>Log in</h1>
+            <form onSubmit={(e) => this.handleSubmit(e)}>
+              <Paper zDepth={2} style={styles.inputMargin}>
+                <TextField ref='email' name='email' hintText='Email' floatingLabelText='Email' className={'todoText'} underlineStyle={styles.underlineStyle} />
+                <Divider />
+              </Paper>
+              <Paper zDepth={2} style={styles.inputMargin}>
+                <TextField ref='password' name='password' type='password' hintText='Password' floatingLabelText='Password' className={'todoText'} underlineStyle={styles.underlineStyle} />
+                <Divider />
+              </Paper>
 
-        <form onSubmit={::this.handleSubmit}>
-          <ul>
-            <li>
-              <p>email</p>
-              <p><input type="text" name="email" ref="email" required /></p>
-            </li>
-            <li>
-              <p>Password</p>
-              <p><input type="password" name="password" ref="password" required /></p>
-            </li>
-          </ul>
+              {auth.error &&
+              <p>{auth.error}</p>
+              }
 
-          {auth.error &&
-          <p>{auth.error}</p>
-          }
-
-          {this.renderSubmit()}
-        </form>
+              {this.renderSubmit()}
+            </form>
+          </div>
+        </div>
       </div>
     );
   }

@@ -1,9 +1,27 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router';
+import RaisedButton from 'material-ui/RaisedButton';
+
+import { Tabs, Tab } from 'material-ui/Tabs';
+import { GREEN } from '../../constant/Color.jsx';
+
+const tabStyles = {
+  rootContainer: {
+    backgroundColor: GREEN,
+    height: 36,
+  },
+  headline: {
+    fontSize: 24,
+    paddingTop: 6,
+    marginBottom: 6,
+    fontWeight: 400,
+  },
+};
 
 class GuestOnly extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired,
+    // children: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
   };
 
@@ -29,12 +47,25 @@ class GuestOnly extends Component {
     }
   }
 
+  handleTabChange = () => {
+
+  }
+
   render() {
     const { auth } = this.props;
     return (
       <div>
-        <h1>{this.props.children}</h1>
-        <h2>fosadkfoaksfokasdofks</h2>
+        <nav>
+          <Tabs
+            onChange={this.handleTabChange}
+          >
+            <Tab label="Login" value="login" style={tabStyles.rootContainer}>
+            </Tab>
+            <Tab label="SignUp" value="signup" style={tabStyles.rootContainer}>
+            </Tab>
+          </Tabs>
+        </nav>
+        {this.props.children}
 
         {auth.error &&
           <p>{auth.error.message}</p>

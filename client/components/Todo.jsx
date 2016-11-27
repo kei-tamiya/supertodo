@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import Rnd from 'react-rnd'
+import Rnd from 'react-rnd';
 import RaisedButton from 'material-ui/RaisedButton';
 import TodoTitleInput from './TodoTitleInput.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';

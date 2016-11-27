@@ -32,7 +32,7 @@ class App extends Component {
   }
 
   render() {
-    const { auth } = this.props;
+    const { auth, children } = this.props;
     // const children = React.Children.map(this.props.children, function (child) {
     //   return React.cloneElement(child, {
     //     foo: this.state.foo
@@ -41,26 +41,15 @@ class App extends Component {
     return (
       <div>
         <header>
-          {auth.isLoggedIn ? (
-            <div>
-              <Header
-                auth={auth}
-                handleLogout={::this.handleLogout}
-              />
-            </div>) : (
-            <div>
-              <Header
-                auth={auth}
-                handleLogout={::this.handleLogout}
-              />
-              {this.props.children}
-            </div>)
-          }
+          <Header
+            auth={auth}
+            handleLogout={::this.handleLogout}
+          />
         </header>
 
         {auth.isLoggedIn
-          ? <UserOnly auth={auth} />
-          : <GuestOnly />
+          ? <UserOnly auth={auth} children={children} />
+          : <GuestOnly children={children} />
         }
       </div>
     );

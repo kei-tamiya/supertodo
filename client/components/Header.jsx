@@ -1,18 +1,27 @@
 import React, { PropTypes } from 'react';
 import mui, {AppBar} from 'material-ui';
+import Logged from './Logged.jsx';
+import FlatButton from 'material-ui/FlatButton';
 import { Link } from 'react-router';
-
 
 const Header = ({ auth, handleLogout }) => (
   <div>
-    <AppBar title="Petatto - My Todo App" showMenuIconButton={false} />
     {auth.isLoggedIn
-      ? <button onClick={handleLogout}>Logout</button>
+      ? (
+        <AppBar
+          title="Petatto - My Todo App"
+          showMenuIconButton={false}
+          iconElementRight={<FlatButton label="Logout" onClick={handleLogout} />}
+        />
+      )
       : (
-        <div>
-          <Link to="/signup">SignUp</Link>
-          <Link to="/login">Login</Link>
-        </div>
+        <AppBar
+          title="Petatto - My Todo App"
+          showMenuIconButton={false}
+          iconElementRight={
+            <Logged />
+          }
+        />
       )
     }
   </div>

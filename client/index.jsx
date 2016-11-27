@@ -62,6 +62,7 @@ render(
             <Route component={UserOnly}>
             </Route>
             <Route component={GuestOnly}>
+              <IndexRoute component={Login} />
               <Route path="signup" component={Signup} />
               <Route path="login" component={Login} />
             </Route>

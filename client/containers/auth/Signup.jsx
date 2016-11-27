@@ -18,9 +18,6 @@ class Signup extends Component {
                 console.log("invalid value");
                 return
             }
-            console.log("email : " + email)
-            console.log("name : " + name)
-            console.log("password : " + password)
             dispatch(signupByApi(email, name, password));
             this.refs.email.value = '';
             this.refs.name.value = '';

@@ -28,7 +28,7 @@ class UserOnly extends Component {
     //   date: PropTypes.string.isRequired,
     // }).isRequired).isRequired,
     dispatch: PropTypes.func.isRequired,
-    children: PropTypes.object.isRequired,
+    // children: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
     selectedBoard: PropTypes.object.isRequired,
   };
