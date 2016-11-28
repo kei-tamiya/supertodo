@@ -28,7 +28,7 @@ class UserOnly extends Component {
     //   date: PropTypes.string.isRequired,
     // }).isRequired).isRequired,
     dispatch: PropTypes.func.isRequired,
-    children: PropTypes.object.isRequired,
+    // children: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
     selectedBoard: PropTypes.object.isRequired,
   };
@@ -83,17 +83,19 @@ class UserOnly extends Component {
     }
 
     return (
-      <div className="row">
-        <div className="col-sm-8">
-        </div>
-        <div className="col-sm-4">
-          <AddBoard selectedBoard={selectedBoard} />
-          <AddTodo />
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm-8">
+          </div>
+          <div className="col-sm-4">
+            <AddBoard selectedBoard={selectedBoard} />
+            <AddTodo />
 
-          {isTodosEmpty
-            ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-            : <TodoList todos={todos} deleteTodo={this.deleteTodo} changeTodoTitle={this.changeTodoTitle} updateTodo={this.updateTodo} toggleTodoCompleted={this.toggleTodoCompleted} />
-          }
+            {isTodosEmpty
+              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
+              : <TodoList todos={todos} deleteTodo={this.deleteTodo} changeTodoTitle={this.changeTodoTitle} updateTodo={this.updateTodo} toggleTodoCompleted={this.toggleTodoCompleted} />
+            }
+          </div>
         </div>
       </div>
     );

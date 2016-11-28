@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import Rnd from 'react-rnd'
+import Rnd from 'react-rnd';
+import RaisedButton from 'material-ui/RaisedButton';
 import TodoTitleInput from './TodoTitleInput.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 
@@ -27,14 +28,14 @@ const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo, t
         className={"todoBtnList"}
       >
         <li
-         onClick={() => toggleTodoCompleted(id)}
+          onClick={() => toggleTodoCompleted(id)}
         >
-         <button className={"finishBtn btn btn-default"}>Finish</button>
+          <RaisedButton label="Complete" />
         </li>
         <li
          onClick={() => deleteTodo(id)}
         >
-         <button className={"removeBtn btn  btn-default"}>×</button>
+         <RaisedButton label="×"></RaisedButton>
         </li>
       </ul>
     </span>

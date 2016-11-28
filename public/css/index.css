@@ -52,11 +52,21 @@ table {
   border-spacing: 0;
 }
 
+.submitBtn {
+    position: absolute;
+    padding: 0;
+    background: none;
+    border: none;
+}
+
+form {
+    text-align: center;
+}
+
 /*******************/
 header .wrapHead {
   margin:0;
   height: 50px;
-  background: url("../images/bg_tamiya.jpg") left top repeat-x;
   -webkit-background-size: auto 100%;
   background-size: auto 100%;
   opacity: 0.1;
@@ -106,4 +116,12 @@ header h1 {
   border-right:none;
   text-align: center;
   vertical-align: middle;
+}
+
+.container h1 {
+    padding: 40px 0;
+    font-size: 2em;
+    font-weight: bold;
+    color: #9a9a9a;
+    text-align: center;
 }

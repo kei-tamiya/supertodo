@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { Link, browserHistory } from 'react-router';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class GuestOnly extends Component {
   static propTypes = {
-    children: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
   };
 
@@ -33,8 +34,7 @@ class GuestOnly extends Component {
     const { auth } = this.props;
     return (
       <div>
-        <h1>{this.props.children}</h1>
-        <h2>fosadkfoaksfokasdofks</h2>
+        {this.props.children}
 
         {auth.error &&
           <p>{auth.error.message}</p>

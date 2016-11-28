@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { fetchToken } from '../actions/Token.jsx';
 import { clearBoards } from '../actions/BoardActions.jsx';
 import { clearTodos } from '../actions/Todo.jsx';
 import { logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
-import Header from '../components/Header.jsx'
-import UserOnly from './auth/UserOnly.jsx'
-import GuestOnly from './auth/GuestOnly.jsx'
+import Header from '../components/Header.jsx';
+import UserOnly from './auth/UserOnly.jsx';
+import GuestOnly from './auth/GuestOnly.jsx';
 // import Loading from '../components/Loading.jsx'
 
 class App extends Component {
@@ -31,36 +32,35 @@ class App extends Component {
     this.props.dispatch(logoutByApi());
   }
 
+  handleTabChange(value) {
+    switch(value) {
+      case 'login':
+        return browserHistory.push('/login');
+      case 'signup':
+        return browserHistory.push('/signup');
+      default:
+        return browserHistory.push('/login');
+    }
+  }
+
   render() {
-    const { auth } = this.props;
+    const { auth, children } = this.props;
     // const children = React.Children.map(this.props.children, function (child) {
     //   return React.cloneElement(child, {
     //     foo: this.state.foo
     //   })
     // });
     return (
-      <div className="container-fluid">
-        <header>
-          {auth.isLoggedIn ? (
-            <div>
-              <Header
-                auth={auth}
-                handleLogout={::this.handleLogout}
-              />
-            </div>) : (
-            <div>
-              <Header
-                auth={auth}
-                handleLogout={::this.handleLogout}
-              />
-              {this.props.children}
-            </div>)
-          }
-        </header>
+      <div>
+        <Header
+          auth={auth}
+          handleLogout={::this.handleLogout}
+          handleTabChange={this.handleTabChange}
+        />
 
         {auth.isLoggedIn
           ? <UserOnly auth={auth} />
-          : <GuestOnly />
+          : <GuestOnly auth={auth} children={children} />
         }
       </div>
     );

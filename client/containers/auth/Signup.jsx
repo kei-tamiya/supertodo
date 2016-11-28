@@ -2,40 +2,80 @@ import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
 
 import { signupByApi } from '../../actions/AuthActions.jsx';
+import Loading from '../../components/Loading.jsx';
+
+import { GREEN, BLUE, ORANGE } from '../../constant/Color.jsx';
+import Divider from 'material-ui/Divider';
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import RaisedButton from 'material-ui/RaisedButton';
+
+const styles = {
+  errorStyle: {
+    color: ORANGE,
+  },
+  underlineStyle: {
+    borderColor: ORANGE,
+  },
+  floatingLabelStyle: {
+    color: ORANGE,
+  },
+  floatingLabelFocusStyle: {
+    color: BLUE,
+  },
+  inputMargin: {
+    marginBottom: 20,
+  }
+};
 
 class Signup extends Component {
+  handleSubmit(e) {
+    e.preventDefault();
+    const email = this.refs.email.getInputNode().value.trim();
+    const name = this.refs.name.getInputNode().value.trim();
+    const password = this.refs.password.getInputNode().value.trim();
+    if (!email || !name || !password) {
+      return
+    }
+    this.props.dispatch(signupByApi(email, name, password));
+    this.refs.email.getInputNode().value = '';
+    this.refs.name.getInputNode().value = '';
+    this.refs.password.getInputNode().value = '';
+  }
+
+  renderSubmit() {
+    return this.props.auth.isFetching ? <Loading /> : <RaisedButton label="SignUp"><input type="submit" value="" className="submitBtn" /></RaisedButton>;
+  }
+
   render() {
-    const { dispatch } = this.props;
+    const { auth } = this.props;
     return (
-      <div>
-        <article>
-          <form onSubmit={e => {
-            e.preventDefault();
-            let email = this.refs.email.value.trim();
-            let name = this.refs.name.value.trim();
-            let password = this.refs.password.value.trim();
-            if (!email || !name || !password) {
-                console.log("invalid value");
-                return
-            }
-            console.log("email : " + email)
-            console.log("name : " + name)
-            console.log("password : " + password)
-            dispatch(signupByApi(email, name, password));
-            this.refs.email.value = '';
-            this.refs.name.value = '';
-            this.refs.password.value = '';
-          }}>
-            {/*<input type="hidden" name="_csrf" value={token}/>*/}
-            <label htmlFor="email">email</label>
-            <input type="text" name="email" ref="email" />
-            <label htmlFor="name">name</label>
-            <input type="text" name="name" ref="name" />
-            <label htmlFor="password">password</label>
-            <input type="password" name="password" ref="password" />
-            <input type="submit" value="signup"/>
-          </form>
-        </article>
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-4 col-sm-offset-4">
+            <h1>Sign Up</h1>
+            <form onSubmit={(e) => ::this.handleSubmit(e)}>
+              <Paper zDepth={2} style={styles.inputMargin}>
+                <TextField ref='email' name='email' hintText='Email' floatingLabelText='Email' className={'todoText'} underlineStyle={styles.underlineStyle} />
+                <Divider />
+              </Paper>
+              <Paper zDepth={2} style={styles.inputMargin}>
+                <TextField ref='name' name='name' hintText='Name' floatingLabelText='Name' className={'todoText'} underlineStyle={styles.underlineStyle} />
+                <Divider />
+              </Paper>
+              <Paper zDepth={2} style={styles.inputMargin}>
+                <TextField ref='password' name='password' type='password' hintText='Password' floatingLabelText='Password' className={'todoText'} underlineStyle={styles.underlineStyle} />
+                <Divider />
+              </Paper>
+
+              {auth.error &&
+                <p>{auth.error}</p>
+              }
+
+              <RaisedButton label="SignUp" type="submit"></RaisedButton>
+            </form>
+          </div>
+        </div>
       </div>
     )
   }
@@ -43,10 +83,13 @@ class Signup extends Component {
 
 Signup.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
-const mapStateToProps = () => {
-  return {};
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  }
 };
 
 export default connect(mapStateToProps)(Signup);
