@@ -7,7 +7,7 @@ CREATE TABLE `boards` (
   `updated` timestamp NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT 'when last updated',
   PRIMARY KEY (`board_id`),
   FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`),
-  UNIQUE (`date`)
+  UNIQUE (`board_id`, `date`)
   ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='list of board';
 
 -- +migrate Down
