@@ -70,7 +70,7 @@ class Login extends Component {
               </Paper>
 
               {auth.error &&
-              <p>{auth.error}</p>
+                <p>{auth.error}</p>
               }
 
               {this.renderSubmit()}

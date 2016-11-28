@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Link } from 'react-router';
+import { Link, browserHistory } from 'react-router';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
@@ -47,8 +47,14 @@ class GuestOnly extends Component {
     }
   }
 
-  handleTabChange = () => {
-
+  handleTabChange(value) {
+    console.log("chang value ;  " + value);
+    switch(value) {
+      case 'login':
+        return browserHistory.push('/login');
+      case 'signup':
+        return browserHistory.push('/signup');
+    }
   }
 
   render() {
@@ -58,6 +64,7 @@ class GuestOnly extends Component {
         <nav>
           <Tabs
             onChange={this.handleTabChange}
+            initialSelectedIndex={0}
           >
             <Tab label="Login" value="login" style={tabStyles.rootContainer}>
             </Tab>
@@ -65,7 +72,7 @@ class GuestOnly extends Component {
             </Tab>
           </Tabs>
         </nav>
-        {this.props.children}
+        <div>{this.props.children}</div>
 
         {auth.error &&
           <p>{auth.error.message}</p>
