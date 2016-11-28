@@ -29,7 +29,7 @@ const styles = {
 };
 
 class Signup extends Component {
-  handleSubmit(e) {
+  handleSubmit() {
     const email = this.refs.email.getInputNode().value.trim();
     const name = this.refs.name.getInputNode().value.trim();
     const password = this.refs.password.getInputNode().value.trim();
@@ -47,13 +47,13 @@ class Signup extends Component {
   }
 
   render() {
-    const { dispatch } = this.props;
+    const { auth } = this.props;
     return (
       <div className="container">
         <div className="row">
           <div className="col-sm-4 col-sm-offset-4">
             <h1>Sign Up</h1>
-            <form onSubmit={(e) => this.handleSubmit(e)}>
+            <form onSubmit={() => this.handleSubmit()}>
               <Paper zDepth={2} style={styles.inputMargin}>
                 <TextField ref='email' name='email' hintText='Email' floatingLabelText='Email' className={'todoText'} underlineStyle={styles.underlineStyle} />
                 <Divider />
