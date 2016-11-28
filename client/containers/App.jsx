@@ -33,12 +33,13 @@ class App extends Component {
   }
 
   handleTabChange(value) {
-    console.log("valuesss" + value)
     switch(value) {
       case 'login':
         return browserHistory.push('/login');
       case 'signup':
         return browserHistory.push('/signup');
+      default:
+        return browserHistory.push('/login');
     }
   }
 

@@ -36,9 +36,6 @@ const Header = ({ auth, handleLogout, handleTabChange }) => (
           <AppBar
             title="Petatto - My Todo App"
             showMenuIconButton={false}
-            iconElementRight={
-              <Logged />
-            }
           >
 
           </AppBar>

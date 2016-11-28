@@ -29,7 +29,8 @@ const styles = {
 };
 
 class Signup extends Component {
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     const email = this.refs.email.getInputNode().value.trim();
     const name = this.refs.name.getInputNode().value.trim();
     const password = this.refs.password.getInputNode().value.trim();
@@ -43,7 +44,7 @@ class Signup extends Component {
   }
 
   renderSubmit() {
-    return this.props.auth.isFetching ? <Loading /> : <RaisedButton label="Login"><input type="submit" value="" className="submitBtn" /></RaisedButton>;
+    return this.props.auth.isFetching ? <Loading /> : <RaisedButton label="SignUp"><input type="submit" value="" className="submitBtn" /></RaisedButton>;
   }
 
   render() {
@@ -53,7 +54,7 @@ class Signup extends Component {
         <div className="row">
           <div className="col-sm-4 col-sm-offset-4">
             <h1>Sign Up</h1>
-            <form onSubmit={() => this.handleSubmit()}>
+            <form onSubmit={(e) => ::this.handleSubmit(e)}>
               <Paper zDepth={2} style={styles.inputMargin}>
                 <TextField ref='email' name='email' hintText='Email' floatingLabelText='Email' className={'todoText'} underlineStyle={styles.underlineStyle} />
                 <Divider />
@@ -71,7 +72,7 @@ class Signup extends Component {
                 <p>{auth.error}</p>
               }
 
-              {this.renderSubmit()}
+              <RaisedButton label="SignUp" type="submit"></RaisedButton>
             </form>
           </div>
         </div>

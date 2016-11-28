@@ -34,7 +34,9 @@ const auth = (state = initialState.auth, action) => {
         isFetching: true,
       });
     case EXECUTE_SIGNUP:
-
+      return Object.assign({}, state, {
+        isFetching: false,
+      });
     case REQUEST_LOGIN:
       return Object.assign({}, state, {
         isPrepared: true,

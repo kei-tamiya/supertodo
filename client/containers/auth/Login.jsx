@@ -40,20 +40,17 @@ class Login extends Component {
     }
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
+    e.preventDefault();
     const email = this.refs.email.getInputNode().value.trim();
     const password = this.refs.password.getInputNode().value.trim();
-    if (!email || !name || !password) {
+    if (!email || !password) {
       return
     }
     this.props.dispatch(loginByApi(email, password));
 
     this.refs.email.getInputNode().value = '';
     this.refs.password.getInputNode().value = '';
-  }
-
-  renderSubmit() {
-    return this.props.auth.isFetching ? <Loading /> : <RaisedButton label="Login"><input type="submit" value="" className="submitBtn" /></RaisedButton>;
   }
 
   render() {
@@ -77,7 +74,7 @@ class Login extends Component {
                 <p>{auth.error}</p>
               }
 
-              {this.renderSubmit()}
+              {this.props.auth.isFetching ? <Loading /> : <RaisedButton label="Login" type="submit"></RaisedButton>}
             </form>
           </div>
         </div>
