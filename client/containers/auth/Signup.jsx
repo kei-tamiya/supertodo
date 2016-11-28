@@ -36,7 +36,7 @@ class Signup extends Component {
     if (!email || !name || !password) {
       return
     }
-    dispatch(signupByApi(email, name, password));
+    this.props.dispatch(signupByApi(email, name, password));
     this.refs.email.getInputNode().value = '';
     this.refs.name.getInputNode().value = '';
     this.refs.password.getInputNode().value = '';

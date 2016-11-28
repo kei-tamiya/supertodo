@@ -40,9 +40,13 @@ class Login extends Component {
     }
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
-    this.props.dispatch(loginByApi(this.refs.email.getInputNode().value.trim(), this.refs.password.getInputNode().value.trim()));
+  handleSubmit() {
+    const email = this.refs.email.getInputNode().value.trim();
+    const password = this.refs.password.getInputNode().value.trim();
+    if (!email || !name || !password) {
+      return
+    }
+    this.props.dispatch(loginByApi(email, password));
 
     this.refs.email.getInputNode().value = '';
     this.refs.password.getInputNode().value = '';

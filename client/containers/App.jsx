@@ -1,12 +1,13 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 import { fetchToken } from '../actions/Token.jsx';
 import { clearBoards } from '../actions/BoardActions.jsx';
 import { clearTodos } from '../actions/Todo.jsx';
 import { logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
-import Header from '../components/Header.jsx'
-import UserOnly from './auth/UserOnly.jsx'
-import GuestOnly from './auth/GuestOnly.jsx'
+import Header from '../components/Header.jsx';
+import UserOnly from './auth/UserOnly.jsx';
+import GuestOnly from './auth/GuestOnly.jsx';
 // import Loading from '../components/Loading.jsx'
 
 class App extends Component {
@@ -31,6 +32,16 @@ class App extends Component {
     this.props.dispatch(logoutByApi());
   }
 
+  handleTabChange(value) {
+    console.log("valuesss" + value)
+    switch(value) {
+      case 'login':
+        return browserHistory.push('/login');
+      case 'signup':
+        return browserHistory.push('/signup');
+    }
+  }
+
   render() {
     const { auth, children } = this.props;
     // const children = React.Children.map(this.props.children, function (child) {
@@ -40,16 +51,15 @@ class App extends Component {
     // });
     return (
       <div>
-        <header>
-          <Header
-            auth={auth}
-            handleLogout={::this.handleLogout}
-          />
-        </header>
+        <Header
+          auth={auth}
+          handleLogout={::this.handleLogout}
+          handleTabChange={this.handleTabChange}
+        />
 
         {auth.isLoggedIn
-          ? <UserOnly auth={auth} children={children} />
-          : <GuestOnly children={children} />
+          ? <UserOnly auth={auth} />
+          : <GuestOnly auth={auth} children={children} />
         }
       </div>
     );
