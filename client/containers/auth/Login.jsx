@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
+import { browserHistory } from 'react-router';
 
 import { loginByApi } from '../../actions/AuthActions.jsx';
 import Loading from '../../components/Loading.jsx';
@@ -36,7 +37,7 @@ class Login extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isLoggedIn) {
-      this.context.router.replace("/");
+      browserHistory.replace("/");
     }
   }
 
