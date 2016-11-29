@@ -36,7 +36,7 @@ class TodoList extends Component {
       </div>
     );
   }
-};
+}
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
@@ -45,6 +45,8 @@ TodoList.propTypes = {
       title: PropTypes.string.isRequired,
       pos_top: PropTypes.number.isRequired,
       pos_left: PropTypes.number.isRequired,
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired,
   }).isRequired).isRequired,
   deleteTodo: PropTypes.func.isRequired,
   changeTodoTitle: PropTypes.func.isRequired,
