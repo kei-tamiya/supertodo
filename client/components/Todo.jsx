@@ -4,11 +4,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TodoTitleInput from './TodoTitleInput.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 
-const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted, changeTodoPosition }) => (
+const Todo = ({ id, completed, title, pos_top, pos_left, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted, changeTodoPosition }) => (
   <Rnd
     initial={{
-      x: 0,
-      y: 0,
+      x: pos_left,
+      y: pos_top,
       width: 320,
       height: 240,
     }}
@@ -47,6 +47,8 @@ Todo.propTypes = {
   id: PropTypes.number.isRequired,
   completed: PropTypes.bool.isRequired,
   title: PropTypes.string.isRequired,
+  pos_top: PropTypes.number.isRequired,
+  pos_left: PropTypes.number.isRequired,
   deleteTodo: PropTypes.func.isRequired,
   changeTodoTitle: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,

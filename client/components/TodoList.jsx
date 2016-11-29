@@ -34,6 +34,8 @@ TodoList.propTypes = {
       id: PropTypes.number.isRequired,
       completed: PropTypes.bool.isRequired,
       title: PropTypes.string.isRequired,
+      pos_top: PropTypes.number.isRequired,
+      pos_left: PropTypes.number.isRequired,
   }).isRequired).isRequired,
   deleteTodo: PropTypes.func.isRequired,
   changeTodoTitle: PropTypes.func.isRequired,

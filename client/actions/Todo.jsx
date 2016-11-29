@@ -40,11 +40,11 @@ export const toggleTodoCompleted = (id) => ({
   id
 });
 
-export const changeTodoPosition = (id, top, left) => ({
+export const changeTodoPosition = (id, pos_top, pos_left) => ({
   type: CHANGE_TODO_POSITION,
   id,
-  top,
-  left
+  pos_top,
+  pos_left
 });
 
 export const updateTodo = (date, todos) => ({
@@ -269,8 +269,8 @@ export const updateTodoCompletedIfPossible = (id) => (dispatch, getState) => {
   }
 };
 
-export const updateTodoPositionIfPossible = (id, top, left) => (dispatch, getState) => {
-  dispatch(changeTodoPosition(id, top, left));
+export const updateTodoPositionIfPossible = (id, pos_top, pos_left) => (dispatch, getState) => {
+  dispatch(changeTodoPosition(id, pos_top, pos_left));
   if (canUpdateTodo(getState())) {
     dispatch(updateTodoByApi(id));
   }

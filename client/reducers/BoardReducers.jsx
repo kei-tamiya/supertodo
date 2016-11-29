@@ -79,7 +79,7 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
       const changeTodoPositionState = Object.assign({}, state);
       changeTodoPositionState.board.todos = state.board.todos.map((todo) =>
         todo.id === action.id ?
-          { ...todo, top: action.top, left: action.left } :
+          { ...todo, pos_top: action.pos_top, pos_left: action.pos_left } :
           todo
       );
       return changeTodoPositionState;

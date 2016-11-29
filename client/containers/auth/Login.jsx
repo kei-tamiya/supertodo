@@ -75,7 +75,7 @@ class Login extends Component {
                 <p>{auth.error}</p>
               }
 
-              {this.props.auth.isFetching ? <Loading /> : <RaisedButton label="Login" type="submit"></RaisedButton>}
+              {this.props.auth.isFetching ? <Loading /> : <input type="submit" label="Login" />}
             </form>
           </div>
         </div>

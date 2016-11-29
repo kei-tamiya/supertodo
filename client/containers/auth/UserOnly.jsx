@@ -19,8 +19,8 @@ class UserOnly extends Component {
       id: PropTypes.number.isRequired,
       completed: PropTypes.bool.isRequired,
       title: PropTypes.string.isRequired,
-      top: PropTypes.number.isRequired,
-      left: PropTypes.number.isRequired,
+      pos_top: PropTypes.number.isRequired,
+      pos_left: PropTypes.number.isRequired,
     }).isRequired).isRequired,
     isFetching: PropTypes.bool.isRequired,
     // boards: PropTypes.arrayOf(PropTypes.shape({
