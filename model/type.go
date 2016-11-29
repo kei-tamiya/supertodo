@@ -30,8 +30,8 @@ type Todo struct {
 	User_Id   int64      `json:"user_id"`
 	Title     string     `json:"title"`
 	Completed bool       `json:"completed"`
-	Top       int64      `json:"top"`
-	Left      int64      `json:"left"`
+	Pos_Top   int64      `json:"pos_top"`
+	Pos_Left  int64      `json:"pos_left"`
 	Width     int64      `json:"width"`
 	Height    int64      `json:"height"`
 	Created   *time.Time `json:"created"`

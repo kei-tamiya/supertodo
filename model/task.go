@@ -66,7 +66,7 @@ func (t *Todo) Patch(tx *sqlx.Tx, userId int64) (sql.Result, error) {
 		return nil, err
 	}
 	defer stmt.Close()
-	return stmt.Exec(t.Title, t.Completed, t.Top, t.Left, t.ID, userId)
+	return stmt.Exec(t.Title, t.Completed, t.Pos_Top, t.Pos_Left, t.ID, userId)
 }
 
 //func (t *Todo) PatchCompleted(tx *sqlx.Tx, userId int64) (sql.Result, error) {
