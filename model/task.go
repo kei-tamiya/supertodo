@@ -60,13 +60,13 @@ func (t *Todo) Insert(tx *sqlx.Tx, userId int64) (sql.Result, error) {
 
 func (t *Todo) Patch(tx *sqlx.Tx, userId int64) (sql.Result, error) {
 	stmt, err := tx.Prepare(`
-	UPDATE todos SET title = ?, completed = ?, pos_top = ?, pos_left = ? WHERE (todo_id, user_id) = (?, ?)
+	UPDATE todos SET title = ?, completed = ?, pos_top = ?, pos_left = ?, width = ?, height = ? WHERE (todo_id, user_id) = (?, ?)
 	`)
 	if err != nil {
 		return nil, err
 	}
 	defer stmt.Close()
-	return stmt.Exec(t.Title, t.Completed, t.Pos_Top, t.Pos_Left, t.ID, userId)
+	return stmt.Exec(t.Title, t.Completed, t.Pos_Top, t.Pos_Left, t.Width, t.Height, t.ID, userId)
 }
 
 //func (t *Todo) PatchCompleted(tx *sqlx.Tx, userId int64) (sql.Result, error) {
