@@ -269,7 +269,8 @@ export const updateTodoCompletedIfPossible = (id) => (dispatch, getState) => {
   }
 };
 
-export const updateTodoPositionIfPossible = (id) => (dispatch, getState) => {
+export const updateTodoPositionIfPossible = (id, top, left) => (dispatch, getState) => {
+  dispatch(changeTodoPosition(id, top, left));
   if (canUpdateTodo(getState())) {
     dispatch(updateTodoByApi(id));
   }
