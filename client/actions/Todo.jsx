@@ -14,6 +14,7 @@ export const REQUEST_UPDATE_TODO = 'REQUEST_UPDATE_TODO';
 export const CHANGE_TODO_TITLE = 'CHANGE_TODO_TITLE';
 export const UPDATE_TODO = 'UPDATE_TODO';
 export const TOGGLE_TODO_COMPLETED = 'TOGGLE_TODO_COMPLETED';
+export const CHANGE_TODO_POSITION = 'CHANGE_TODO_POSITION';
 // export const UPDATE_TODO_SIZE = 'UPDATE_TODO_SIZE';
 // export const UPDATE_TODO_POSITION = 'UPDATE_TODO_POSITION';
 
@@ -37,6 +38,13 @@ export const changeTodoTitle = (id, title) => ({
 export const toggleTodoCompleted = (id) => ({
   type: TOGGLE_TODO_COMPLETED,
   id
+});
+
+export const changeTodoPosition = (id, top, left) => ({
+  type: CHANGE_TODO_POSITION,
+  id,
+  top,
+  left
 });
 
 export const updateTodo = (date, todos) => ({
@@ -71,6 +79,8 @@ const updateTodoByApi = (id) => (dispatch, getState) => {
   if (!todoToUpdate) {
     return
   }
+
+  console.log("todo's state  :  " + JSON.stringify(todoToUpdate));
   const apiUrl = API_ROOT_URL + 'api/todos';
   dispatch(requestUpdateTodo());
   fetch(apiUrl, {
@@ -129,6 +139,7 @@ export const deleteTodo = (id, board) => ({
 export const requestDeleteTodo = () => ({
   type: REQUEST_DELETE_TODO
 });
+
 //
 // export const updateTodo = petaTodos => ({
 //     type: UPDATE_TODO_TITLE,
@@ -249,13 +260,19 @@ const canUpdateTodo = (state) => {
 
 export const updateTodoIfPossible = (id) => (dispatch, getState) => {
   if (canUpdateTodo(getState())) {
-    dispatch(updateTodoByApi(id))
+    dispatch(updateTodoByApi(id));
   }
 };
 
 export const updateTodoCompletedIfPossible = (id) => (dispatch, getState) => {
   dispatch(toggleTodoCompleted(id));
   if (canUpdateTodo(getState())) {
-    dispatch(updateTodoByApi(id))
+    dispatch(updateTodoByApi(id));
+  }
+};
+
+export const updateTodoPositionIfPossible = (id) => (dispatch, getState) => {
+  if (canUpdateTodo(getState())) {
+    dispatch(updateTodoByApi(id));
   }
 };
