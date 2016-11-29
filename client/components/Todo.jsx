@@ -4,7 +4,19 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TodoTitleInput from './TodoTitleInput.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 
-const Todo = ({ id, completed, title, pos_top, pos_left, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted, changeTodoPosition }) => (
+const Todo = ({
+  id,
+  completed,
+  title,
+  pos_top,
+  pos_left,
+  deleteTodo,
+  changeTodoTitle,
+  updateTodo,
+  toggleTodoCompleted,
+  changeTodoPosition,
+  updateTodoSize,
+}) => (
   <Rnd
     initial={{
       x: pos_left,
@@ -22,6 +34,7 @@ const Todo = ({ id, completed, title, pos_top, pos_left, deleteTodo, changeTodoT
       backgroundColor: GREEN
     }}
     onDragStop={(e, ui) => changeTodoPosition(e, ui, id)}
+    onResizeStop={(direction, styleSize, clientSize) => updateTodoSize(clientSize, id)}
   >
     <span className="box">
       <TodoTitleInput title={title} changeTodoTitle={(e) => changeTodoTitle(e, id)} updateTodo={() => updateTodo(id)} />
@@ -53,6 +66,7 @@ Todo.propTypes = {
   changeTodoTitle: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
   toggleTodoCompleted: PropTypes.func.isRequired,
+  updateTodoSize: PropTypes.func.isRequired,
 };
 
 export default Todo;
