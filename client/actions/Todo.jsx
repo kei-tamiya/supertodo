@@ -79,8 +79,6 @@ const updateTodoByApi = (id) => (dispatch, getState) => {
   if (!todoToUpdate) {
     return
   }
-
-  console.log("todo's state  :  " + JSON.stringify(todoToUpdate));
   const apiUrl = API_ROOT_URL + 'api/todos';
   dispatch(requestUpdateTodo());
   fetch(apiUrl, {

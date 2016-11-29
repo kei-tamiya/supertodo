@@ -75,6 +75,7 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
       );
       return toggeleTodoCompletedState;
     case CHANGE_TODO_POSITION:
+      console.log('working?');
       const changeTodoPositionState = Object.assign({}, state);
       changeTodoPositionState.board.todos = state.board.todos.map((todo) =>
         todo.id === action.id ?

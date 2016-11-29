@@ -4,7 +4,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TodoTitleInput from './TodoTitleInput.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 
-const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted }) => (
+const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted, changeTodoPosition }) => (
   <Rnd
     initial={{
       x: 0,
@@ -21,6 +21,7 @@ const Todo = ({ id, completed, title, deleteTodo, changeTodoTitle, updateTodo, t
       opacity: completed ? '0.8' : '1',
       backgroundColor: GREEN
     }}
+    onDragStop={(e, ui) => changeTodoPosition(e, ui, id)}
   >
     <span className="box">
       <TodoTitleInput title={title} changeTodoTitle={(e) => changeTodoTitle(e, id)} updateTodo={() => updateTodo(id)} />
