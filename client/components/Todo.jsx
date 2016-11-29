@@ -10,6 +10,8 @@ const Todo = ({
   title,
   pos_top,
   pos_left,
+  width,
+  height,
   deleteTodo,
   changeTodoTitle,
   updateTodo,
@@ -21,8 +23,8 @@ const Todo = ({
     initial={{
       x: pos_left,
       y: pos_top,
-      width: 320,
-      height: 240,
+      width: width,
+      height: height,
     }}
     minWidth={300}
     minHeight={160}
