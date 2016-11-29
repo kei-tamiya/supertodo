@@ -7,7 +7,7 @@ class TodoList extends Component {
   }
 
   render() {
-    const { todos, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted } = this.props;
+    const { todos, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted, changeTodoPosition } = this.props;
 
     return (
       <div>
@@ -19,6 +19,7 @@ class TodoList extends Component {
               changeTodoTitle={(e) => changeTodoTitle(e, todo.id)}
               updateTodo={() => updateTodo(todo.id)}
               toggleTodoCompleted={() => toggleTodoCompleted(todo.id)}
+              changeTodoPosition={(e, ui, id) => changeTodoPosition(e, ui, id)}
               {...todo}
             />
           )}
@@ -33,11 +34,14 @@ TodoList.propTypes = {
       id: PropTypes.number.isRequired,
       completed: PropTypes.bool.isRequired,
       title: PropTypes.string.isRequired,
+      pos_top: PropTypes.number.isRequired,
+      pos_left: PropTypes.number.isRequired,
   }).isRequired).isRequired,
   deleteTodo: PropTypes.func.isRequired,
   changeTodoTitle: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
   toggleTodoCompleted: PropTypes.func.isRequired,
+  changeTodoPosition: PropTypes.func.isRequired,
 };
 
 export default TodoList;

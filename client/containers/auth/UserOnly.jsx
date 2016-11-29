@@ -6,7 +6,7 @@ import TodoList from '../../components/TodoList.jsx'
 import AddBoard from '../AddBoard.jsx'
 import BoardList from '../../components/BoardList.jsx'
 import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
-import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible, updateTodoCompletedIfPossible } from '../../actions/Todo.jsx';
+import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible, updateTodoCompletedIfPossible, updateTodoPositionIfPossible } from '../../actions/Todo.jsx';
 
 class UserOnly extends Component {
   constructor(props) {
@@ -19,8 +19,8 @@ class UserOnly extends Component {
       id: PropTypes.number.isRequired,
       completed: PropTypes.bool.isRequired,
       title: PropTypes.string.isRequired,
-      top: PropTypes.number.isRequired,
-      left: PropTypes.number.isRequired,
+      pos_top: PropTypes.number.isRequired,
+      pos_left: PropTypes.number.isRequired,
     }).isRequired).isRequired,
     isFetching: PropTypes.bool.isRequired,
     // boards: PropTypes.arrayOf(PropTypes.shape({
@@ -73,6 +73,11 @@ class UserOnly extends Component {
     this.props.dispatch(updateTodoCompletedIfPossible(id));
   };
 
+  changeTodoPosition = (e, ui, id) => {
+    const pos = ui.position;
+    this.props.dispatch(updateTodoPositionIfPossible(id, pos.top, pos.left));
+  };
+
   render() {
     const { isFetching, todos, auth, selectedBoard } = this.props;
 
@@ -86,15 +91,14 @@ class UserOnly extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-8">
+            {isTodosEmpty
+              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
+              : <TodoList todos={todos} deleteTodo={this.deleteTodo} changeTodoTitle={this.changeTodoTitle} updateTodo={this.updateTodo} toggleTodoCompleted={this.toggleTodoCompleted} changeTodoPosition={this.changeTodoPosition} />
+            }
           </div>
           <div className="col-sm-4">
             <AddBoard selectedBoard={selectedBoard} />
             <AddTodo />
-
-            {isTodosEmpty
-              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-              : <TodoList todos={todos} deleteTodo={this.deleteTodo} changeTodoTitle={this.changeTodoTitle} updateTodo={this.updateTodo} toggleTodoCompleted={this.toggleTodoCompleted} />
-            }
           </div>
         </div>
       </div>

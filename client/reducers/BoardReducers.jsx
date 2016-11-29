@@ -22,6 +22,7 @@ import {
   UPDATE_TODO,
   REQUEST_UPDATE_TODO,
   TOGGLE_TODO_COMPLETED,
+  CHANGE_TODO_POSITION,
 } from '../actions/Todo.jsx';
 
 const initialState = {
@@ -73,6 +74,15 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
           todo
       );
       return toggeleTodoCompletedState;
+    case CHANGE_TODO_POSITION:
+      console.log('working?');
+      const changeTodoPositionState = Object.assign({}, state);
+      changeTodoPositionState.board.todos = state.board.todos.map((todo) =>
+        todo.id === action.id ?
+          { ...todo, pos_top: action.pos_top, pos_left: action.pos_left } :
+          todo
+      );
+      return changeTodoPositionState;
     default:
       return state
   }
