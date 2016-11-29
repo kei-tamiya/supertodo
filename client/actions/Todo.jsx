@@ -15,6 +15,7 @@ export const CHANGE_TODO_TITLE = 'CHANGE_TODO_TITLE';
 export const UPDATE_TODO = 'UPDATE_TODO';
 export const TOGGLE_TODO_COMPLETED = 'TOGGLE_TODO_COMPLETED';
 export const CHANGE_TODO_POSITION = 'CHANGE_TODO_POSITION';
+export const CHANGE_TODO_SIZE = 'CHANGE_TODO_SIZE';
 // export const UPDATE_TODO_SIZE = 'UPDATE_TODO_SIZE';
 // export const UPDATE_TODO_POSITION = 'UPDATE_TODO_POSITION';
 
@@ -45,6 +46,13 @@ export const changeTodoPosition = (id, pos_top, pos_left) => ({
   id,
   pos_top,
   pos_left
+});
+
+export const changeTodoSize = (id, width, height) => ({
+  type: CHANGE_TODO_SIZE,
+  id,
+  width,
+  height
 });
 
 export const updateTodo = (date, todos) => ({
@@ -271,6 +279,13 @@ export const updateTodoCompletedIfPossible = (id) => (dispatch, getState) => {
 
 export const updateTodoPositionIfPossible = (id, pos_top, pos_left) => (dispatch, getState) => {
   dispatch(changeTodoPosition(id, pos_top, pos_left));
+  if (canUpdateTodo(getState())) {
+    dispatch(updateTodoByApi(id));
+  }
+};
+
+export const updateTodoSizeIfPossible = (id, width, height) => (dispatch, getState) => {
+  dispatch(changeTodoSize(id, width, height));
   if (canUpdateTodo(getState())) {
     dispatch(updateTodoByApi(id));
   }
