@@ -7,7 +7,15 @@ class TodoList extends Component {
   }
 
   render() {
-    const { todos, deleteTodo, changeTodoTitle, updateTodo, toggleTodoCompleted, changeTodoPosition } = this.props;
+    const {
+      todos,
+      deleteTodo,
+      changeTodoTitle,
+      updateTodo,
+      toggleTodoCompleted,
+      changeTodoPosition,
+      updateTodoSize,
+    } = this.props;
 
     return (
       <div>
@@ -20,6 +28,7 @@ class TodoList extends Component {
               updateTodo={() => updateTodo(todo.id)}
               toggleTodoCompleted={() => toggleTodoCompleted(todo.id)}
               changeTodoPosition={(e, ui, id) => changeTodoPosition(e, ui, id)}
+              updateTodoSize={(clientSize, id) => updateTodoSize(clientSize, id)}
               {...todo}
             />
           )}
@@ -27,7 +36,7 @@ class TodoList extends Component {
       </div>
     );
   }
-};
+}
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({
@@ -36,12 +45,15 @@ TodoList.propTypes = {
       title: PropTypes.string.isRequired,
       pos_top: PropTypes.number.isRequired,
       pos_left: PropTypes.number.isRequired,
+      width: PropTypes.number.isRequired,
+      height: PropTypes.number.isRequired,
   }).isRequired).isRequired,
   deleteTodo: PropTypes.func.isRequired,
   changeTodoTitle: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
   toggleTodoCompleted: PropTypes.func.isRequired,
   changeTodoPosition: PropTypes.func.isRequired,
+  updateTodoSize: PropTypes.func.isRequired,
 };
 
 export default TodoList;

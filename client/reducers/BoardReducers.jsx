@@ -23,6 +23,7 @@ import {
   REQUEST_UPDATE_TODO,
   TOGGLE_TODO_COMPLETED,
   CHANGE_TODO_POSITION,
+  CHANGE_TODO_SIZE,
 } from '../actions/Todo.jsx';
 
 const initialState = {
@@ -75,7 +76,6 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
       );
       return toggeleTodoCompletedState;
     case CHANGE_TODO_POSITION:
-      console.log('working?');
       const changeTodoPositionState = Object.assign({}, state);
       changeTodoPositionState.board.todos = state.board.todos.map((todo) =>
         todo.id === action.id ?
@@ -83,6 +83,14 @@ const selectedBoard = (state = initialState.selectedBoard, action) => {
           todo
       );
       return changeTodoPositionState;
+    case CHANGE_TODO_SIZE:
+      const changeTodoSizeState = Object.assign({}, state);
+      changeTodoSizeState.board.todos = state.board.todos.map((todo) =>
+        todo.id === action.id ?
+          { ...todo, width: action.width, height: action.height } :
+          todo
+      );
+      return changeTodoSizeState;
     default:
       return state
   }
