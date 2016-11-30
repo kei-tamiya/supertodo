@@ -11,8 +11,15 @@ import GuestOnly from './auth/GuestOnly.jsx';
 // import Loading from '../components/Loading.jsx'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
+  static handleTabChange(value) {
+    switch (value) {
+      case 'login':
+        return browserHistory.push('/login');
+      case 'signup':
+        return browserHistory.push('/signup');
+      default:
+        return browserHistory.push('/login');
+    }
   }
 
   componentWillMount() {
@@ -32,29 +39,13 @@ class App extends Component {
     this.props.dispatch(logoutByApi());
   }
 
-  handleTabChange(value) {
-    switch(value) {
-      case 'login':
-        return browserHistory.push('/login');
-      case 'signup':
-        return browserHistory.push('/signup');
-      default:
-        return browserHistory.push('/login');
-    }
-  }
-
   render() {
     const { auth, children } = this.props;
-    // const children = React.Children.map(this.props.children, function (child) {
-    //   return React.cloneElement(child, {
-    //     foo: this.state.foo
-    //   })
-    // });
     return (
       <div>
         <Header
           auth={auth}
-          handleLogout={::this.handleLogout}
+          handleLogout={this.handleLogout}
           handleTabChange={this.handleTabChange}
         />
 
@@ -74,12 +65,10 @@ App.propTypes = {
   isFetchTokenCompleted: PropTypes.bool.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-    token: state.token.token,
-    isFetchTokenCompleted: state.token.isCompleted,
-  };
-};
+const mapStateToProps = state => ({
+  auth: state.auth,
+  token: state.token.token,
+  isFetchTokenCompleted: state.token.isCompleted,
+});
 
 export default connect(mapStateToProps)(App);

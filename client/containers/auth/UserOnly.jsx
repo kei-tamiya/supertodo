@@ -1,10 +1,10 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
-import AddTodo from '../AddTodo.jsx'
-import TodoList from '../../components/TodoList.jsx'
-import AddBoard from '../AddBoard.jsx'
-import BoardList from '../../components/BoardList.jsx'
+import AddTodo from '../AddTodo.jsx';
+import TodoList from '../../components/TodoList.jsx';
+import AddBoard from '../AddBoard.jsx';
+import Board from '../../components/Board.jsx';
 import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
 import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible, updateTodoCompletedIfPossible, updateTodoPositionIfPossible, updateTodoSizeIfPossible } from '../../actions/TodoActions.jsx';
 
@@ -95,6 +95,7 @@ class UserOnly extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-8">
+            <Board />
             {isTodosEmpty
               ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
               : <TodoList

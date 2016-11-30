@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   REQUEST_SIGNUP,
   REQUEST_LOGIN,
@@ -71,7 +70,7 @@ const auth = (state = initialState.auth, action) => {
     case FAIL_FETCH_BY_API:
       return Object.assign({}, state, {
         isFetching: false,
-        error: action.error
+        error: action.error,
       });
     default:
       return state;
