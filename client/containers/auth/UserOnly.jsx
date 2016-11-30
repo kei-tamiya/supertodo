@@ -6,7 +6,7 @@ import TodoList from '../../components/TodoList.jsx'
 import AddBoard from '../AddBoard.jsx'
 import BoardList from '../../components/BoardList.jsx'
 import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
-import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible, updateTodoCompletedIfPossible, updateTodoPositionIfPossible, updateTodoSizeIfPossible } from '../../actions/Todo.jsx';
+import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible, updateTodoCompletedIfPossible, updateTodoPositionIfPossible, updateTodoSizeIfPossible } from '../../actions/TodoActions.jsx';
 
 class UserOnly extends Component {
   constructor(props) {

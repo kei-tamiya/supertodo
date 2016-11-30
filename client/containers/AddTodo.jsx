@@ -1,6 +1,6 @@
 import React, { PropTypes, Component } from 'react';
 import { connect } from 'react-redux';
-import { changeNewTodoTitle, addTodoByApi } from '../actions/Todo.jsx';
+import { changeNewTodoTitle, addTodoByApi } from '../actions/TodoActions.jsx';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';

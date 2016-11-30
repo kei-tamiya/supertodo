@@ -1,4 +1,4 @@
-import { RECEIVE_TOKEN } from '../actions/Token.jsx';
+import { RECEIVE_TOKEN } from '../actions/TokenActions.jsx';
 
 const initialState = {
   token: {

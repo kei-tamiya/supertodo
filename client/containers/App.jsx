@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { fetchToken } from '../actions/Token.jsx';
+import { fetchToken } from '../actions/TokenActions.jsx';
 import { clearBoards } from '../actions/BoardActions.jsx';
-import { clearTodos } from '../actions/Todo.jsx';
+import { clearTodos } from '../actions/TodoActions.jsx';
 import { logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
 import Header from '../components/Header.jsx';
 import UserOnly from './auth/UserOnly.jsx';

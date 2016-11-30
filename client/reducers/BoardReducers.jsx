@@ -24,7 +24,7 @@ import {
   TOGGLE_TODO_COMPLETED,
   CHANGE_TODO_POSITION,
   CHANGE_TODO_SIZE,
-} from '../actions/Todo.jsx';
+} from '../actions/TodoActions.jsx';
 
 const initialState = {
   selectedBoard: {
