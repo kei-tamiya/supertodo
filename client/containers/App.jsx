@@ -45,7 +45,7 @@ class App extends Component {
       <div>
         <Header
           auth={auth}
-          handleLogout={this.handleLogout}
+          handleLogout={::this.handleLogout}
           handleTabChange={App.handleTabChange}
         />
 

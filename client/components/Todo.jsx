@@ -26,10 +26,10 @@ const Todo = ({
       width,
       height,
     }}
-    minWidth={300}
-    minHeight={160}
+    minWidth={200}
+    minHeight={80}
     maxWidth={800}
-    maxHeight={300}
+    maxHeight={600}
     className={'todo'}
     style={{
       opacity: completed ? '0.8' : '1',

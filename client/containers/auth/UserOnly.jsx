@@ -72,22 +72,22 @@ class UserOnly extends Component {
         <div className="row">
           <div className="col-sm-8">
             <Board />
-            {isTodosEmpty
-              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-              : <TodoList
-                  todos={todos}
-                  deleteTodo={this.deleteTodo}
-                  changeTodoTitle={this.changeTodoTitle}
-                  updateTodo={this.updateTodo}
-                  toggleTodoCompleted={this.toggleTodoCompleted}
-                  changeTodoPosition={this.changeTodoPosition}
-                  updateTodoSize={this.updateTodoSize}
-                />
-            }
           </div>
           <div className="col-sm-4">
             <AddBoard selectedBoard={selectedBoard} />
             <AddTodo />
+            {isTodosEmpty
+              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
+              : <TodoList
+              todos={todos}
+              deleteTodo={this.deleteTodo}
+              changeTodoTitle={this.changeTodoTitle}
+              updateTodo={this.updateTodo}
+              toggleTodoCompleted={this.toggleTodoCompleted}
+              changeTodoPosition={this.changeTodoPosition}
+              updateTodoSize={this.updateTodoSize}
+            />
+            }
           </div>
         </div>
       </div>
