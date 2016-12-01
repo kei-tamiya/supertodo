@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { changeNewTodoTitle, addTodoByApi } from '../actions/TodoActions.jsx';
 import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
 
-
 class AddTodo extends Component {
   handleChange(e) {
     e.preventDefault();
@@ -50,7 +49,7 @@ class AddTodo extends Component {
               <TextField
                 ref="addTodoInput"
                 hintText="New To Do"
-                className="todoText"
+                className={"todoText"}
                 underlineStyle={styles.underlineStyle}
                 value={newTodoTitle}
                 onChange={event => this.handleChange(event)}

@@ -1,38 +1,32 @@
-import React, { PropTypes, Component } from 'react';
+import React, { PropTypes } from 'react';
 import Todo from './Todo.jsx';
 
-class TodoList extends Component {
-  render() {
-    const {
-      todos,
-      deleteTodo,
-      changeTodoTitle,
-      updateTodo,
-      toggleTodoCompleted,
-      changeTodoPosition,
-      updateTodoSize,
-    } = this.props;
-
-    return (
-      <div>
-        <ul>
-          {todos.map(todo =>
-            <Todo
-              key={todo.id}
-              deleteTodo={id => deleteTodo(id)}
-              changeTodoTitle={(e, id) => changeTodoTitle(e, id)}
-              updateTodo={id => updateTodo(id)}
-              toggleTodoCompleted={id => toggleTodoCompleted(id)}
-              changeTodoPosition={(e, ui, id) => changeTodoPosition(e, ui, id)}
-              updateTodoSize={(clientSize, id) => updateTodoSize(clientSize, id)}
-              {...todo}
-            />,
-          )}
-        </ul>
-      </div>
-    );
-  }
-}
+const TodoList = ({
+  todos,
+  deleteTodo,
+  changeTodoTitle,
+  updateTodo,
+  toggleTodoCompleted,
+  changeTodoPosition,
+  updateTodoSize,
+}) => (
+  <div>
+    <ul>
+      {todos.map(todo =>
+        <Todo
+          key={todo.id}
+          deleteTodo={id => deleteTodo(id)}
+          changeTodoTitle={(e, id) => changeTodoTitle(e, id)}
+          updateTodo={id => updateTodo(id)}
+          toggleTodoCompleted={id => toggleTodoCompleted(id)}
+          changeTodoPosition={(e, ui, id) => changeTodoPosition(e, ui, id)}
+          updateTodoSize={(clientSize, id) => updateTodoSize(clientSize, id)}
+          {...todo}
+        />,
+      )}
+    </ul>
+  </div>
+);
 
 TodoList.propTypes = {
   todos: PropTypes.arrayOf(PropTypes.shape({

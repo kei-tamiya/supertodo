@@ -39,7 +39,12 @@ const Todo = ({
     onResizeStop={(direction, styleSize, clientSize) => updateTodoSize(clientSize, id)}
   >
     <span className="box">
-      <TodoTitleInput title={title} changeTodoTitle={(e) => changeTodoTitle(e, id)} updateTodo={() => updateTodo(id)} />
+      <TodoTitleInput
+        id={id}
+        title={title}
+        changeTodoTitle={e => changeTodoTitle(e, id)}
+        updateTodo={() => updateTodo(id)}
+      />
       <ul
         className={"todoBtnList"}
       >

@@ -14,11 +14,11 @@ class UserOnly extends Component {
   }
 
   componentWillMount() {
-    this.guestWillTransfer(this.props, this.context.router);
+    UserOnly.guestWillTransfer(this.props, this.context.router);
   }
 
   componentWillUpdate(nextProps) {
-    this.guestWillTransfer(nextProps, this.context.router);
+    UserOnly.guestWillTransfer(nextProps, this.context.router);
   }
 
   componentDidMount() {
@@ -26,7 +26,7 @@ class UserOnly extends Component {
     dispatch(fetchBoardsByApiIfNeeded(boards));
   }
 
-  guestWillTransfer(props, router) {
+  static guestWillTransfer(props, router) {
     if (!props.auth.isLoggedIn) {
       router.push('/login');
     }

@@ -46,7 +46,7 @@ class App extends Component {
         <Header
           auth={auth}
           handleLogout={this.handleLogout}
-          handleTabChange={this.handleTabChange}
+          handleTabChange={App.handleTabChange}
         />
 
         {auth.isLoggedIn

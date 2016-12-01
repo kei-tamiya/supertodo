@@ -8,11 +8,11 @@ class GuestOnly extends Component {
   }
 
   componentWillMount() {
-    this.userWillTransfer(this.props, this.context.router);
+    GuestOnly.userWillTransfer(this.props, this.context.router);
   }
 
   componentWillUpdate(nextProps) {
-    this.userWillTransfer(nextProps, this.context.router);
+    GuestOnly.userWillTransfer(nextProps, this.context.router);
   }
 
   static userWillTransfer(props, router) {
