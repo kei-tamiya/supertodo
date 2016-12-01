@@ -1,41 +1,21 @@
 import React, { PropTypes, Component } from 'react';
+import DatePicker from 'material-ui/DatePicker';
 import { connect } from 'react-redux';
 import { fetchOrAddBoardOneByApiIfNeeded } from '../actions/BoardActions.jsx';
-import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
-import DatePicker from 'material-ui/DatePicker';
 
 class AddBoard extends Component {
-  constructor(props) {
-    super(props);
+  handleChange(e, date) {
+    let selectedDate = JSON.stringify(date).slice(1, 11);
+    selectedDate = selectedDate.split('-').join('');
+    const fixedDate = parseInt(selectedDate, 10) + 1;
+    this.props.dispatch(fetchOrAddBoardOneByApiIfNeeded(fixedDate.toString()));
   }
 
-  handleChange = (e, date) => {
-    let selectedDate = JSON.stringify(date).slice(1, 11);
-    selectedDate = selectedDate.split("-").join("");
-    let fixedDate = parseInt(selectedDate)+1;
-    this.props.dispatch(fetchOrAddBoardOneByApiIfNeeded(fixedDate.toString()));
-  };
-
   render() {
-    const { dispatch } = this.props;
-    const styles = {
-      errorStyle: {
-        color: ORANGE,
-      },
-      underlineStyle: {
-        borderColor: ORANGE,
-      },
-      floatingLabelStyle: {
-        color: ORANGE,
-      },
-      floatingLabelFocusStyle: {
-        color: BLUE,
-      },
-    };
-
     return (
       <div>
-        <DatePicker hintText="Let's Select Todo's Board."
+        <DatePicker
+          hintText="Let's Select Todo's Board."
           autoOk={true}
           defaultDate={new Date()}
           formatDate={(date) => `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`}
@@ -55,10 +35,8 @@ AddBoard.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    selectedBoard: state.selectedBoard.board,
-  };
-};
+const mapStateToProps = state => ({
+  selectedBoard: state.selectedBoard.board,
+});
 
 export default connect(mapStateToProps)(AddBoard);

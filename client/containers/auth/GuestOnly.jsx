@@ -1,30 +1,21 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link, browserHistory } from 'react-router';
-import RaisedButton from 'material-ui/RaisedButton';
 
 class GuestOnly extends Component {
-  static propTypes = {
-    auth: PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired,
-  };
-
   constructor(props) {
     super(props)
   }
 
   componentWillMount() {
-    this.userWillTransfer(this.props, this.context.router);
+    GuestOnly.userWillTransfer(this.props, this.context.router);
   }
 
   componentWillUpdate(nextProps) {
-    this.userWillTransfer(nextProps, this.context.router);
+    GuestOnly.userWillTransfer(nextProps, this.context.router);
   }
 
-  userWillTransfer(props, router) {
+  static userWillTransfer(props, router) {
     if (props.auth.isLoggedIn) {
       router.push('/');
     }
@@ -44,10 +35,16 @@ class GuestOnly extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-  }
+GuestOnly.propTypes = {
+  auth: PropTypes.object.isRequired,
 };
+
+GuestOnly.contextTypes = {
+  router: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = state => ({
+  auth: state.auth,
+});
 
 export default connect(mapStateToProps)(GuestOnly);

@@ -1,9 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
-import { fetchToken } from '../actions/Token.jsx';
+import { fetchToken } from '../actions/TokenActions.jsx';
 import { clearBoards } from '../actions/BoardActions.jsx';
-import { clearTodos } from '../actions/Todo.jsx';
+import { clearTodos } from '../actions/TodoActions.jsx';
 import { logoutByApi, fetchLoggedInUser } from '../actions/AuthActions.jsx';
 import Header from '../components/Header.jsx';
 import UserOnly from './auth/UserOnly.jsx';
@@ -11,8 +11,15 @@ import GuestOnly from './auth/GuestOnly.jsx';
 // import Loading from '../components/Loading.jsx'
 
 class App extends Component {
-  constructor(props) {
-    super(props)
+  static handleTabChange(value) {
+    switch (value) {
+      case 'login':
+        return browserHistory.push('/login');
+      case 'signup':
+        return browserHistory.push('/signup');
+      default:
+        return browserHistory.push('/login');
+    }
   }
 
   componentWillMount() {
@@ -32,30 +39,14 @@ class App extends Component {
     this.props.dispatch(logoutByApi());
   }
 
-  handleTabChange(value) {
-    switch(value) {
-      case 'login':
-        return browserHistory.push('/login');
-      case 'signup':
-        return browserHistory.push('/signup');
-      default:
-        return browserHistory.push('/login');
-    }
-  }
-
   render() {
     const { auth, children } = this.props;
-    // const children = React.Children.map(this.props.children, function (child) {
-    //   return React.cloneElement(child, {
-    //     foo: this.state.foo
-    //   })
-    // });
     return (
       <div>
         <Header
           auth={auth}
           handleLogout={::this.handleLogout}
-          handleTabChange={this.handleTabChange}
+          handleTabChange={App.handleTabChange}
         />
 
         {auth.isLoggedIn
@@ -72,14 +63,13 @@ App.propTypes = {
   auth: PropTypes.object.isRequired,
   token: PropTypes.string.isRequired,
   isFetchTokenCompleted: PropTypes.bool.isRequired,
+  children: PropTypes.any.isRequired,
 };
 
-const mapStateToProps = (state) => {
-  return {
-    auth: state.auth,
-    token: state.token.token,
-    isFetchTokenCompleted: state.token.isCompleted,
-  };
-};
+const mapStateToProps = state => ({
+  auth: state.auth,
+  token: state.token.token,
+  isFetchTokenCompleted: state.token.isCompleted,
+});
 
 export default connect(mapStateToProps)(App);

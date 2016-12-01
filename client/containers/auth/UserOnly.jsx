@@ -1,48 +1,24 @@
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 // import { bindActionCreators } from 'redux'
-import AddTodo from '../AddTodo.jsx'
-import TodoList from '../../components/TodoList.jsx'
-import AddBoard from '../AddBoard.jsx'
-import BoardList from '../../components/BoardList.jsx'
+import AddTodo from '../AddTodo.jsx';
+import TodoList from '../../components/TodoList.jsx';
+import AddBoard from '../AddBoard.jsx';
+import Board from '../../components/Board.jsx';
 import { selectOrAddBoard, fetchBoardsByApiIfNeeded } from '../../actions/BoardActions.jsx';
-import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible, updateTodoCompletedIfPossible, updateTodoPositionIfPossible, updateTodoSizeIfPossible } from '../../actions/Todo.jsx';
+import { deleteTodoIfPossible, changeTodoTitle, updateTodoIfPossible, updateTodoCompletedIfPossible, updateTodoPositionIfPossible, updateTodoSizeIfPossible } from '../../actions/TodoActions.jsx';
 
 class UserOnly extends Component {
   constructor(props) {
     super(props);
   }
 
-  static propTypes = {
-    // isTodosFetching: PropTypes.bool.isRequired,
-    todos: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      completed: PropTypes.bool.isRequired,
-      title: PropTypes.string.isRequired,
-      pos_top: PropTypes.number.isRequired,
-      pos_left: PropTypes.number.isRequired,
-    }).isRequired).isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    // boards: PropTypes.arrayOf(PropTypes.shape({
-    //   id: PropTypes.number.isRequired,
-    //   date: PropTypes.string.isRequired,
-    // }).isRequired).isRequired,
-    dispatch: PropTypes.func.isRequired,
-    // children: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired,
-    selectedBoard: PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  };
-
   componentWillMount() {
-    this.guestWillTransfer(this.props, this.context.router);
+    UserOnly.guestWillTransfer(this.props, this.context.router);
   }
 
   componentWillUpdate(nextProps) {
-    this.guestWillTransfer(nextProps, this.context.router);
+    UserOnly.guestWillTransfer(nextProps, this.context.router);
   }
 
   componentDidMount() {
@@ -50,7 +26,7 @@ class UserOnly extends Component {
     dispatch(fetchBoardsByApiIfNeeded(boards));
   }
 
-  guestWillTransfer(props, router) {
+  static guestWillTransfer(props, router) {
     if (!props.auth.isLoggedIn) {
       router.push('/login');
     }
@@ -95,22 +71,23 @@ class UserOnly extends Component {
       <div className="container-fluid">
         <div className="row">
           <div className="col-sm-8">
-            {isTodosEmpty
-              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
-              : <TodoList
-                  todos={todos}
-                  deleteTodo={this.deleteTodo}
-                  changeTodoTitle={this.changeTodoTitle}
-                  updateTodo={this.updateTodo}
-                  toggleTodoCompleted={this.toggleTodoCompleted}
-                  changeTodoPosition={this.changeTodoPosition}
-                  updateTodoSize={this.updateTodoSize}
-                />
-            }
+            <Board />
           </div>
           <div className="col-sm-4">
             <AddBoard selectedBoard={selectedBoard} />
             <AddTodo />
+            {isTodosEmpty
+              ? (isFetching ? <h2>Loading...</h2> : <h2>Todoリストを作ってみよう！</h2>)
+              : <TodoList
+              todos={todos}
+              deleteTodo={this.deleteTodo}
+              changeTodoTitle={this.changeTodoTitle}
+              updateTodo={this.updateTodo}
+              toggleTodoCompleted={this.toggleTodoCompleted}
+              changeTodoPosition={this.changeTodoPosition}
+              updateTodoSize={this.updateTodoSize}
+            />
+            }
           </div>
         </div>
       </div>
@@ -140,9 +117,30 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = dispatch => ({
-//   actions: bindActionCreators(TodoActions, dispatch)
-// });
+UserOnly.propTypes = {
+  // isTodosFetching: PropTypes.bool.isRequired,
+  todos: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    completed: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    pos_top: PropTypes.number.isRequired,
+    pos_left: PropTypes.number.isRequired,
+  }).isRequired).isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  // boards: PropTypes.arrayOf(PropTypes.shape({
+  //   id: PropTypes.number.isRequired,
+  //   date: PropTypes.string.isRequired,
+  // }).isRequired).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  // children: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  selectedBoard: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+};
+
+UserOnly.contextTypes = {
+  router: PropTypes.object.isRequired
+};
 
 export default connect(
   mapStateToProps

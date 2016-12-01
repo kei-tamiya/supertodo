@@ -13,7 +13,7 @@ import { syncHistoryWithStore, routerReducer } from 'react-router-redux';
 import injectTapEventPlugin from "react-tap-event-plugin";
 
 import { selectedBoard, boardsByApi } from './reducers/BoardReducers.jsx';
-import token from './reducers/Token.jsx';
+import token from './reducers/TokenReducers.jsx';
 import auth from './reducers/AuthReducers.jsx';
 import App from './containers/App.jsx';
 import Signup from './containers/auth/Signup.jsx';

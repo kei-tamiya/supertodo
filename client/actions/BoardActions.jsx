@@ -5,7 +5,6 @@ export const SELECT_BOARD = 'SELECT_BOARD';
 export const ADD_TODO = 'ADD_TODO';
 export const CHANGE_NEW_TODO_TITLE = 'CHANGE_NEW_TODO_TITLE';
 
-export const CHANGE_SELECTED_VALUE = 'CHANGE_SELECTED_VALUE';
 export const CLEAR_BOARDS = 'CLEAR_BOARDS';
 export const REQUEST_BOARD_ONE = 'REQUEST_BOARD_ONE';
 export const RECEIVE_BOARD_ONE = 'RECEIVE_BOARD_ONE';
@@ -13,86 +12,79 @@ export const REQUEST_BOARDS = 'REQUEST_BOARDS';
 export const RECEIVE_BOARDS = 'RECEIVE_BOARDS';
 export const SYNC_TODOS = 'SYNC_TODOS';
 
-export const addBoard = (board) => ({
+export const addBoard = board => ({
   type: ADD_BOARD,
-  board
+  board,
 });
 
-export const selectBoard = (board) => ({
+export const selectBoard = board => ({
   type: SELECT_BOARD,
-  board
+  board,
 });
-
-export const selectOrAddBoard = (date) => (dispatch, getState) => {
-  let boardsByApiState = getState().boardsByApi;
-  const boardDates = boardsByApiState.dates;
-  if (boardDates && boardDates.includes(date)) {
-    dispatch(selectBoard(boardsByApiState[date]));
-    return
-  }
-  dispatch(addBoardOneByApi(date));
-};
 
 export const clearBoards = () => ({
-  type: CLEAR_BOARDS
+  type: CLEAR_BOARDS,
 });
 
-export const requestBoardOne = (board) => ({
+export const requestBoardOne = board => ({
   type: REQUEST_BOARD_ONE,
-  board
+  board,
 });
 
-export const receiveBoardOne = (board) => ({
+export const receiveBoardOne = board => ({
   type: RECEIVE_BOARD_ONE,
-  board
+  board,
 });
 
 export const requestBoards = (boards = []) => ({
   type: REQUEST_BOARDS,
-  boards
+  boards,
 });
 
-export const receiveBoards = (boards) => ({
+export const receiveBoards = boards => ({
   type: RECEIVE_BOARDS,
-  boards
+  boards,
 });
 
 export const syncTodos = (boards, todos) => ({
   type: SYNC_TODOS,
-  boards: boards,
-  todos: todos
+  boards,
+  todos,
 });
 
-export const fetchOrAddBoardByApi = (date) => (dispatch, getState) => {
-  fetchBoardOneByApiIfNeeded(getState().boards, date);
-  if (shouldFetchBoardOne(getState(), date)) {
-    dispatch(addBoardOneByApi(date));
-  }
-};
+// export const fetchOrAddBoardByApi = date => (dispatch, getState) => {
+//   fetchBoardOneByApiIfNeeded(getState().boards, date);
+//   if (shouldFetchBoardOne(getState(), date)) {
+//     dispatch(addBoardOneByApi(date));
+//   }
+// };
 
-export const addBoardOneByApi = (date) => (dispatch, getState) => {
-  const boardToSave = Object.assign({}, {date: date});
-  let apiUrl = API_ROOT_URL + 'api/boards/';
+export const addBoardOneByApi = date => (dispatch, getState) => {
+  const boardToSave = Object.assign({}, { date });
+  const apiUrl = `${API_ROOT_URL}api/boards/`;
   return fetch(apiUrl, {
     credentials: 'same-origin',
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': getState().token.token
+      'X-XSRF-TOKEN': getState().token.token,
     },
     body: JSON.stringify(boardToSave),
   })
     .then(response => response.json())
-    .then(json => {
+    .then((json) => {
       if (json == null) {
-        return
+        return;
       }
       dispatch(addBoard(json.data));
     })
     .then(() => {
       dispatch(selectBoard(getState().boardsByApi[date]));
     })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 // const fetchOrAddBoardOneByApi = (date) => (dispatch, getState) => {
@@ -104,7 +96,7 @@ export const addBoardOneByApi = (date) => (dispatch, getState) => {
 //     credentials: 'same-origin',
 //     method: 'PUT',
 //     headers: {
-//       'Accept': 'application/json',
+//       Accept: 'application/json',
 //       'Content-Type': 'application/json',
 //       'X-XSRF-TOKEN': getState().token.token,
 //     },
@@ -122,39 +114,6 @@ export const addBoardOneByApi = (date) => (dispatch, getState) => {
 //     })
 // };
 
-const fetchBoardsByApi = () => (dispatch, getState) => {
-  dispatch(requestBoards());
-
-  let apiUrl = API_ROOT_URL + 'api/boards/';
-  return fetch(apiUrl, {
-    credentials: 'same-origin',
-    method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'X-XSRF-TOKEN': getState().token.token,
-    },
-  })
-    .then(response => response.json())
-    .then(json => {
-      if (json == null) {
-        return;
-      }
-      dispatch(receiveBoards(json.data.boards));
-    })
-    .then(() => {
-      let d = new Date();
-      let year = d.getFullYear();
-      let month = d.getMonth()+1;
-      let date = d.getDate();
-      let today = `${year}${month}${date}`;
-      dispatch(selectOrAddBoard(today));
-    })
-    .catch(error => {
-      console.error(error);
-    })
-};
-
 const shouldFetchBoardOne = (state, date) => {
   let board = state.boardsByApi[date];
   if (!board) {
@@ -166,7 +125,7 @@ const shouldFetchBoardOne = (state, date) => {
   return board.didInvalidate;
 };
 
-const shouldFetchBoards = (state) => {
+const shouldFetchBoards = state => {
   let boardsByApi = state.boardsByApi;
   if (!boardsByApi.dates) {
     return true;
@@ -177,11 +136,11 @@ const shouldFetchBoards = (state) => {
   return boardsByApi.didInvalidate;
 };
 
-export const fetchOrAddBoardOneByApiIfNeeded = (date) => (dispatch, getState) => {
+export const fetchOrAddBoardOneByApiIfNeeded = date => (dispatch, getState) => {
   if (shouldFetchBoardOne(getState(), date)) {
     dispatch(addBoardOneByApi(date));
   } else {
-    dispatch(selectBoard(getState().boardsByApi[date]))
+    dispatch(selectBoard(getState().boardsByApi[date]));
   }
 };
 
@@ -189,6 +148,49 @@ export const fetchBoardsByApiIfNeeded = () => (dispatch, getState) => {
   if (shouldFetchBoards(getState())) {
     dispatch(fetchBoardsByApi());
   }
+};
+
+export const selectOrAddBoard = date => (dispatch, getState) => {
+  const boardsByApiState = getState().boardsByApi;
+  const boardDates = boardsByApiState.dates;
+  if (boardDates && boardDates.includes(date)) {
+    dispatch(selectBoard(boardsByApiState[date]));
+    return;
+  }
+  dispatch(addBoardOneByApi(date));
+};
+
+const fetchBoardsByApi = () => (dispatch, getState) => {
+  dispatch(requestBoards());
+
+  const apiUrl = `${API_ROOT_URL}api/boards/`;
+  return fetch(apiUrl, {
+    credentials: 'same-origin',
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': getState().token.token,
+    },
+  })
+    .then(response => response.json())
+    .then((json) => {
+      if (json == null) {
+        return;
+      }
+      dispatch(receiveBoards(json.data.boards));
+    })
+    .then(() => {
+      const d = new Date();
+      const year = d.getFullYear();
+      const month = d.getMonth() + 1;
+      const date = d.getDate();
+      const today = `${year}${month}${date}`;
+      dispatch(selectOrAddBoard(today));
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 };
 
 // export const fetchBoardAndSelectTodayWhenComponentDidMount = () => (dispatch, getState) => {

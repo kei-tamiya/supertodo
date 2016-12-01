@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import Rnd from 'react-rnd';
 import RaisedButton from 'material-ui/RaisedButton';
 import TodoTitleInput from './TodoTitleInput.jsx';
-import { GREEN, BLUE, ORANGE } from '../constant/Color.jsx';
+import { GREEN } from '../constant/Color.jsx';
 
 const Todo = ({
   id,
@@ -23,35 +23,43 @@ const Todo = ({
     initial={{
       x: pos_left,
       y: pos_top,
-      width: width,
-      height: height,
+      width,
+      height,
     }}
-    minWidth={300}
-    minHeight={160}
+    minWidth={200}
+    minHeight={80}
     maxWidth={800}
-    maxHeight={300}
+    maxHeight={600}
     className={'todo'}
     style={{
       opacity: completed ? '0.8' : '1',
-      backgroundColor: GREEN
+      backgroundColor: GREEN,
     }}
     onDragStop={(e, ui) => changeTodoPosition(e, ui, id)}
     onResizeStop={(direction, styleSize, clientSize) => updateTodoSize(clientSize, id)}
   >
     <span className="box">
-      <TodoTitleInput title={title} changeTodoTitle={(e) => changeTodoTitle(e, id)} updateTodo={() => updateTodo(id)} />
+      <TodoTitleInput
+        id={id}
+        title={title}
+        changeTodoTitle={e => changeTodoTitle(e, id)}
+        updateTodo={() => updateTodo(id)}
+      />
       <ul
-        className={"todoBtnList"}
+        className="todoBtnList"
       >
-        <li
-          onClick={() => toggleTodoCompleted(id)}
-        >
-          <RaisedButton label="Complete" />
+        <li>
+          <RaisedButton
+            label="Complete"
+            onClick={() => toggleTodoCompleted(id)}
+          />
         </li>
-        <li
-         onClick={() => deleteTodo(id)}
-        >
-         <RaisedButton label="×"></RaisedButton>
+        <li>
+          <RaisedButton
+            onClick={() => deleteTodo(id)}
+          >
+            ×
+          </RaisedButton>
         </li>
       </ul>
     </span>
@@ -70,6 +78,7 @@ Todo.propTypes = {
   changeTodoTitle: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
   toggleTodoCompleted: PropTypes.func.isRequired,
+  changeTodoPosition: PropTypes.func.isRequired,
   updateTodoSize: PropTypes.func.isRequired,
 };
 
