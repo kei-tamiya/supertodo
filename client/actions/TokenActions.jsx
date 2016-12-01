@@ -1,23 +1,24 @@
-import React from 'react';
-
+import { API_ROOT_URL } from '../constant/Url.jsx';
 export const RECEIVE_TOKEN = 'RECEIVE_TOKEN';
 
-export const receiveToken = (token) => ({
+export const receiveToken = token => ({
   type: RECEIVE_TOKEN,
-  token: token
+  token,
 });
 
-export const fetchToken = () => (dispatch) =>  {
-  return fetch('http://localhost:8080/token', {credentials: 'same-origin'})
+export const fetchToken = () => (dispatch) => {
+  const apiUrl = `${API_ROOT_URL}token`;
+  return fetch(apiUrl, {
+    credentials: 'same-origin',
+  })
     .then(x => x.json())
-    .then(json => {
-        if (json == null) {
-            return
-        }
-        dispatch(receiveToken(json.token));
+    .then((json) => {
+      if (json == null) {
+        return;
+      }
+      dispatch(receiveToken(json.token));
     })
-    .catch(error => {
+    .catch((error) => {
       console.error(error);
-    })
+    });
 };
-
