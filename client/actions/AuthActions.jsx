@@ -117,36 +117,37 @@ export const signupByApi = (email, name, password) => (dispatch, getState) => {
 
 export const fetchLoggedInUser = () => (dispatch, getState) => {
   const isLoggedIn = JSON.parse(localStorage.getItem('isLoggedIn'));
-
-  if (isLoggedIn) {
-    return fetch('http://localhost:8080/api/loggedinuser', {
-      credentials: 'same-origin',
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        'X-XSRF-TOKEN': getState().token.token,
-      },
-    })
-      .then(response => response.json())
-      .then((json) => {
-        if (json == null) {
-          return;
-        }
-
-        const data = json.data;
-        const authedUser = Object.assign({}, {
-          id: data.id,
-          email: data.email,
-          name: data.name,
-        });
-
-        dispatch(executeLogin(authedUser));
-      })
-      .catch((error) => {
-        dispatch(failFetchByApi(error));
-      });
+  if (!isLoggedIn) {
+    return;
   }
+
+  return fetch('http://localhost:8080/api/loggedinuser', {
+    credentials: 'same-origin',
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'X-XSRF-TOKEN': getState().token.token,
+    },
+  })
+    .then(response => response.json())
+    .then((json) => {
+      if (json == null) {
+        return;
+      }
+
+      const data = json.data;
+      const authedUser = Object.assign({}, {
+        id: data.id,
+        email: data.email,
+        name: data.name,
+      });
+
+      dispatch(executeLogin(authedUser));
+    })
+    .catch((error) => {
+      dispatch(failFetchByApi(error));
+    });
 };
 
 export const logoutByApi = () => (dispatch, getState) => {

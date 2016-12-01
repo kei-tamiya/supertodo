@@ -6,14 +6,14 @@ import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import MenuItem from 'material-ui/MenuItem';
 import { Link } from 'react-router';
 
-const Logged = (props) => (
+const Logged = props => (
   <IconMenu
     {...props}
     iconButtonElement={
       <IconButton><MoreVertIcon /></IconButton>
     }
-    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
+    targetOrigin={{ horizontal: 'right', vertical: 'top' }}
+    anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
   >
     <Link to="/signup"><MenuItem primaryText="SignUp" desktop={false} /></Link>
     <Link to="/login"><MenuItem primaryText="Login" desktop={false} /></Link>

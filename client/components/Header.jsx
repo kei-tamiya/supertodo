@@ -1,8 +1,6 @@
 import React, { PropTypes } from 'react';
-import mui, {AppBar} from 'material-ui';
-import Logged from './Logged.jsx';
 import FlatButton from 'material-ui/FlatButton';
-import { Link } from 'react-router';
+import { AppBar } from 'material-ui';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import { GREEN } from '../constant/Color.jsx';
 
@@ -36,18 +34,14 @@ const Header = ({ auth, handleLogout, handleTabChange }) => (
           <AppBar
             title="Petatto - My Todo App"
             showMenuIconButton={false}
-          >
-
-          </AppBar>
+          />
           <nav>
             <Tabs
-              onChange={(e) => handleTabChange(e)}
+              onChange={e => handleTabChange(e)}
               initialSelectedIndex={0}
             >
-              <Tab label="Login" value="login" style={tabStyles.rootContainer}>
-              </Tab>
-              <Tab label="SignUp" value="signup" style={tabStyles.rootContainer}>
-              </Tab>
+              <Tab label="Login" value="login" style={tabStyles.rootContainer} />
+              <Tab label="SignUp" value="signup" style={tabStyles.rootContainer} />
             </Tabs>
           </nav>
         </header>
