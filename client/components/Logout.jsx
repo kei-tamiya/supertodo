@@ -5,11 +5,6 @@ import { loginByApi } from '../../actions/AuthActions.jsx';
 import Loading from '../../components/Loading.jsx';
 
 class Login extends Component {
-  static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    auth: PropTypes.object.isRequired,
-  };
-
   handleSubmit(e) {
     const target = e.target;
     e.preventDefault();
@@ -57,6 +52,11 @@ const mapStateToProps = (state) => {
   return {
     auth: state.auth,
   }
+};
+
+Login.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  auth: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(Login);
