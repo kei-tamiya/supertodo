@@ -13,30 +13,6 @@ class UserOnly extends Component {
     super(props);
   }
 
-  static propTypes = {
-    // isTodosFetching: PropTypes.bool.isRequired,
-    todos: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      completed: PropTypes.bool.isRequired,
-      title: PropTypes.string.isRequired,
-      pos_top: PropTypes.number.isRequired,
-      pos_left: PropTypes.number.isRequired,
-    }).isRequired).isRequired,
-    isFetching: PropTypes.bool.isRequired,
-    // boards: PropTypes.arrayOf(PropTypes.shape({
-    //   id: PropTypes.number.isRequired,
-    //   date: PropTypes.string.isRequired,
-    // }).isRequired).isRequired,
-    dispatch: PropTypes.func.isRequired,
-    // children: PropTypes.object.isRequired,
-    auth: PropTypes.object.isRequired,
-    selectedBoard: PropTypes.object.isRequired,
-  };
-
-  static contextTypes = {
-    router: PropTypes.object.isRequired
-  };
-
   componentWillMount() {
     this.guestWillTransfer(this.props, this.context.router);
   }
@@ -141,9 +117,30 @@ const mapStateToProps = (state) => {
   };
 };
 
-// const mapDispatchToProps = dispatch => ({
-//   actions: bindActionCreators(TodoActions, dispatch)
-// });
+UserOnly.propTypes = {
+  // isTodosFetching: PropTypes.bool.isRequired,
+  todos: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    completed: PropTypes.bool.isRequired,
+    title: PropTypes.string.isRequired,
+    pos_top: PropTypes.number.isRequired,
+    pos_left: PropTypes.number.isRequired,
+  }).isRequired).isRequired,
+  isFetching: PropTypes.bool.isRequired,
+  // boards: PropTypes.arrayOf(PropTypes.shape({
+  //   id: PropTypes.number.isRequired,
+  //   date: PropTypes.string.isRequired,
+  // }).isRequired).isRequired,
+  dispatch: PropTypes.func.isRequired,
+  // children: PropTypes.object.isRequired,
+  auth: PropTypes.object.isRequired,
+  selectedBoard: PropTypes.object.isRequired,
+  children: PropTypes.any.isRequired,
+};
+
+UserOnly.contextTypes = {
+  router: PropTypes.object.isRequired
+};
 
 export default connect(
   mapStateToProps

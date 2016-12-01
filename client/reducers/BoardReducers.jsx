@@ -1,10 +1,6 @@
 import {
   ADD_BOARD,
   SELECT_BOARD,
-  DELETE_BOARD,
-  UPDATE_BOARD_TITLE,
-  UPDATE_BOARD_POSITION,
-  TOGGLE_BOARD,
   REQUEST_BOARDS,
   RECEIVE_BOARDS,
   CLEAR_BOARDS,
@@ -68,7 +64,7 @@ const selectedBoard = (
         (todo.id === action.id ?
           { ...todo, title: action.title } :
           todo
-        )
+        ),
       );
       return changeTodoTitleState;
     }
@@ -78,7 +74,7 @@ const selectedBoard = (
         (todo.id === action.id ?
           { ...todo, completed: !todo.completed } :
           todo
-        )
+        ),
       );
       return toggeleTodoCompletedState;
     }
@@ -88,7 +84,7 @@ const selectedBoard = (
         (todo.id === action.id ?
           { ...todo, pos_top: action.pos_top, pos_left: action.pos_left } :
           todo
-        )
+        ),
       );
       return changeTodoPositionState;
     }
@@ -98,7 +94,7 @@ const selectedBoard = (
         (todo.id === action.id ?
           { ...todo, width: action.width, height: action.height } :
           todo
-        )
+        ),
       );
       return changeTodoSizeState;
     }
@@ -205,7 +201,7 @@ const boardsByApi = (
     case DELETE_TODO: {
       const newCurrentBoard = Object.assign({}, action.board, {
         todos: action.board.todos.filter(todo =>
-          todo.id !== action.id
+          todo.id !== action.id,
         ),
       });
       return Object.assign({}, state, {

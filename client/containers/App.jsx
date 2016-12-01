@@ -63,6 +63,7 @@ App.propTypes = {
   auth: PropTypes.object.isRequired,
   token: PropTypes.string.isRequired,
   isFetchTokenCompleted: PropTypes.bool.isRequired,
+  children: PropTypes.any.isRequired,
 };
 
 const mapStateToProps = state => ({
