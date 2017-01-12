@@ -87,13 +87,12 @@ const updateTodoByApi = id => (dispatch, getState) => {
   if (!todoToUpdate) {
     return;
   }
-  const apiUrl = `${API_ROOT_URL}api/todos/`;
+  const apiUrl = `${API_ROOT_URL}api/todos`;
   dispatch(requestUpdateTodo());
   fetch(apiUrl, {
     credentials: 'same-origin',
     method: 'PATCH',
     headers: {
-      Accept: 'application/json',
       'Content-Type': 'application/json',
       'X-XSRF-TOKEN': getState().token.token,
     },
@@ -114,13 +113,13 @@ const updateTodoByApi = id => (dispatch, getState) => {
 export const addTodoByApi = title => (dispatch, getState) => {
   const todoToSave = Object.assign({}, { board_id: getState().selectedBoard.board.id, title });
   const date = getState().selectedBoard.board.date;
+  console.log("working");
 
-  const apiUrl = `${API_ROOT_URL}api/todos/`;
+  const apiUrl = `${API_ROOT_URL}api/todos`;
   return fetch(apiUrl, {
     credentials: 'same-origin',
     method: 'POST',
     headers: {
-      Accept: 'application/json',
       'Content-Type': 'application/json',
       'X-XSRF-TOKEN': getState().token.token,
     },
@@ -180,12 +179,11 @@ export const clearTodos = () => ({
 
 const fetchTodos = (todos) => (dispatch, getState) => {
   dispatch(requestTodos(todos));
-  const apiUrl = `${API_ROOT_URL}api/todos/`;
+  const apiUrl = `${API_ROOT_URL}api/todos`;
   return fetch(apiUrl, {
     credentials: 'same-origin',
     method: 'GET',
     headers: {
-      Accept: 'application/json',
       'Content-Type': 'application/json',
       'X-XSRF-TOKEN': getState().token.token,
     },
@@ -211,7 +209,6 @@ const deleteTodoByApi = id => (dispatch, getState) => {
     credential: 'same-origin',
     method: 'DELETE',
     headers: {
-      Accept: 'application/json',
       'Content-Type': 'application/json',
       'X-XSRF-TOKEN': getState().token.token,
     },

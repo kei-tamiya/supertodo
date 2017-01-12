@@ -1,7 +1,3 @@
-import { createDevTools } from 'redux-devtools';
-import LogMonitor from 'redux-devtools-log-monitor';
-import DockMonitor from 'redux-devtools-dock-monitor';
-
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore, applyMiddleware, combineReducers, compose } from 'redux';
@@ -21,7 +17,6 @@ import Login from './containers/auth/Login.jsx';
 import UserOnly from './containers/auth/UserOnly.jsx';
 import GuestOnly from './containers/auth/GuestOnly.jsx';
 
-// import material-ui
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 const reducer = combineReducers({
@@ -37,11 +32,6 @@ if (process.env.NODE_ENV !== 'production') {
   middleware.push(createLogger())
 }
 
-// const DevTools = createDevTools(
-//     <DockMonitor toggleVisibilityKey="ctrl-h" changePositionKey="ctrl-q">
-//         <LogMonitor theme="tomorrow" preserveScrollTop={false} />
-//     </DockMonitor>
-// )
 const store = createStore(
   reducer,
   compose(
@@ -72,13 +62,3 @@ render(
   </MuiThemeProvider>,
   document.getElementById('root')
 );
-//
-// render(
-//   <Provider store={store}>
-//       <Router history={history}>
-//           <Route path=""
-//       </Router>
-//     <App />
-//   </Provider>,
-//   document.getElementById('root')
-// )

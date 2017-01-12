@@ -12,8 +12,8 @@ CREATE TABLE `todos` (
   `created` timestamp NOT NULL DEFAULT NOW() COMMENT 'when created',
   `updated` timestamp NOT NULL DEFAULT NOW() ON UPDATE CURRENT_TIMESTAMP COMMENT 'when last updated',
   PRIMARY KEY (`todo_id`),
-  FOREIGN KEY (`board_id`) REFERENCES `boards`(`board_id`),
-  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`)
+  FOREIGN KEY (`user_id`) REFERENCES `users`(`user_id`),
+  FOREIGN KEY (`board_id`) REFERENCES `boards`(`board_id`)
   ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='list of todo';
 
 -- +migrate Down

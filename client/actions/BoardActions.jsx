@@ -61,7 +61,7 @@ export const syncTodos = (boards, todos) => ({
 
 export const addBoardOneByApi = date => (dispatch, getState) => {
   const boardToSave = Object.assign({}, { date });
-  const apiUrl = `${API_ROOT_URL}api/boards/`;
+  const apiUrl = `${API_ROOT_URL}api/boards`;
   return fetch(apiUrl, {
     credentials: 'same-origin',
     method: 'POST',
@@ -163,7 +163,7 @@ export const selectOrAddBoard = date => (dispatch, getState) => {
 const fetchBoardsByApi = () => (dispatch, getState) => {
   dispatch(requestBoards());
 
-  const apiUrl = `${API_ROOT_URL}api/boards/`;
+  const apiUrl = `${API_ROOT_URL}api/boards`;
   return fetch(apiUrl, {
     credentials: 'same-origin',
     method: 'GET',

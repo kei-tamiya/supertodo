@@ -215,11 +215,13 @@ const boardsByApi = (
       });
     }
     case UPDATE_TODO: {
+      const date = action.date;
+      const boardObj = Object.assign({}, state[date], {
+        todos: action.todos.slice(),
+      });
       return Object.assign({}, state, {
         isUpdateing: false,
-        [action.date]: {
-          todos: action.todos.slice(),
-        },
+        [action.date]: boardObj,
       });
     }
     default: {

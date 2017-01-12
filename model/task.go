@@ -4,6 +4,7 @@ import (
 	"database/sql"
 
 	"github.com/jmoiron/sqlx"
+	"github.com/kotakanbe/go-cve-dictionary/log"
 )
 
 //func (t *Todo) SelectTodo(tx *sqlx.Tx) (sql.Result, error) {
@@ -37,6 +38,7 @@ func TodosAllOfBoard(dbx *sqlx.DB, userId int64, boardId int64) (todos []Todo, e
 }
 
 func (t *Todo) Insert(tx *sqlx.Tx, userId int64) (sql.Result, error) {
+	log.Printf("t.Board_Id : %v", t.Board_Id)
 	stmt, err := tx.Prepare(`
 	INSERT INTO todos (board_id, user_id, title, completed)
 	VALUES (?, ?, ?, ?)

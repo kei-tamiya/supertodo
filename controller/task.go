@@ -38,18 +38,20 @@ func (t *Todo) Post(c *gin.Context) {
 	}
 
 	sess := sessions.Default(c)
-	log.Printf("uid post : %v", sess.Get("uid"))
 
-	TXHandler(c, t.DB, func(tx *sqlx.Tx) error {
+	TXHandler(c, t.DB, func(tx *sqlx.Tx) (err error) {
 		result, err := todo.Insert(tx, sess.Get("uid").(int64))
 		if err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
 			return err
 		}
 		if err := tx.Commit(); err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
 			return err
 		}
 		todo.ID, err = result.LastInsertId()
 		if err != nil {
+			c.JSON(500, gin.H{"err": err.Error()})
 			return err
 		}
 		todo, err = model.TodoOne(t.DB, todo.ID)
