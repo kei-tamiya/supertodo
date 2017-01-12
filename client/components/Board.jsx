@@ -15,21 +15,6 @@ const Board = () => (
       </TableHeader>
       <TableBody>
         <TableRow>
-          <TableRowColumn>0:00</TableRowColumn>
-        </TableRow>
-        <TableRow>
-          <TableRowColumn>1:00</TableRowColumn>
-        </TableRow>
-        <TableRow>
-          <TableRowColumn>2:00</TableRowColumn>
-        </TableRow>
-        <TableRow>
-          <TableRowColumn>3:00</TableRowColumn>
-        </TableRow>
-        <TableRow>
-          <TableRowColumn>4:00</TableRowColumn>
-        </TableRow>
-        <TableRow>
           <TableRowColumn>5:00</TableRowColumn>
         </TableRow>
         <TableRow>
@@ -88,6 +73,9 @@ const Board = () => (
         </TableRow>
         <TableRow>
           <TableRowColumn>24:00</TableRowColumn>
+        </TableRow>
+        <TableRow>
+          <TableRowColumn>0:00</TableRowColumn>
         </TableRow>
       </TableBody>
     </Table>
